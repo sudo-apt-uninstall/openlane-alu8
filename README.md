@@ -67,7 +67,7 @@ Two deliberate RTL choices worth noting, because reviewers often try to "fix" th
 
 | stage | result |
 |---|---|
-| synthesis (Yosys) | **210 CP8D standard cells** |
+| synthesis (Yosys) | **210 CP8D standard cells**, ≈0.137 mm² of cell area |
 | floorplan | 1000 × 1000 µm die, 800 × 800 µm core, **16 rows**, 50.7 µm pitch, ~33 % occupancy |
 | PDN | metal1 followpins, 7 µm per row, metal1/metal2 ring |
 | placement | `detailed_placement` + `check_placement` clean |
@@ -192,6 +192,7 @@ number, is in [tapeout/TAPEOUT-PLAN.md](tapeout/TAPEOUT-PLAN.md).
 | die | 4 mm × 4 mm — 40 pads = 32 usable I/O + 8 power |
 | design I/O | **29** of 32, so pin count fixes the die, not area |
 | core opening | **`304.90 304.90 3695.10 3695.10`** — **measured** from `frame4mmx4mm.gds`, not derived |
+| utilisation | ≈0.137 mm² of cells in an 11.5 mm² core = **≈1.2 %** — wildly pad-limited |
 | pin split | **8 / 8 / 8 / 5**. Every edge has exactly 8 signal positions; the other two are power |
 
 Three things stand between this and a submittable GDS, and only the first is ours:
@@ -200,8 +201,8 @@ Three things stand between this and a submittable GDS, and only the first is our
    polygons** and there are **3** items, so at least one must be genuinely fixed.
    A plain re-run cannot help — the flow is byte-identically deterministic through
    signoff. Two experiments decide it: a standalone `INVR00` DRC run (library defect?)
-   and the chip run itself, which drops occupancy from ~33 % to ~0.4 % and so tests the
-   `NND200`→`INVR00` abutment hypothesis for free.
+   and the chip run itself, which drops utilisation from ~33 % to ~1.2 % and so tests
+   the `NND200`→`INVR00` abutment hypothesis for free.
 2. **Pad conversion.** The frame ships **16 input pads, 16 dead pads and zero outputs** —
    `ASPAD00` has only three terminals (bond pad + 322 Ω nwell resistor + ESD diodes) and
    **no path to the core at all**. Converting costs **13 swaps minimum**, or **18** for a
@@ -209,8 +210,9 @@ Three things stand between this and a submittable GDS, and only the first is our
    editing `frame4mmx4mm.cdl`, or chip-level LVS fails.
 3. **Blocked on SCL.** No **antenna rule deck** exists anywhere in the PDK or its five
    documents, yet submission requires an antenna-clean GDSII. The **Tapeout Submission
-   Form** and the **seal ring** are likewise named but never supplied. No amount of
-   core-side work removes these.
+   Form** and the **seal ring** are likewise named but never supplied. ⚠️ `CORNER.gds`
+   is a pad-ring corner cell, **not** a seal ring. No amount of core-side work removes
+   these.
 
 ---
 
