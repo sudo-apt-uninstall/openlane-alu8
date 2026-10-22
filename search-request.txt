@@ -1,472 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?>
-<report-database>
- <description>SCL DRC runset</description>
- <original-file>std_cells_cp8d.gds</original-file>
- <generator>drc: script='/home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/drc.lydrc'</generator>
- <top-cell>INVR00</top-cell>
- <tags>
-  <tag>
-   <name>waived</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>red</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>green</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>blue</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>yellow</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>important</name>
-   <description/>
-  </tag>
- </tags>
- <categories>
-  <category>
-   <name>1.1.1 &amp; 1.1.2 : Minimum Nwell width violations = 4.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>1.2.2 : Minimum Nwell spacing violations = 7.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>1.3.2 : Minimium spacing Ndiff outside nwell = 3.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>1.3.3 : Minimum spacing Pdiff inside Nwell = 3.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>2.1.1 : Minimum Ndiff Width violations =  2.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>2.1.2 : Minimum Pdiff Width violations =  2.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>2.2.1 : Minimum Ndiff spacing violations =  1.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>2.2.2 : Minimum Pdiff spacing violations =  1.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>2.2.3 : Minimum Pdiff to Ndiff Spacing violations =  1.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>3.1.1 : Shapes present in Nwell_rev XOR Nwell</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.1.1 : Minimum Poly width violations  =  0.8um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.2.1 : Minimum Poly to diffusion spacing violations =  0.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.2.2 : Minimum Poly spacing edge violations = 1.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.3.1 &amp; 4.3.2 : Minimum NMOS length : 0.8um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.3.1 &amp; 4.3.2 : Minimum NMOS Area : 1.6.0umÂ²</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.3.1 &amp; 4.3.2 : Minimum PMOS length : 0.8um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.3.1 &amp; 4.3.2 : Minimum PMOS Area : 1.6.0umÂ²</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.4.1 : Minimum Poly Extension beyond Gate : 1.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.5.1 : Minimum Diffusion extenion beyond Gate violations = 1.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>4.6.1 : Poly dimension exceeds Maximum 30u x 30u</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>6.1.1 and 6.1.2 : Minimum Boron width violations =  3.4um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>6.4.1 : Minimum enclosure of Diffusion by Boron violations =  0.7um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>6.5.1 : Minimum Boron to Ndiff spacing violations = 0.7um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>6.7.1 : Minimum Boron spacing violations =  1.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>5.1.1 : Shapes present in Boron_rev XOR Boron</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.1.1 : Contacts not exactly 1.2u x 1.2u</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.2.1 &amp; 7.2.2 : Maximum Nplus substrate contact size violations</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.2.1 &amp; 7.2.2 : Maximum Pplus substrate contact size violations</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.3.1 : Minimum Contact spacing violations =  1.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.4.1 :  Minimum enclosure of Poly to Contact violations = 0.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.4.2 : Minimum enclosure of Diffusion to Contact violations =  0.7um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.5.1 : Minimum Diffusion contact spacing tO Poly gate = 1.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.6.1 : Minimum Poly contact spacing tO active Gate area = 0.8um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.7.1 : Minimum butted Diffusion Contact width = 2.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.1 : Poly Contact in Diffusion NOT ALLOWED</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>7.2 : Contact NOT IN Poly OR Diffusion AND Metal1</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.1.1 : Minimum Metal1 spacing violations = 1.2um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.2.1 : Minimum Metal1 width violations = 1.7um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.3.1 : Minimum Metal1 enclose to contact violations = 0.4um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.4.1 : Minimum Metal1 enclousure to Pad Contacts =  1.2um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.9.1 : Minimum bonding Pad spacing to Diffusion violations = 10.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.9.2 : Minimum bonding Pad spacing to Poly violations = 30.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.9.3 : Minimum bonding Pad spacing to Contact violations = 15.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.9.4 : Minimum bonding Pad spacing to Metal1 violations = 30.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.10.1 : Minimum enclousure of Metal1 to Pad window violations = 5.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>8.1 : NO Poly allowed underneath bonding Pad Metal1</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>9.1.1 : Exact via width = 1.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>9.2.1 : Minimum via to via spacing violations = 1.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>9.3.1 : Minimum via to contact spacing violations = 1.2um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>9.4.1 : Minimum via to Poly spacing violations = 1.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>9.5.1 : Minimum Metal1 enclose to via violations = 0.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>9.6.1 : Minimum Metal2 enclose to via violations = 0.5um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name> NOTE  Via on poly edges not allowed</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>10.1.1 : Minimum Metal2 to Metal2 spacing violations = 1.4um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>10.2.1 : Minimum Metal2 width violations = 2.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>10.3.2 : Minimum bonding pad spacing to via violations = 15.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>10.3.3 : Minimum bonding pad metal spacing to Metal2 violations = 30.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>10.4.1 : Minimum enclosure of Metal2 to pad violations = 5.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>11.1.1 : Minimum pad window size = 90 X 90 </name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>11.2.1 : Minimum pad to pad spacing violations = 100.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>11.1 : unwanted Nguardbar CONNECTED TO SOURCE/DRAIN OF nmos</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>11.2 : unwanted Pguardbar CUTTING nwell</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>11.3 : pad Metal NOT ON Metal1 OR Metal2 ARE ILLEGAL</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>rnwell width violations = 10.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>@GUIDELINE-3 Bad contact covering nwell resistor</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name> @GUIDELINE-3 Bad contact covering npoly resistor</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>@GUIDELINE-3 Bad contact covering ppoly resistor</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>@GUIDELINE_4_floating_gates  </name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name> @GUIDELINE-6 AVOID PLACING vias ON diff EDGES</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>@GUIDELINE-5 distance pgate welltap &gt; 25.0um  </name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
-  <category>
-   <name>@GUIDELINE-5 distance ngate subtap &gt; 50.0um</name>
-   <description/>
-   <categories>
-   </categories>
-  </category>
- </categories>
- <cells>
-  <cell>
-   <name>INVR00</name>
-   <variant/>
-   <layout-name/>
-   <references>
-   </references>
-  </cell>
- </cells>
- <items>
- </items>
-</report-database>
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ cd /home/eda/OpenLane/designs/project_scl_cp8d/alu8
+ls runs/CHIP/RUN/results/*/          # inner: expect full set incl. spef + sta
+ls runs/CHIP/results/*/              # outer stub: expect only synthesis
+runs/CHIP/RUN/results/cts/:
+alu8_plcts.def  alu8_plcts.odb
+
+runs/CHIP/RUN/results/floorplan/:
+alu8.def  alu8_pdn.def
+
+runs/CHIP/RUN/results/placement/:
+alu8_plcts.odb  alu8_pl.def
+
+runs/CHIP/RUN/results/routing/:
+alu8_rt.def  alu8_rt_pwr.v  alu8_rt_sim.v  drc.rpt
+
+runs/CHIP/RUN/results/signoff/:
+
+runs/CHIP/RUN/results/spef/:
+alu8_rt.spef
+
+runs/CHIP/RUN/results/sta/:
+alu8_rt.sdf  timing_report.txt  tns_report.txt  wns_report.txt
+
+runs/CHIP/RUN/results/synthesis/:
+alu8_sys.v
+runs/CHIP/results/cts/:
+
+runs/CHIP/results/floorplan/:
+
+runs/CHIP/results/placement/:
+
+runs/CHIP/results/routing/:
+
+runs/CHIP/results/signoff/:
+
+runs/CHIP/results/synthesis/:
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ mv runs/CHIP runs/CHIP_STUB_OLD
+mv runs/CHIP_STUB_OLD/RUN runs/CHIP
+rm -rf runs/CHIP_STUB_OLD
+ls runs/
+du -sh runs/CHIP
+ls runs/CHIP/results/routing/ runs/CHIP/results/sta/
+CHIP  RUN.bak  RUN_COMPLETE_20261021
+19M	runs/CHIP
+runs/CHIP/results/routing/:
+alu8_rt.def  alu8_rt_pwr.v  alu8_rt_sim.v  drc.rpt
+
+runs/CHIP/results/sta/:
+alu8_rt.sdf  timing_report.txt  tns_report.txt  wns_report.txt
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ sclenv 
+========================================================================
+ SCL CP8D / OpenLane environment loaded
+========================================================================
+ MY_DTECH_DIR  : /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d
+ PDK_ROOT      : /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks
+ PDK           : scl_cp8d
+ KLAYOUT_PATH  : /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout
+ OPENLANE_PATH : /home/eda/OpenLane
+ PADFRAME      : /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/PadFrame_cp8d/Padframe_database
+------------------------------------------------------------------------
+ aliases: olmount   (make mount with the SCL PDK)
+          scldesigns (cd to project_scl_cp8d)
+========================================================================
+ NOTE: this shell must NOT also load cadence.bash (PDK_ROOT collides).
+========================================================================
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ cd 5_klayout
+cp cdl_gds_script.source cdl_gds_script.source.1mm
+sed -i 's|runs/RUN/|runs/CHIP/|g' cdl_gds_script.source
+grep -n 'runs/' cdl_gds_script.source      # confirm both paths now say CHIP
+source cdl_gds_script.source
+32:-verilog $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/runs/CHIP/results/routing/${DESIGN_NAME}_rt_pwr.v \
+42:    -rd in_def=$OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/runs/CHIP/results/routing//${DESIGN_NAME}_rt.def \
+========================================================================
+ Environment Variables Sourced Successfully!
+========================================================================
+ HOME		: /home/eda
+ MY_DTECH_DIR	: /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d
+ PDK_ROOT	: /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks
+ PDK		: scl_cp8d
+ OPENLANE_PATH	: /home/eda/OpenLane
+========================================================================
+ Please verify that the displayed paths match your actual directories.
+========================================================================
+Success: CDL generated successfully with bracket tracking.
+======================================================================
+DEF -> GDS conversion
+======================================================================
+  DEF file      : /home/eda/OpenLane/designs/project_scl_cp8d/alu8/runs/CHIP/results/routing//alu8_rt.def
+  Tech LEF      : /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/openlane/digital_cp8d/lef/tech_cp8d.lef
+  Cell LEFs     : ['/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/core_cp8d.lef', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/corner_cp8d.lef', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/pads_cp8d.lef']
+  Cell GDS libs : ['/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/std_cells_cp8d.gds', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/pads_cp8d.gds', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/CORNER.gds']
+  Layer map     : /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/scl_cp8d.map
+  Output GDS    : /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/alu8.gds
+======================================================================
+Warning: FOREIGN name SPAD00 differs from MACRO ASPAD00 (line=5434, cell=ASPAD00, file=pads_cp8d.lef)
+Warning: No mapping for purpose 'OUTLINE' - layer is ignored (line=6, cell=, file=alu8_rt.def)
+Top cell(s) after import: ['alu8']
+Done. Wrote /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/alu8.gds
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ Info: Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+2026-10-23 03:03:38 +0530: Starting running SCL C1D Klayout LVS runset on active layout
+2026-10-23 03:03:38 +0530: deep mode is enabled.
+2026-10-23 03:03:38 +0530: Netlist file: alu8.cdl
+2026-10-23 03:03:38 +0530: Extracted netlist file: alu8_extracted.cir
+2026-10-23 03:03:38 +0530: Final report: alu8.lvsdb
+2026-10-23 03:03:39 +0530: LVS Total Run time 1.376748 seconds
+2026-10-23 03:03:39 +0530: ==========================================
+2026-10-23 03:03:39 +0530: INFO : Congratulations! Netlists match.
+2026-10-23 03:03:39 +0530: ==========================================
+Writing report database: /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/scl_drc.txt ..
+Total elapsed: 1.740s  Memory: 553.00M
+Writing report database: /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/scl_drc.txt ..
+Total elapsed: 1.710s  Memory: 596.00M
+
+[1]+  Done                    klayout -e $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc/${DESIGN_TOP_CELL_NAME}.gds
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ cd 5_klayout
+cp cdl_gds_script.source cdl_gds_script.source.1mm
+sed -i 's|runs/RUN/|runs/CHIP/|g' cdl_gds_script.source
+grep -n 'runs/' cdl_gds_script.source      # confirm both paths now say CHIP
+source cdl_gds_script.source
+bash: cd: 5_klayout: No such file or directory
+32:-verilog $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/runs/CHIP/results/routing/${DESIGN_NAME}_rt_pwr.v \
+42:    -rd in_def=$OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/runs/CHIP/results/routing//${DESIGN_NAME}_rt.def \
+========================================================================
+ Environment Variables Sourced Successfully!
+========================================================================
+ HOME		: /home/eda
+ MY_DTECH_DIR	: /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d
+ PDK_ROOT	: /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks
+ PDK		: scl_cp8d
+ OPENLANE_PATH	: /home/eda/OpenLane
+========================================================================
+ Please verify that the displayed paths match your actual directories.
+========================================================================
+Success: CDL generated successfully with bracket tracking.
+======================================================================
+DEF -> GDS conversion
+======================================================================
+  DEF file      : /home/eda/OpenLane/designs/project_scl_cp8d/alu8/runs/CHIP/results/routing//alu8_rt.def
+  Tech LEF      : /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/openlane/digital_cp8d/lef/tech_cp8d.lef
+  Cell LEFs     : ['/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/core_cp8d.lef', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/corner_cp8d.lef', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/pads_cp8d.lef']
+  Cell GDS libs : ['/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/std_cells_cp8d.gds', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/pads_cp8d.gds', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/CORNER.gds']
+  Layer map     : /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/scl_cp8d.map
+  Output GDS    : /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/alu8.gds
+======================================================================
+Warning: FOREIGN name SPAD00 differs from MACRO ASPAD00 (line=5434, cell=ASPAD00, file=pads_cp8d.lef)
+Warning: No mapping for purpose 'OUTLINE' - layer is ignored (line=6, cell=, file=alu8_rt.def)
+Top cell(s) after import: ['alu8']
+Done. Wrote /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/alu8.gds
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ Info: Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+
+[1]+  Done                    klayout -e $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc/${DESIGN_TOP_CELL_NAME}.gds
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ grep -c '<item>' scl_drc.txt
+grep -E '<original-file>|<top-cell>' scl_drc.txt
+grep: scl_drc.txt: No such file or directory
+grep: scl_drc.txt: No such file or directory
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ ls
+ cdl_gds_script.source      'drc 1.png'                  lvs_drc
+ cdl_gds_script.source.1mm  'drc 2.png'                  lvs_drc_1mm
+ cdl_gds_script.source.bak  'full chip screenshot.png'   script
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ cd /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc $ grep -c '<item>' scl_drc.txt
+grep -E '<original-file>|<top-cell>' scl_drc.txt
+8
+ <original-file>/home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/alu8.gds</original-file>
+ <top-cell>alu8</top-cell>
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc $ 
+
