@@ -1,0 +1,16 @@
+[ERROR]: during executing openroad script /openlane/designs/project_scl_cp8d/alu8/3_src/rcx_cp8d.tcl
+[ERROR]: Log: ../dev/null
+[ERROR]: Last 10 lines:
+[INFO ODB-0226] Finished LEF file:  /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/core_cp8d.lef
+[INFO ODB-0222] Reading LEF file: /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/corner_cp8d.lef
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/corner_cp8d.lef
+[INFO ODB-0127] Reading DEF file: /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/routing/alu8_rt.def
+ERROR (DEFPARS-6002): Incomplete def file. Error in file /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/routing/alu8_rt.def at line 1, on token <unprintable>.
+Update the def file before parsing the file again.
+[ERROR ODB-0421] DEF parser returns an error!
+Error: rcx_cp8d.tcl, 11 ODB-0421
+child process exited abnormally
+
+[ERROR]: Creating issue reproducible...
+[ERROR]: Failed to package reproducible.
