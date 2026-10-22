@@ -61,6 +61,14 @@ Two deliberate RTL choices worth noting, because reviewers often try to "fix" th
 | RC extraction | SPEF written, **but capacitance is all zero — PDK limitation, see below** |
 | STA | **11.61 ns ⇒ ≈86.1 MHz**, critical path `a[1]` → `zero`, 10 logic levels |
 
+### The routed layout
+
+![Routed alu8 on SCL CP8D](docs/images/GDS-image.png)
+
+210 logic cells and 356 fillers across 16 rows at ~33 % occupancy, routed on the two
+metal layers CP8D provides. The sparse look is deliberate: the die was fixed at
+1000 × 1000 µm for pad-ring headroom, not shrunk to the logic.
+
 ### Cell histogram
 
 ```
@@ -92,8 +100,8 @@ For scale on how slow this process is: `NND600` alone costs **2.50 ns**.
 ## Running it
 
 The flow is driven from the OpenLane container prompt, one script at a time.
-`run_openroad_script` takes a **path** argument and prints nothing on success — check
-`runs/RUN/results/`, and check **file sizes**, not just existence.
+`run_openroad_script` takes a **path** argument and prints nothing on success —
+check `runs/RUN/results/`, and check **file sizes**, not just existence.
 
 ```tcl
 run_openroad_script $::env(DESIGN_DIR)/3_src/pdn_cp8d.tcl
@@ -172,9 +180,20 @@ precisely why the `fill_cp8d.tcl` rescue above matters.
 
 ```
 rtl/        alu8.sv, tb_alu8.sv
-netlist/    alu8_netlist.v  — generic Yosys output, NOT technology-mapped
-docs/       flow notes
+flow/       config.json, pin_order.cfg, 3_src/*.tcl as actually executed
+results/    flattened artefacts: synthesis netlist, floorplan/placement/cts/
+            routing DEFs, routed netlists (_pwr/_sim), SPEF, SDF, STA reports
+runs/       the three raw run trees — see docs/failed-runs.md
+netlist/    alu8_netlist.v — generic Yosys output, NOT technology-mapped
+docs/       flow-notes.md, failed-runs.md, images/
+MANIFEST.md byte sizes of every tracked artefact, and what was excluded
 ```
+
+Three run directories are preserved under `runs/`: `RUN` (the completed flow),
+`RUN_COMPLETE_20261021` (an earlier snapshot — `diff -rq` shows every file
+byte-identical except `cmds.log`) and `RUN.bak` (an aborted attempt, kept as
+failure evidence). Each tree's `tmp/` is excluded: it holds merged LEF and
+Liberty files copied out of the PDK, roughly 14.5 MB per tree.
 
 ⚠️ `netlist/alu8_netlist.v` is Yosys **generic** output: 322 `assign` statements, 318
 wires, **zero cell instances**. It is kept for provenance only. **No area, cell-count or
