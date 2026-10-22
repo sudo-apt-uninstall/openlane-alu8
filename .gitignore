@@ -1,0 +1,17 @@
+# OpenLane run outputs that are large or regenerable
+runs/*/tmp/
+runs/*/logs/
+*.odb
+*.rcx
+
+# editor / OS noise
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# simulation artefacts
+*.vcd
+*.vvp
+a.out
