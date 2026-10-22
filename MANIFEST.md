@@ -8,7 +8,7 @@ Sizes let anyone reproducing the run diff their output against ours.
 |---:|---|
 | 418 | `flow/config.json` |
 | 64 | `flow/pin_order.cfg` |
-| — | `flow/run_all.tcl` — our driver; runs the whole flow from one `source` |
+| 926 | `flow/run_all.tcl` — our driver; runs the whole flow from one `source` |
 | 1628 | `flow/3_src/cts_cp8d.tcl` — **never executed**, see README |
 | 937 | `flow/3_src/fill_cp8d.tcl` |
 | 1608 | `flow/3_src/floorplan_cp8d.tcl` |
@@ -58,9 +58,9 @@ and LVS run by hand in the GUI. See [`docs/signoff.md`](docs/signoff.md).
 | 22347 | `signoff/lvs_drc/alu8.cdl` | source netlist for LVS, from `alu8_rt_pwr.v` |
 | 42167 | `signoff/lvs_drc/alu8_extracted.cir` | netlist extracted from the layout |
 | 662694 | `signoff/lvs_drc/alu8.lvsdb` | **LVS database: 0 errors.** The verdict exists only here — open it in KLayout's Netlist Browser |
-| 435244 | `signoff/lvs_drc/alu8.gds` | streamed-out layout |
-| 435244 | `signoff/lvs_drc/alu8_klayout.gds` | same byte size as the above; presumed a GUI re-save of the same layout — not independently verified |
-| 35628 | `signoff/lvs_drc/DRC_ERROR_SCREENSHOT.png` | KLayout view of a DRC violation — **caption pending** |
+| 435244 | `signoff/lvs_drc/alu8.gds` | streamed-out layout, written by `def2gds.py` |
+| 435244 | `signoff/lvs_drc/alu8_klayout.gds` | the GUI's re-save of the same layout. **Not byte-identical** (57 % of bytes differ, cell write order changed) but **geometrically identical** — verified by parsing both: 30 cells, 7,383 elements, 7,639 XY records, matching layer and `SREF` histograms. See `docs/signoff.md` §4.3 |
+| 35628 | `signoff/lvs_drc/DRC_ERROR_SCREENSHOT.png` | KLayout zoomed to one of the three boron-width violations, showing the edge-pair markers that bound the 3.35 µm gap. Marker geometry checked against the report by ratio: 5.66:1 measured vs 5.77:1 reported. See `docs/signoff.md` §3 |
 
 **Excluded from `signoff/`:** `core_iolib_cp8d.cdl` (123,613 B) — a PDK-derived
 cell netlist, not redistributed here.

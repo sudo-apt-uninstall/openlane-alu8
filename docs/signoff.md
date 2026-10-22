@@ -82,6 +82,21 @@ three times over. This is a sliver, not a structural failure.
 | 2 | `(643.5,372.25;642.919,372.25)` \| `(643.5,375.6;644.081,375.6)` | 3.35 |
 | 3 | `(744.9,169.45;744.319,169.45)` \| `(744.9,172.8;745.481,172.8)` | 3.35 |
 
+![KLayout view of a boron-width violation](../signoff/lvs_drc/DRC_ERROR_SCREENSHOT.png)
+
+*KLayout zoomed to one of the three violations. The two short white horizontal
+segments are the DRC marker's **edge pair** — the two boron edges the rule
+measures between. They are what the checker is complaining about: the vertical
+gap between them is 3.35 µm where the rule demands 3.4 µm.*
+
+*The image can be checked against the report without trusting the scale bar,
+because a **ratio** is scale-free. The markers measure **532 px apart** and
+**94 px long**, a ratio of **5.66 : 1**. The report gives 3.35 µm against a
+0.581 µm edge length — **5.77 : 1**. Agreement within 2 %, which is the
+line-width and anti-aliasing error for a 94-px measurement. The lower edge
+extends **left** of the shared x-coordinate and the upper edge extends **right**
+of it, exactly as the coordinates describe.*
+
 ### 3.1 Mapping violations back to instances
 
 Each coordinate was matched against the component list in `alu8_rt.def`:
@@ -118,9 +133,27 @@ Note the control case: the INVR00 at x = 479.7 is *also* at Δx = 15.6, but its
 left neighbour is a **NOR200**, and it passes. So the hypothesis is about the
 NND200/INVR00 seam specifically, **not** about spacing alone.
 
-**This hypothesis is unconfirmed.** See §3.4 for the experiment that settles it.
+### 3.3 The three violations are the *same* violation, three times
 
-### 3.3 A corroborating lead in the SCL configuration
+Subtracting each INVR00's placed origin from its violation coordinates gives the
+offset of the defect **within the cell's own frame**:
+
+| instance | cell origin | violation x | violation y | Δx | Δy (lower / upper) |
+|---|---|---:|---|---:|---|
+| `_281_` | 468.0, 152.1 | 468.0 | 169.45 / 172.8 | **0.00** | **+17.35 / +20.70** |
+| `_257_` | 744.9, 152.1 | 744.9 | 169.45 / 172.8 | **0.00** | **+17.35 / +20.70** |
+| `_252_` | 643.5, 354.9 | 643.5 | 372.25 / 375.6 | **0.00** | **+17.35 / +20.70** |
+
+**Identical to the last decimal place in all three.** The violation sits exactly
+on the cell's left boundary (Δx = 0) at a fixed height within the row
+(row height is 32.35 µm, so the notch occupies the band 17.35–20.70 µm up the
+cell).
+
+This is not three coincidences. It is **one structural defect reproduced at every
+site where the same two cells abut**, which is what a seam between fixed cell
+geometries should look like — and what a random placement artefact should not.
+
+### 3.4 A corroborating lead in the SCL configuration
 
 `runs/RUN.bak/config.tcl` carries two variables that are **not** OpenLane
 defaults — they were authored by SCL:
@@ -139,7 +172,7 @@ which this SCL flow bypasses entirely (it uses raw `run_openroad_script`
 calls). So the exclusion was most likely never actually applied here. **The
 intent is the signal, not the mechanism.**
 
-### 3.4 The deciding experiment
+### 3.5 The deciding experiment
 
 Run the process deck against **INVR00 alone**, straight out of the library GDS:
 
@@ -154,13 +187,15 @@ grep -c '<item>' /tmp/invr00.xml
 - **0 items** → the cell is fine in isolation → the notch is created by
   **abutment** → fix in placement (lower `PL_TARGET_DENSITY` so no NND200 hard
   abuts an INVR00, then re-run from placement).
-- **> 0 items** → **PDK library defect**, corroborated by §3.3.
+- **> 0 items** → **PDK library defect**, corroborated by §3.4.
 
-LVS passing makes this sharper: connectivity is provably correct, so the three
-violations are **purely geometric** — either inside the cell or at its seam.
-There is no third possibility.
+Two facts narrow this further. LVS passing means connectivity is provably
+correct, so the violations are **purely geometric** — either inside the cell or
+at its seam, with no third possibility. And §3.3 shows the defect is at a fixed
+offset in the cell frame, which is what either explanation predicts, so the
+standalone run really is the discriminator.
 
-### 3.5 The waiver route is not available
+### 3.6 The waiver route is not available
 
 The CP8D deck carries an undocumented waiver layer, `999:0`, subtracted from
 every process layer. It is **hard-capped at 2 polygons** — the deck raises and
@@ -211,7 +246,7 @@ not merely to STA.
 
 The corollary is the uncomfortable one: because placement is deterministic, the
 violating abutments recur every run. **Re-running cannot fix this.** Only an
-input change can — see §3.4.
+input change can — see §3.5.
 
 ### 4.2 The DRC deck came from a second PDK copy — verified identical
 
@@ -226,6 +261,34 @@ is recorded here because the general case is not harmless: if the decks had
 diverged, the DRC result would not have been checking the PDK the design was
 built with, and nothing in either tool would have said so.
 
+### 4.3 The two GDS files — geometrically identical, not byte-identical
+
+`lvs_drc/` holds `alu8.gds` and `alu8_klayout.gds`, both **435,244 B**. The
+second is the GUI's re-save of the first; no editing was done. Equal size
+invites the assumption that they are the same file, but their git blob SHAs
+differ (`7cf9bc6b…` against `1c8d7548…`) and **249,388 of 435,244 bytes — 57 %**
+— are different.
+
+Both were parsed record by record. The geometry is **identical**:
+
+| | `alu8.gds` | `alu8_klayout.gds` |
+|---|---:|---:|
+| cells | 30 | 30 |
+| elements | 7,383 | 7,383 |
+| XY records | 7,639 | 7,639 |
+| layer histogram | identical | identical |
+| `SREF` histogram | identical | identical |
+| geometry multiset | identical | identical |
+| **cell write order** | — | **differs** |
+
+KLayout rewrote the structures in a different order. Same records, so the file
+length is unchanged; different positions, so most bytes move. **The layouts are
+the same; the files are not.**
+
+Worth keeping in mind generally: for GDS, equal size proves nothing and a byte
+diff proves less than it appears to. Only a parsed comparison answers the
+question, and a layout tool's "save" is not a no-op at the file level.
+
 ---
 
 ## 5. Current signoff scorecard
@@ -236,8 +299,8 @@ built with, and nothing in either tool would have said so.
 | setup timing | ✅ +88.39 ns slack MET |
 | hold timing | ✅ +0.78 ns slack MET |
 | **LVS** | ✅ **0 errors** |
-| signoff DRC | ⚠️ 3 boron-width violations, all INVR00 |
+| signoff DRC | ⚠️ 3 boron-width violations, all INVR00, all the same defect |
 | gate-level simulation | ⬜ not run |
 
-One isolated geometric issue on one cell type, reproducible run to run. Nothing
-else in signoff is outstanding.
+One isolated geometric issue, reproducible run to run, at a fixed offset inside
+one cell type. Nothing else in signoff is outstanding.
