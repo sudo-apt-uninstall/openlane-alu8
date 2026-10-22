@@ -170,9 +170,10 @@ were needed. Full detail in [docs/flow-notes.md](docs/flow-notes.md).
    insertion. The reference flow only inserts fillers *inside* CTS, so skipping CTS
    silently loses them.
 7. `signoff/cdl_gds_script.source` — the signoff driver, retargeted from the counter
-   smoke test (`smoke` / `cnt8` / `cnt8_top`) to `alu8`. Three lines, but it is an
-   **input**: a clean checkout will not have it. The unmodified template is kept
-   alongside it as `.bak` so the diff is visible.
+   smoke test to `alu8`. Three lines — `smoke` / `cnt8` / `cnt8_top` → `alu8` / `alu8` /
+   `alu8` — but it is an **input**: a clean checkout will not have it.
+   ⚠️ The unmodified SCL template is **not** in this repository; it exists only on the
+   machine the flow was run on, so the diff cannot be reproduced from here.
 
 **Provenance:** of the 10 reference Tcl scripts, **8 are byte-identical to SCL's
 upstream** and only `run_sta.tcl` and `yosys_script.tcl` differ — exactly the two edits
