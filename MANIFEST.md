@@ -1,11 +1,15 @@
 # Artefact manifest
 
-Generated 2026-10-22 13:54 UTC on the machine that ran the flow.
 Sizes let anyone reproducing the run diff their output against ours.
+
+## Flow inputs
 
 | bytes | file |
 |---:|---|
-| 1628 | `flow/3_src/cts_cp8d.tcl` |
+| 418 | `flow/config.json` |
+| 64 | `flow/pin_order.cfg` |
+| — | `flow/run_all.tcl` — our driver; runs the whole flow from one `source` |
+| 1628 | `flow/3_src/cts_cp8d.tcl` — **never executed**, see README |
 | 937 | `flow/3_src/fill_cp8d.tcl` |
 | 1608 | `flow/3_src/floorplan_cp8d.tcl` |
 | 2444 | `flow/3_src/pdn_cp8d.tcl` |
@@ -16,47 +20,85 @@ Sizes let anyone reproducing the run diff their output against ours.
 | 1511 | `flow/3_src/run_sta.tcl` |
 | 481 | `flow/3_src/script_openlane.tcl` |
 | 859 | `flow/3_src/yosys_script.tcl` |
-| 418 | `flow/config.json` |
-| 64 | `flow/pin_order.cfg` |
-| 177807 | `results/cts/alu8_plcts.def` |
+
+## Flow results
+
+Lifted from `runs/RUN/results/`. Byte-identical across both completed run trees.
+
+| bytes | file |
+|---:|---|
+| 20959 | `results/synthesis/alu8_sys.v` |
 | 24648 | `results/floorplan/alu8.def` |
 | 145711 | `results/floorplan/alu8_pdn.def` |
 | 151801 | `results/placement/alu8_pl.def` |
+| 177807 | `results/cts/alu8_plcts.def` |
 | 319149 | `results/routing/alu8_rt.def` |
 | 46062 | `results/routing/alu8_rt_pwr.v` |
 | 18144 | `results/routing/alu8_rt_sim.v` |
+| 0 | `results/routing/drc.rpt` — **0 bytes is the result**: router DRC clean |
 | 423 | `results/routing/DRC-RESULT.md` |
-| 0 | `results/routing/drc.rpt` |
 | 155176 | `results/spef/alu8_rt.spef` |
 | 77512 | `results/sta/alu8_rt.sdf` |
 | 2188 | `results/sta/timing_report.txt` |
 | 9 | `results/sta/tns_report.txt` |
 | 9 | `results/sta/wns_report.txt` |
-| 20959 | `results/synthesis/alu8_sys.v` |
+
+## Signoff
+
+Added 2026-10-22. Produced by `signoff/cdl_gds_script.source` plus KLayout DRC
+and LVS run by hand in the GUI. See [`docs/signoff.md`](docs/signoff.md).
+
+| bytes | file | what it is |
+|---:|---|---|
+| 2755 | `signoff/cdl_gds_script.source` | the signoff driver — **an input**, retargeted from the counter smoke test |
+| 2760 | `signoff/cdl_gds_script.source.bak` | the unmodified template it was derived from |
+| 7133 | `signoff/script/def2gds.py` | DEF → GDS, SCL-supplied |
+| 7291 | `signoff/script/verilog2spice.py` | Verilog → CDL, SCL-supplied |
+| 12191 | `signoff/lvs_drc/scl_drc.txt` | **DRC report: 3 boron-width violations** |
+| 22347 | `signoff/lvs_drc/alu8.cdl` | source netlist for LVS, from `alu8_rt_pwr.v` |
+| 42167 | `signoff/lvs_drc/alu8_extracted.cir` | netlist extracted from the layout |
+| 662694 | `signoff/lvs_drc/alu8.lvsdb` | **LVS database: 0 errors.** The verdict exists only here — open it in KLayout's Netlist Browser |
+| 435244 | `signoff/lvs_drc/alu8.gds` | streamed-out layout |
+| 435244 | `signoff/lvs_drc/alu8_klayout.gds` | same byte size as the above; presumed a GUI re-save of the same layout — not independently verified |
+| 35628 | `signoff/lvs_drc/DRC_ERROR_SCREENSHOT.png` | KLayout view of a DRC violation — **caption pending** |
+
+**Excluded from `signoff/`:** `core_iolib_cp8d.cdl` (123,613 B) — a PDK-derived
+cell netlist, not redistributed here.
 
 ## Run trees
 
-Added 2026-10-22 14:41 UTC. `runs/` holds the three run directories as produced
-by the tool. See `docs/failed-runs.md` for what each one is and why the two
-non-completing trees are kept.
+`runs/` holds the raw run directories as produced by the tool. See
+[`docs/failed-runs.md`](docs/failed-runs.md) for what each one is.
 
 | tree | what it is | reached STA? |
 |---|---|---|
-| `runs/RUN` | the completed run; the files tabled above were lifted from here | yes |
-| `runs/RUN_COMPLETE_20261021` | archived snapshot of the same run | yes |
+| `runs/RUN` | the 2026-10-22 scripted re-run (`run_all.tcl`) | yes |
+| `runs/RUN_COMPLETE_20261021` | the original 2026-10-21 run, executed by hand | yes |
 | `runs/RUN.bak` | aborted attempt, 02:15, run-tag collision | no |
 
-`runs/RUN/reports/` and `runs/RUN/logs/` do not appear: they are empty on disk
-(raw `run_openroad_script` calls bypass OpenLane's native reporting tree) and
-git does not track empty directories.
+Top-level files differ between the two completed trees because the entry points
+differed; their `results/` are byte-identical, which is the determinism claim in
+auditable form:
+
+| file | `RUN` | `RUN_COMPLETE_20261021` |
+|---|---:|---:|
+| `config.tcl` | 18232 | 83 |
+| `cmds.log` | 8011 | 8593 |
+| `openlane.log` | 188 | 1661 |
+| `errors.log` | absent | 1435 |
+
+`runs/*/reports/` and `runs/*/logs/` do not appear: they are empty on disk (raw
+`run_openroad_script` calls bypass OpenLane's native reporting tree) and git does
+not track empty directories.
 
 ## Deliberately excluded
+
 - `tmp/` in every run tree — holds `merged.nom.lef`, `merged.min.lef` and
   `merged.max.lef` (484,380 B each) plus `merged.lib` (2,664,059 B),
   `trimmed.lib` (2,664,060 B), `cts.lib` (2,685,635 B), `cts-fastest.lib`
   (2,676,577 B) and `cts-slowest.lib` (2,669,913 B), all copied out of the PDK.
   Roughly 14.5 MB of PDK data per tree.
-- `runs/RUN/results/routing.bak/` — byte-identical duplicate of `results/routing/`.
+- `results/routing.bak/` — byte-identical duplicate of `results/routing/`.
 - `3_src/run_sta.tcl.bak` — superseded scratch copy.
 - `*.odb` — OpenDB binaries, tool-version-locked and regenerable.
 - **All PDK files** (`*.lib`, `*.lef`, tech/DRC/LVS decks, cell GDS). The SCL

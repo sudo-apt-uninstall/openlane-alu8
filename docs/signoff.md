@@ -3,6 +3,8 @@
 **Run date:** 2026-10-22
 **Verdict:** **LVS ✅ clean (0 errors)** · **signoff DRC ⚠️ 3 violations**
 
+Artefacts live in [`signoff/lvs_drc/`](../signoff/lvs_drc).
+
 ---
 
 ## 1. Router DRC is not signoff DRC
@@ -16,7 +18,7 @@ correct but kept being read far too broadly. The two checks are different:
 | cell interiors | **no** — cells are abstract LEF outlines | **yes** — every polygon, flattened |
 | cell boundaries | not examined | examined, including abutment seams |
 | rule set | routing rules from the tech LEF | the full process rule deck |
-| tool | OpenROAD / TritonRoute | KLayout + `cp8d_drc.drc` |
+| tool | OpenROAD / TritonRoute | KLayout + the SCL `drc.lydrc` runset |
 | alu8 result | `drc.rpt` **0 bytes — PASS** | **3 violations — FAIL** |
 
 A design can pass the first and fail the second. alu8 does exactly that.
@@ -70,9 +72,9 @@ $ grep -o '<category>[^<]*</category>' scl_drc.txt | sort | uniq -c
       3 '6.1.1 and 6.1.2 : Minimum Boron width violations =  3.4um'
 ```
 
-One category, three instances. Every edge-pair spans **3.35 µm** against a
-**3.4 µm** minimum — **50 nm short**, three times over. This is a sliver, not a
-structural failure.
+One category, three instances, out of **74 rule categories** the deck checks.
+Every edge-pair spans **3.35 µm** against a **3.4 µm** minimum — **50 nm short**,
+three times over. This is a sliver, not a structural failure.
 
 | # | edge-pair (µm) | span |
 |---|---|---|
@@ -142,7 +144,7 @@ intent is the signal, not the mechanism.**
 Run the process deck against **INVR00 alone**, straight out of the library GDS:
 
 ```bash
-klayout -b -r <cp8d_drc.drc> \
+klayout -b -r <drc.lydrc> \
   -rd top_cell=INVR00 \
   -rd input=<libs.ref/digital_cp8d/gds/std_cells_cp8d.gds> \
   -rd report=/tmp/invr00.xml
@@ -171,7 +173,8 @@ library defect.
 ## 4. How signoff is actually run — manually
 
 **There is no Makefile.** The only driver is
-`5_klayout/cdl_gds_script.source` (2,755 B), and what it does is:
+[`signoff/cdl_gds_script.source`](../signoff/cdl_gds_script.source) (2,755 B),
+and what it does is:
 
 1. `source cp8d_pdk_env_setting.source` — PDK environment
 2. `verilog2spice.py` : `alu8_rt_pwr.v` → `lvs_drc/alu8.cdl`
@@ -186,22 +189,42 @@ signoff is **not reproducible** in the way the flow itself now is.
 **Open gap:** a `signoff.sh` that performs GDS → DRC → LVS headless and prints
 both counts, so the full chain becomes `source run_all.tcl` + `./signoff.sh`.
 
-### 4.1 Signoff artefacts go stale silently
+### 4.1 ✅ Signoff reproduced on the re-run layout — measured
 
-`run_all.tcl` ends at STA — **it has no GDS streamout stage**. So after a
-re-run, everything under `5_klayout/lvs_drc/` still describes the *previous*
-layout:
+`run_all.tcl` ends at STA; **it has no GDS streamout stage**. So after a re-run
+the signoff artefacts describe the *previous* layout until they are regenerated,
+and quoting them without doing so is an argument rather than a measurement.
 
-| file | timestamp | describes |
+They were regenerated. The CDL and GDS were rebuilt from the 2026-10-22
+`alu8_rt.def`, and DRC was re-run against the new GDS:
+
+| | before re-run | after re-run |
 |---|---|---|
-| `runs/RUN/results/routing/alu8_rt.def` | 22 Oct 21:07 | the current run |
-| `5_klayout/lvs_drc/alu8.gds` | 22 Oct 06:19 | previous run |
-| `5_klayout/lvs_drc/scl_drc.txt` | 22 Oct 05:48 | previous run |
-| `5_klayout/lvs_drc/alu8.lvsdb` | 22 Oct 05:48 | previous run |
+| `scl_drc.txt` size | 12,536 B | **12,191 B** |
+| violation count | 3 | **3** |
+| categories | 1 × boron width | **1 × boron width** |
+| coordinates | 468 / 643.5 / 744.9 | **468 / 643.5 / 744.9 — identical** |
 
-Because the flow is deterministic the content is equivalent, but the timestamps
-make that an argument rather than a measurement. Regenerate the CDL and GDS
-before quoting signoff results against any particular run.
+A different file, byte for byte, reporting **exactly the same three violations at
+exactly the same coordinates**. Determinism therefore holds **through signoff**,
+not merely to STA.
+
+The corollary is the uncomfortable one: because placement is deterministic, the
+violating abutments recur every run. **Re-running cannot fix this.** Only an
+input change can — see §3.4.
+
+### 4.2 The DRC deck came from a second PDK copy — verified identical
+
+The report's `<generator>` line records the deck as
+`/home/eda/alu8bit/PDK/.../libs.tech/klayout/tech/drc/drc.lydrc`, while the flow
+itself ran against a `PDK_ROOT` under `/home/eda/cadence/pdk/echip/...`. **Two
+separate PDK copies exist on the machine**, and signoff used a different one than
+place-and-route.
+
+The two copies were compared and are **byte-identical**, so the result stands. It
+is recorded here because the general case is not harmless: if the decks had
+diverged, the DRC result would not have been checking the PDK the design was
+built with, and nothing in either tool would have said so.
 
 ---
 
@@ -216,5 +239,5 @@ before quoting signoff results against any particular run.
 | signoff DRC | ⚠️ 3 boron-width violations, all INVR00 |
 | gate-level simulation | ⬜ not run |
 
-One isolated geometric issue on one cell type. Nothing else in signoff is
-outstanding.
+One isolated geometric issue on one cell type, reproducible run to run. Nothing
+else in signoff is outstanding.

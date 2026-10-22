@@ -1,30 +1,53 @@
 # Run trees: what each one is
 
-Three run trees are preserved under `runs/`. Only one is a completed flow.
-The other two are kept because they document real failure modes, and because
-a tree that only ever shows success teaches nothing.
+Three run trees are preserved under `runs/`. They are **two separate executions
+of the same flow plus one aborted attempt** — kept because a tree that only ever
+shows success teaches nothing, and because the pair of completed runs is what
+proves the flow is deterministic.
 
-| tree | what it is | reached STA? |
-|---|---|---|
-| `RUN` | the completed run; all `results/` artefacts come from here | yes |
-| `RUN_COMPLETE_20261021` | earlier snapshot of the same run; `results/` byte-identical | yes |
-| `RUN.bak` | aborted attempt, 02:15, run-tag collision | no |
+| tree | what it is | entry point | reached STA? |
+|---|---|---|---|
+| `RUN` | the **2026-10-22 scripted re-run**, driven by `flow/run_all.tcl` | `flow.tcl -interactive` | yes |
+| `RUN_COMPLETE_20261021` | the **original 2026-10-21 run**, executed stage by stage by hand | raw `run_openroad_script` | yes |
+| `RUN.bak` | aborted attempt, 02:15, run-tag collision | `flow.tcl` | no |
 
 `tmp/`, `*.odb` and all PDK files are excluded from every tree. `tmp/` in
 particular holds `merged.{nom,min,max}.lef` and `merged` / `trimmed` / `cts*.lib`
 copied out of the SCL CP8D PDK; those are not redistributed here.
 
-## `RUN` vs `RUN_COMPLETE_20261021` — measured, not assumed
+> ⚠️ **This page previously described `RUN` and `RUN_COMPLETE_20261021` as the
+> same run captured twice, differing only in `cmds.log`.** That was accurate when
+> written. It is no longer: `flow.tcl -overwrite` deleted the original `RUN` and
+> the 2026-10-22 re-run took its place. The description below is current.
 
-`diff -rq` across the two trees reports exactly one difference:
+## The two completed trees — and why having both matters
 
-    Files runs/RUN/cmds.log and runs/RUN_COMPLETE_20261021/cmds.log differ
+They are **different executions**, and their top-level files differ accordingly:
 
-Every other file is byte-identical — including all of `results/`, `errors.log`
-(1,435 B in both) and `openlane.log` (1,661 B in both). The two `cmds.log` files
-are 8,895 B and 8,593 B: `RUN` carries 302 bytes more. So the archive is an
-**earlier snapshot**, taken while the session was still issuing commands, not a
-divergent run. The results it contains are the same results.
+| file | `RUN` (re-run) | `RUN_COMPLETE_20261021` (original) |
+|---|---:|---:|
+| `config.tcl` | 18,232 B | 83 B |
+| `cmds.log` | 8,011 B | 8,593 B |
+| `openlane.log` | 188 B | 1,661 B |
+| `errors.log` | **absent** | 1,435 B |
+
+The `config.tcl` difference is the entry point, not the stages. Launching through
+`flow.tcl -interactive` expands the full configuration into the run directory;
+the original session invoked the stages directly and left an 83-byte stub. In
+**both** trees the stages themselves were raw `run_openroad_script` calls, which
+is why `reports/` and `logs/` are empty in both.
+
+`RUN` has **no `errors.log` at all** — the scripted re-run produced no errors.
+
+**Their `results/` are byte-identical.** Same inputs, same tool, same outputs,
+across two independent executions days apart. Anyone cloning this repository can
+check that claim rather than take it:
+
+```bash
+diff -rq runs/RUN/results runs/RUN_COMPLETE_20261021/results
+```
+
+See [`determinism.md`](determinism.md) for the artefact-size table.
 
 ## `RUN.bak` — run-tag collision, not a design failure
 
@@ -38,35 +61,36 @@ runtime environment, prepared LEF files for the nom, min and max corners, then
 re-entered the run directory and aborted. Nothing in the design was wrong. The
 flow refused to clobber an existing `RUN` tag.
 
-It is a `flow.tcl`-driven tree, which is why it carries the expanded
-`config.tcl` (18,232 B) and `config_in.tcl` (1,009 B) that `RUN` does not —
-`RUN`'s `config.tcl` is only 83 B, because its stages were invoked as raw
-`run_openroad_script` calls.
-
-Its `results/` holds only two stages, both byte-size-identical to the final run:
-`synthesis/alu8_sys.v` 20,959 B and `floorplan/alu8.def` 24,648 B.
+Its `results/` holds only two stages, both byte-size-identical to the completed
+runs: `synthesis/alu8_sys.v` 20,959 B and `floorplan/alu8.def` 24,648 B.
 
 **Lesson:** pass `-overwrite`, or pick a new tag, before re-invoking the flow.
 
-## `RUN/errors.log` is historical — the run did finish
+## The rcx failure — preserved in `RUN_COMPLETE_20261021/errors.log`
 
-`RUN/errors.log` is 1,435 B and records an rcx failure:
+That file is 1,435 B and records:
 
     ERROR (DEFPARS-6002): Incomplete def file. Error in file
     .../runs/RUN/results/routing/alu8_rt.def at line 1, on token <unprintable>.
     [ERROR ODB-0421] DEF parser returns an error!
 
-This is superseded. A dead routing invocation left a zero-byte `alu8_rt.def`;
-`rcx_cp8d.tcl` then correctly refused to parse it. The script is innocent — the
-input was empty. The routed DEF now in `results/routing/alu8_rt.def` is
-319,149 B, router DRC came back clean (`drc.rpt`, 0 bytes), and STA completed.
+It is **superseded, and it is not an rcx bug.** A dead routing invocation left a
+zero-byte `alu8_rt.def`; `rcx_cp8d.tcl` then correctly refused to parse it. The
+script is innocent — the input was empty. Re-running routing fixed it, and rcx
+then completed. The routed DEF now in `results/routing/alu8_rt.def` is
+319,149 B, router DRC came back clean (`drc.rpt`, 0 bytes), and STA finished.
 
-**Lesson:** check artefact *sizes*, not merely that the file exists. A 0-byte
-output looks identical to a real one in `ls` without `-l`.
+**Lesson — and it is the reason `run_all.tcl` exists in its current form:** check
+artefact *sizes*, not merely that a file exists. A 0-byte output is
+indistinguishable from a real one in `ls` without `-l`, and it propagates
+silently into the next stage. `run_all.tcl` now asserts a non-empty artefact
+after every stage, so this failure mode stops the flow immediately instead of
+surfacing two stages later as someone else's error message.
 
 ## Empty by design, not by omission
 
-`RUN/reports/` and `RUN/logs/` are empty and always were: the stages were run as
-raw `run_openroad_script` calls, which bypass OpenLane's native reporting tree.
-STA output is written to `results/sta/`, not `reports/`. Git does not track empty
-directories, so these do not appear in the repository at all.
+`reports/` and `logs/` are empty in both completed trees and always were: the
+stages were run as raw `run_openroad_script` calls, which bypass OpenLane's
+native reporting tree. STA output is written to `results/sta/`, not `reports/`.
+Git does not track empty directories, so these do not appear in the repository
+at all.
