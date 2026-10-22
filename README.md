@@ -14,7 +14,11 @@ KLayout DRC/LVS signoff.
 > Nothing here is a tapeout claim.
 
 > ✅ **The flow is scripted and deterministic.** One `source flow/run_all.tcl` runs it
-> end to end, and a full re-run reproduced every artefact **byte-identically**.
+> end to end. A full re-run reproduced every artefact **byte-identically**, and
+> re-running DRC against the regenerated GDS returned the **same 3 violations at the
+> same coordinates** — so determinism holds through signoff, not just to STA.
+> Both completed run trees are in `runs/`, so the claim is auditable:
+> `diff -rq runs/RUN/results runs/RUN_COMPLETE_20261021/results`.
 > See [docs/determinism.md](docs/determinism.md).
 
 Companion project: [`openlane-8bit-counter`](https://github.com/sudo-apt-uninstall/openlane-8bit-counter)
@@ -69,7 +73,7 @@ Two deliberate RTL choices worth noting, because reviewers often try to "fix" th
 | STA — setup | **11.61 ns ⇒ ≈86.1 MHz**, critical path `a[1]` → `zero`, 10 logic levels, **+88.39 MET** |
 | STA — hold | **+0.78 MET** — no min-delay problem |
 | **signoff LVS** | ✅ **0 errors — layout matches schematic** |
-| **signoff DRC** | ⚠️ **3 violations** — minimum boron width, all on `INVR00` |
+| **signoff DRC** | ⚠️ **3 violations** — minimum boron width, all on `INVR00`, out of 74 rule categories checked |
 
 ### The routed layout
 
@@ -123,14 +127,16 @@ takes a **path** argument and prints nothing on success, so checking **file size
 not just existence — is the only way to know a stage worked.
 
 ⚠️ **`-overwrite` deletes the entire `runs/RUN` directory**, including anything you
-parked inside it. Copy results, `cmds.log` and `5_klayout/` elsewhere first.
+parked inside it. Copy results, `cmds.log` and the signoff tree elsewhere first.
 
 🔴 **Never run `cts_cp8d.tcl`** — it calls `[get_ports clk]` and this design has no clock
 port. `fill_cp8d.tcl` replaces it; see [docs/flow-notes.md](docs/flow-notes.md).
 
-Signoff is a **separate, manual step** — `5_klayout/cdl_gds_script.source` builds the
-CDL and GDS and then opens the KLayout GUI; DRC and LVS are run by hand from there.
-Details and the gap this leaves in [docs/signoff.md](docs/signoff.md).
+Signoff is a **separate, manual step**: `signoff/cdl_gds_script.source` builds the CDL
+and GDS and then opens the KLayout GUI, where DRC and LVS are run by hand. The flow
+itself has no GDS streamout stage, so the signoff artefacts must be regenerated after
+any re-run before they describe the current layout. Details in
+[docs/signoff.md](docs/signoff.md).
 
 ---
 
@@ -148,9 +154,10 @@ were needed. Full detail in [docs/flow-notes.md](docs/flow-notes.md).
 6. **`fill_cp8d.tcl`** — a new, hand-written CTS substitute that preserves filler
    insertion. The reference flow only inserts fillers *inside* CTS, so skipping CTS
    silently loses them.
-7. `5_klayout/cdl_gds_script.source` — the signoff driver, retargeted from the counter
+7. `signoff/cdl_gds_script.source` — the signoff driver, retargeted from the counter
    smoke test (`smoke` / `cnt8` / `cnt8_top`) to `alu8`. Three lines, but it is an
-   **input**: a clean checkout will not have it.
+   **input**: a clean checkout will not have it. The unmodified template is kept
+   alongside it as `.bak` so the diff is visible.
 
 **Provenance:** of the 10 reference Tcl scripts, **8 are byte-identical to SCL's
 upstream** and only `run_sta.tcl` and `yosys_script.tcl` differ — exactly the two edits
@@ -161,10 +168,11 @@ above. Every result here is stock-script output.
 ## Open items
 
 1. **Signoff DRC — 3 boron-width violations.** All on `INVR00`, each 50 nm short of the
-   3.4 µm minimum. Working hypothesis is the `NND200 → INVR00` hard-abutment seam; the
-   deciding experiment is a standalone DRC run on the cell alone. Full analysis,
-   including a corroborating `DRC_EXCLUDE_CELL_LIST_OPT = "INVR01"` found in SCL's own
-   config, in [docs/signoff.md](docs/signoff.md).
+   3.4 µm minimum, and reproducible run to run. Working hypothesis is the
+   `NND200 → INVR00` hard-abutment seam; the deciding experiment is a standalone DRC
+   run on the cell alone. Full analysis, including a corroborating
+   `DRC_EXCLUDE_CELL_LIST_OPT = "INVR01"` found in SCL's own config, in
+   [docs/signoff.md](docs/signoff.md).
 2. **Gate-level simulation of the routed netlist — not run.** The inputs exist
    (`alu8_rt_sim.v`, which carries no supply pins and so drops straight into the
    existing testbench, plus `alu8_rt.sdf`). This is the only step that verifies the
@@ -219,17 +227,21 @@ flow/       run_all.tcl  — single-command driver for the whole flow
             config.json, pin_order.cfg, 3_src/*.tcl as actually executed
 results/    flattened artefacts: synthesis netlist, floorplan/placement/cts/
             routing DEFs, routed netlists (_pwr/_sim), SPEF, SDF, STA reports
+signoff/    cdl_gds_script.source + script/ (DEF→GDS, Verilog→CDL), and
+            lvs_drc/ holding the GDS, CDL, extracted netlist, LVS database
+            and the KLayout DRC report
 runs/       the three raw run trees — see docs/failed-runs.md
 netlist/    alu8_netlist.v — generic Yosys output, NOT technology-mapped
 docs/       flow-notes.md, signoff.md, determinism.md, failed-runs.md, images/
 MANIFEST.md byte sizes of every tracked artefact, and what was excluded
 ```
 
-Three run directories are preserved under `runs/`: `RUN` (the completed flow),
-`RUN_COMPLETE_20261021` (an earlier snapshot — `diff -rq` shows every file
-byte-identical except `cmds.log`) and `RUN.bak` (an aborted attempt, kept as
-failure evidence). Each tree's `tmp/` is excluded: it holds merged LEF and
-Liberty files copied out of the PDK, roughly 14.5 MB per tree.
+Three run directories are preserved under `runs/`: `RUN` (the 2026-10-22 scripted
+re-run), `RUN_COMPLETE_20261021` (the original run, executed by hand) and `RUN.bak`
+(an aborted attempt, kept as failure evidence). The two completed trees are separate
+executions whose `results/` are byte-identical — that is the determinism claim in a
+form anyone can check. Each tree's `tmp/` is excluded: it holds merged LEF and Liberty
+files copied out of the PDK, roughly 14.5 MB per tree.
 
 ⚠️ `netlist/alu8_netlist.v` is Yosys **generic** output: 322 `assign` statements, 318
 wires, **zero cell instances**. It is kept for provenance only. **No area, cell-count or
