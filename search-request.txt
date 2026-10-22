@@ -1,133 +1,96 @@
-[eda@eda] ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1 $ ls -la $PADFRAME
-find $PADFRAME -iname '*seal*' -o -iname '*ring*' -o -iname '*antenna*' \
-               -o -iname '*revision*' -o -iname '*silicon*'
-find $PADFRAME -iname '*frame*' | sort
-find $PADFRAME -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn
-total 0
-drwxr-xr-x. 5 eda eda  66 Sep 18 12:11 .
-drwxr-xr-x. 4 eda eda 182 Oct  3 15:39 ..
-drwxr-xr-x. 3 eda eda 167 Oct  3 15:40 analog_cp8d
-drwxr-xr-x. 3 eda eda 167 Oct  3 15:39 digital_cp8d
-drwxr-xr-x. 3 eda eda  95 Oct  3 15:40 PadFrame_cp8d
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR_extracted.cir
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.lvsdb
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.gds
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.sim
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.nodes
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/extfiles/RING_OSCILLATOR.ext
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/extfiles/RING_OSCILLATOR.res.ext
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/extfiles/RING_OSCILLATOR.pex.spice
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.cdl
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_cp8d.sch
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_cp8d.sym
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_cp8d_tran_sim.sch
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_cp8d_tran_sim.sym
-./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_pex_cp8d_tran_sim.sch
-./PadFrame_cp8d
-./PadFrame_cp8d/Padframe_database
-./PadFrame_cp8d/Padframe_database/pad_frame_cdl
-./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame1mmx1mm.cdl
-./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame2mmx2mm.cdl
-./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame3mmx3mm.cdl
-./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame4mmx4mm.cdl
-./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame5mmx5mm.cdl
-./PadFrame_cp8d/Padframe_database/pad_frame_gds
-./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame1mmx1mm.gds
-./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame2mmx2mm.gds
-./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame3mmx3mm.gds
-./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame4mmx4mm.gds
-./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame5mmx5mm.gds
-./PadFrame_cp8d/Padframe_database.zip
-./PadFrame_cp8d/Standard_Pad_Frame_CP8D.pdf
-     23 sym
-     23 sch
-     21 gds
-     14 cdl
-     12 tcl
-     12 png
-     10 txt
-      9 ext
-      8 lib
-      6 pxi
-      6 pex
-      6 netlist
-      5 source
-      4 pem
-      4 lvsdb
-      4 lef
-      4 cir
-      3 zip
-      3 subckt
-      3 spice
-      3 sim
-      3 sh
-      3 py
-      3 pdf
-      3 nodes
-      3 log
-      2 webm
-      2 tech/klayout/klayoutrc
-      2 tech
-      2 mp4
-      2 lyt
-      2 lyp
-      2 lylvs
-      2 lydrc
-      2 lvs
-      2 html
-      2 drc
-      1 v
-      1 tech/xschem/xschemrc
-      1 tech/ngpsice/model/hspice/models49/res/worst/ppr
-      1 tech/ngpsice/model/hspice/models49/res/worst/pdiffr
-      1 tech/ngpsice/model/hspice/models49/res/worst/nwr
-      1 tech/ngpsice/model/hspice/models49/res/worst/npr
-      1 tech/ngpsice/model/hspice/models49/res/worst/ndiffr
-      1 tech/ngpsice/model/hspice/models49/res/typ/readme
-      1 tech/ngpsice/model/hspice/models49/res/typ/ppr
-      1 tech/ngpsice/model/hspice/models49/res/typ/pdiffr
-      1 tech/ngpsice/model/hspice/models49/res/typ/nwr
-      1 tech/ngpsice/model/hspice/models49/res/typ/npr
-      1 tech/ngpsice/model/hspice/models49/res/typ/ndiffr
-      1 tech/ngpsice/model/hspice/models49/res/Readme
-      1 tech/ngpsice/model/hspice/models49/res/best/ppr
-      1 tech/ngpsice/model/hspice/models49/res/best/pdiffr
-      1 tech/ngpsice/model/hspice/models49/res/best/nwr
-      1 tech/ngpsice/model/hspice/models49/res/best/npr
-      1 tech/ngpsice/model/hspice/models49/res/best/ndiffr
-      1 tech/ngpsice/model/hspice/models49/mos/wnwp49_5v
-      1 tech/ngpsice/model/hspice/models49/mos/wnbp49_5v
-      1 tech/ngpsice/model/hspice/models49/mos/tntp49_5v
-      1 tech/ngpsice/model/hspice/models49/mos/bnwp49_5v
-      1 tech/ngpsice/model/hspice/models49/mos/bnbp49_5v
-      1 tech/ngpsice/model/hspice/models49/diode/Readme
-      1 ref/scl_tests/RING_OSCILLATOR/sh_pex_script_r_c_cc
-      1 ref/scl_tests/INVR01/sh_pex_script_r_c_cc
-      1 ref/scl_tests/cs_amp/sh_pex_script_r_c_cc
-      1 par
-      1 map
-      1 json
-      1 info
-      1 cfg
-      1 8micron_PDK/open_source_scl_cp8d/xschem_projects_cp8d/xschemrc
-      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/readme/script_for_magic_pex/sh_pex_script_r_c_cc
-      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/readme/script_for_magic_pex/magic_pex_script_r_c_cc
-      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/readme/script_for_magic_pex/magic_pex_script_explanation
-      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/config/xschemrc
-      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/config/magicrc
-      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/config/klayoutrc
-      1 8micron_PDK/open_source_scl_cp8d/cshrc_pdk_env_setting
-[eda@eda] ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1 $ grep -ril 'seal\|guard\|scribe' $PADFRAME | head
-digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/cp8d_drc.drc
-digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/drc.lydrc
-digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/openlane/config.tcl
-digital_cp8d/Readme_0.8u_digital.txt
-analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/scl_drc.txt
-analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/cs_amp/scl_drc.txt
-analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/INVR01/scl_drc.txt
-analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/AND201/scl_drc.txt
-analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/drc.lydrc
-analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/cp8d_drc.drc
-[eda@eda] ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1 $ 
+[eda@eda] ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1 $ cd
+[eda@eda] ~ $ cd ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/PadFrame_cp8d/Padframe_database
+
+head -60 pad_frame_cdl/frame4mmx4mm.cdl
+grep -ciE '^x|^\.subckt|PVDD|PVSS' pad_frame_cdl/frame4mmx4mm.cdl
+grep -oE 'ASPAD00|SPAD00|PVDD[0-9]*|PVSS[0-9]*|OTPD[0-9]*|BPT[0-9]*' \
+     pad_frame_cdl/frame4mmx4mm.cdl | sort | uniq -c
+
+grep -iE '^MACRO' $PDK_ROOT/scl_cp8d/libs.ref/digital_cp8d/lef/pads_cp8d.lef
+ls -la pad_frame_gds/frame4mmx4mm.gds
+
+
+.SUBCKT frame4mmx4mm PAD1 PAD2 PAD3 PAD4 PAD5 PAD6 PAD7 PAD8 PAD9 PAD10 PAD11 PAD12 PAD13 PAD14 PAD15 PAD16 PAD17 PAD18 PAD19 PAD20 PAD21 PAD22 PAD23 PAD24 PAD25 PAD26 PAD27 PAD28 PAD29 PAD30 PAD31 PAD32 PAD2_OUT PAD4_OUT PAD6_OUT PAD8_OUT PAD10_OUT PAD12_OUT PAD14_OUT PAD16_OUT PAD18_OUT PAD20_OUT PAD22_OUT PAD24_OUT PAD26_OUT PAD28_OUT PAD30_OUT PAD32_OUT VDD GROUND
+
+x1  GROUND PAD1 VDD ASPAD00
+x2  GROUND PAD2 PAD2_OUT VDD SPAD00
+x3  GROUND PAD3 VDD ASPAD00
+x4  GROUND PAD4 PAD4_OUT VDD SPAD00
+x5  GROUND PAD5 VDD ASPAD00
+x6  GROUND PAD6 PAD6_OUT VDD SPAD00
+x7  GROUND PAD7 VDD ASPAD00
+x8  GROUND PAD8 PAD8_OUT VDD SPAD00
+x9  GROUND PAD9 VDD ASPAD00
+x10  GROUND PAD10 PAD10_OUT VDD SPAD00
+x11  GROUND PAD11 VDD ASPAD00
+x12  GROUND PAD12 PAD12_OUT VDD SPAD00
+x13  GROUND PAD13 VDD ASPAD00
+x14  GROUND PAD14 PAD14_OUT VDD SPAD00
+x15  GROUND PAD15 VDD ASPAD00
+x16  GROUND PAD16 PAD16_OUT VDD SPAD00
+x17  GROUND PAD17 VDD ASPAD00
+x18  GROUND PAD18 PAD18_OUT VDD SPAD00
+x19  GROUND PAD19 VDD ASPAD00
+x20  GROUND PAD20 PAD20_OUT VDD SPAD00
+x21  GROUND PAD21 VDD ASPAD00
+x22  GROUND PAD22 PAD22_OUT VDD SPAD00
+x23  GROUND PAD23 VDD ASPAD00
+x24  GROUND PAD24 PAD24_OUT VDD SPAD00
+x25  GROUND PAD25 VDD ASPAD00
+x26  GROUND PAD26 PAD26_OUT VDD SPAD00
+x27  GROUND PAD27 VDD ASPAD00
+x28  GROUND PAD28 PAD28_OUT VDD SPAD00
+x29  GROUND PAD29 VDD ASPAD00
+x30  GROUND PAD30 PAD30_OUT VDD SPAD00
+x31  GROUND PAD31 VDD ASPAD00
+x32  GROUND PAD32 PAD32_OUT VDD SPAD00
+
+
+
+x33  VDD GROUND PVDD01
+x34  GROUND VDD PVSS01
+x35  VDD GROUND PVDD01
+x36  GROUND VDD PVSS01
+x37  VDD GROUND PVDD01
+x38  GROUND VDD PVSS01
+x39  VDD GROUND PVDD01
+x40  GROUND VDD PVSS01
+
+
+
+.ends frame4mmx4mm
+
+.include ../klayout/lvs_cdl/io_pad_cp8d.cdl
+
+
+
+41
+     16 ASPAD00
+      4 PVDD01
+      4 PVSS01
+     16 SPAD00
+MACRO BPT101
+MACRO BPT102
+MACRO BPT103
+MACRO BPT201
+MACRO BPT202
+MACRO BPT301
+MACRO BPT302
+MACRO IPAD00
+MACRO IPPD00
+MACRO IPPU00
+MACRO IPSH00
+MACRO OTPD01
+MACRO OTPD02
+MACRO OTPD03
+MACRO OTPD04
+MACRO OTTR01
+MACRO OTTR02
+MACRO OTTR03
+MACRO PVDD01
+MACRO PVSS01
+MACRO SPAD00
+MACRO ASPAD00
+-rwxrwxr-x. 1 eda eda 82054 Aug 31 12:17 pad_frame_gds/frame4mmx4mm.gds
+[eda@eda] ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/PadFrame_cp8d/Padframe_database $ 
 
