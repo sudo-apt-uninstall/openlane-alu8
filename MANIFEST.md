@@ -51,7 +51,6 @@ and LVS run by hand in the GUI. See [`docs/signoff.md`](docs/signoff.md).
 | bytes | file | what it is |
 |---:|---|---|
 | 2755 | `signoff/cdl_gds_script.source` | the signoff driver — **an input**, retargeted from the counter smoke test |
-| 2760 | `signoff/cdl_gds_script.source.bak` | the unmodified template it was derived from |
 | 5429 | `signoff/signoff.sh` | **headless replacement** for the above: same CDL and GDS steps, then DRC and LVS in batch. **Not yet executed** — the KLayout decks are PDK files and are not in this repo, so the script inspects them and prints the variables they reference rather than guessing the `-rd` names. Git stores it `100644`; `chmod +x` after checkout |
 | 7133 | `signoff/script/def2gds.py` | DEF → GDS, SCL-supplied |
 | 7291 | `signoff/script/verilog2spice.py` | Verilog → CDL, SCL-supplied |
@@ -62,6 +61,12 @@ and LVS run by hand in the GUI. See [`docs/signoff.md`](docs/signoff.md).
 | 435244 | `signoff/lvs_drc/alu8.gds` | streamed-out layout, written by `def2gds.py` |
 | 435244 | `signoff/lvs_drc/alu8_klayout.gds` | the GUI's re-save of the same layout. **Not byte-identical** (57 % of bytes differ, cell write order changed) but **geometrically identical** — verified by parsing both: 30 cells, 7,383 elements, 7,639 XY records, matching layer and `SREF` histograms. See `docs/signoff.md` §4.3 |
 | 35628 | `signoff/lvs_drc/DRC_ERROR_SCREENSHOT.png` | KLayout zoomed to one of the three boron-width violations, showing the edge-pair markers that bound the 3.35 µm gap. Marker geometry checked against the report by ratio: 5.66:1 measured vs 5.77:1 reported. See `docs/signoff.md` §3 |
+
+🔴 **Correction 2026-10-22:** earlier versions of this manifest listed
+`signoff/cdl_gds_script.source.bak` at 2,760 B. **That file has never been
+committed** — verified by path lookup, not by a directory listing. It exists only
+on the machine the flow was run on. The three-line diff it would show is
+`smoke` / `cnt8` / `cnt8_top` → `alu8` / `alu8` / `alu8`.
 
 **Excluded from `signoff/`:** `core_iolib_cp8d.cdl` (123,613 B) — a PDK-derived
 cell netlist, not redistributed here.
