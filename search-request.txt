@@ -1,0 +1,133 @@
+[eda@eda] ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1 $ ls -la $PADFRAME
+find $PADFRAME -iname '*seal*' -o -iname '*ring*' -o -iname '*antenna*' \
+               -o -iname '*revision*' -o -iname '*silicon*'
+find $PADFRAME -iname '*frame*' | sort
+find $PADFRAME -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn
+total 0
+drwxr-xr-x. 5 eda eda  66 Sep 18 12:11 .
+drwxr-xr-x. 4 eda eda 182 Oct  3 15:39 ..
+drwxr-xr-x. 3 eda eda 167 Oct  3 15:40 analog_cp8d
+drwxr-xr-x. 3 eda eda 167 Oct  3 15:39 digital_cp8d
+drwxr-xr-x. 3 eda eda  95 Oct  3 15:40 PadFrame_cp8d
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR_extracted.cir
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.lvsdb
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.gds
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.sim
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.nodes
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/extfiles/RING_OSCILLATOR.ext
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/extfiles/RING_OSCILLATOR.res.ext
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/extfiles/RING_OSCILLATOR.pex.spice
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/RING_OSCILLATOR.cdl
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_cp8d.sch
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_cp8d.sym
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_cp8d_tran_sim.sch
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_cp8d_tran_sim.sym
+./analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/xschem/scl_tests/ring_oscillator_pex_cp8d_tran_sim.sch
+./PadFrame_cp8d
+./PadFrame_cp8d/Padframe_database
+./PadFrame_cp8d/Padframe_database/pad_frame_cdl
+./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame1mmx1mm.cdl
+./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame2mmx2mm.cdl
+./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame3mmx3mm.cdl
+./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame4mmx4mm.cdl
+./PadFrame_cp8d/Padframe_database/pad_frame_cdl/frame5mmx5mm.cdl
+./PadFrame_cp8d/Padframe_database/pad_frame_gds
+./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame1mmx1mm.gds
+./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame2mmx2mm.gds
+./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame3mmx3mm.gds
+./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame4mmx4mm.gds
+./PadFrame_cp8d/Padframe_database/pad_frame_gds/frame5mmx5mm.gds
+./PadFrame_cp8d/Padframe_database.zip
+./PadFrame_cp8d/Standard_Pad_Frame_CP8D.pdf
+     23 sym
+     23 sch
+     21 gds
+     14 cdl
+     12 tcl
+     12 png
+     10 txt
+      9 ext
+      8 lib
+      6 pxi
+      6 pex
+      6 netlist
+      5 source
+      4 pem
+      4 lvsdb
+      4 lef
+      4 cir
+      3 zip
+      3 subckt
+      3 spice
+      3 sim
+      3 sh
+      3 py
+      3 pdf
+      3 nodes
+      3 log
+      2 webm
+      2 tech/klayout/klayoutrc
+      2 tech
+      2 mp4
+      2 lyt
+      2 lyp
+      2 lylvs
+      2 lydrc
+      2 lvs
+      2 html
+      2 drc
+      1 v
+      1 tech/xschem/xschemrc
+      1 tech/ngpsice/model/hspice/models49/res/worst/ppr
+      1 tech/ngpsice/model/hspice/models49/res/worst/pdiffr
+      1 tech/ngpsice/model/hspice/models49/res/worst/nwr
+      1 tech/ngpsice/model/hspice/models49/res/worst/npr
+      1 tech/ngpsice/model/hspice/models49/res/worst/ndiffr
+      1 tech/ngpsice/model/hspice/models49/res/typ/readme
+      1 tech/ngpsice/model/hspice/models49/res/typ/ppr
+      1 tech/ngpsice/model/hspice/models49/res/typ/pdiffr
+      1 tech/ngpsice/model/hspice/models49/res/typ/nwr
+      1 tech/ngpsice/model/hspice/models49/res/typ/npr
+      1 tech/ngpsice/model/hspice/models49/res/typ/ndiffr
+      1 tech/ngpsice/model/hspice/models49/res/Readme
+      1 tech/ngpsice/model/hspice/models49/res/best/ppr
+      1 tech/ngpsice/model/hspice/models49/res/best/pdiffr
+      1 tech/ngpsice/model/hspice/models49/res/best/nwr
+      1 tech/ngpsice/model/hspice/models49/res/best/npr
+      1 tech/ngpsice/model/hspice/models49/res/best/ndiffr
+      1 tech/ngpsice/model/hspice/models49/mos/wnwp49_5v
+      1 tech/ngpsice/model/hspice/models49/mos/wnbp49_5v
+      1 tech/ngpsice/model/hspice/models49/mos/tntp49_5v
+      1 tech/ngpsice/model/hspice/models49/mos/bnwp49_5v
+      1 tech/ngpsice/model/hspice/models49/mos/bnbp49_5v
+      1 tech/ngpsice/model/hspice/models49/diode/Readme
+      1 ref/scl_tests/RING_OSCILLATOR/sh_pex_script_r_c_cc
+      1 ref/scl_tests/INVR01/sh_pex_script_r_c_cc
+      1 ref/scl_tests/cs_amp/sh_pex_script_r_c_cc
+      1 par
+      1 map
+      1 json
+      1 info
+      1 cfg
+      1 8micron_PDK/open_source_scl_cp8d/xschem_projects_cp8d/xschemrc
+      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/readme/script_for_magic_pex/sh_pex_script_r_c_cc
+      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/readme/script_for_magic_pex/magic_pex_script_r_c_cc
+      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/readme/script_for_magic_pex/magic_pex_script_explanation
+      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/config/xschemrc
+      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/config/magicrc
+      1 8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/config/klayoutrc
+      1 8micron_PDK/open_source_scl_cp8d/cshrc_pdk_env_setting
+[eda@eda] ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1 $ grep -ril 'seal\|guard\|scribe' $PADFRAME | head
+digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/cp8d_drc.drc
+digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/drc.lydrc
+digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/openlane/config.tcl
+digital_cp8d/Readme_0.8u_digital.txt
+analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/RING_OSCILLATOR/scl_drc.txt
+analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/cs_amp/scl_drc.txt
+analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/INVR01/scl_drc.txt
+analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/scl_tests/AND201/scl_drc.txt
+analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/drc.lydrc
+analog_cp8d/Open_Source_SCL_0.8micron_PDK/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/drc/cp8d_drc.drc
+[eda@eda] ~/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1 $ 
+
