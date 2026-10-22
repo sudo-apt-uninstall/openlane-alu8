@@ -7,11 +7,11 @@ a tree that only ever shows success teaches nothing.
 | tree | what it is | reached STA? |
 |---|---|---|
 | `RUN` | the completed run; all `results/` artefacts come from here | yes |
-| `RUN_COMPLETE_20261021` | archived snapshot of the same run | yes |
+| `RUN_COMPLETE_20261021` | archived snapshot of the same run (not byte-compared against `RUN`) | yes |
 | `RUN.bak` | aborted attempt, 02:15, run-tag collision | no |
 
 `tmp/`, `*.odb` and all PDK files are excluded from every tree. `tmp/` in
-particular holds `merged.{nom,min,max}.lef` and `merged`/`trimmed`/`cts*.lib`
+particular holds `merged.{nom,min,max}.lef` and `merged` / `trimmed` / `cts*.lib`
 copied out of the SCL CP8D PDK; those are not redistributed here.
 
 ## `RUN.bak` — run-tag collision, not a design failure
