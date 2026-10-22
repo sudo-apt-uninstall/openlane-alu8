@@ -52,6 +52,7 @@ and LVS run by hand in the GUI. See [`docs/signoff.md`](docs/signoff.md).
 |---:|---|---|
 | 2755 | `signoff/cdl_gds_script.source` | the signoff driver — **an input**, retargeted from the counter smoke test |
 | 2760 | `signoff/cdl_gds_script.source.bak` | the unmodified template it was derived from |
+| 5429 | `signoff/signoff.sh` | **headless replacement** for the above: same CDL and GDS steps, then DRC and LVS in batch. **Not yet executed** — the KLayout decks are PDK files and are not in this repo, so the script inspects them and prints the variables they reference rather than guessing the `-rd` names. Git stores it `100644`; `chmod +x` after checkout |
 | 7133 | `signoff/script/def2gds.py` | DEF → GDS, SCL-supplied |
 | 7291 | `signoff/script/verilog2spice.py` | Verilog → CDL, SCL-supplied |
 | 12191 | `signoff/lvs_drc/scl_drc.txt` | **DRC report: 3 boron-width violations** |
@@ -64,6 +65,19 @@ and LVS run by hand in the GUI. See [`docs/signoff.md`](docs/signoff.md).
 
 **Excluded from `signoff/`:** `core_iolib_cp8d.cdl` (123,613 B) — a PDK-derived
 cell netlist, not redistributed here.
+
+## Tapeout inputs
+
+Added 2026-10-22. **None of these have been executed.** They are the chip-level
+inputs for a 4 mm pad-framed version, plus the gap register that says why it is
+not a tapeout. See [`tapeout/TAPEOUT-PLAN.md`](tapeout/TAPEOUT-PLAN.md).
+
+| bytes | file | what it is |
+|---:|---|---|
+| 437 | `tapeout/config_chip.json` | 4 mm die; `CORE_AREA 304.90 304.90 3695.10 3695.10` — the frame's **measured** core opening, so the core GDS merges onto the frame with no translation |
+| 64 | `tapeout/pin_order_chip.cfg` | 29 pins as **8 / 8 / 8 / 5**. Every frame edge has exactly 8 signal positions, so the 1 mm run's E-edge grouping of 10 does not fit |
+| 3122 | `tapeout/run_chip.tcl` | same stage list as `flow/run_all.tcl`, chip config, separate design directory |
+| 11576 | `tapeout/TAPEOUT-PLAN.md` | measured frame geometry, pad-conversion arithmetic (**13 minimum, 18 for a bus-aligned floorplan**), the three SCL-side blockers, and the unwaivable DRC item |
 
 ## Run trees
 
