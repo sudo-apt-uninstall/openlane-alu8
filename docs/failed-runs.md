@@ -7,12 +7,24 @@ a tree that only ever shows success teaches nothing.
 | tree | what it is | reached STA? |
 |---|---|---|
 | `RUN` | the completed run; all `results/` artefacts come from here | yes |
-| `RUN_COMPLETE_20261021` | archived snapshot of the same run (not byte-compared against `RUN`) | yes |
+| `RUN_COMPLETE_20261021` | earlier snapshot of the same run; `results/` byte-identical | yes |
 | `RUN.bak` | aborted attempt, 02:15, run-tag collision | no |
 
 `tmp/`, `*.odb` and all PDK files are excluded from every tree. `tmp/` in
 particular holds `merged.{nom,min,max}.lef` and `merged` / `trimmed` / `cts*.lib`
 copied out of the SCL CP8D PDK; those are not redistributed here.
+
+## `RUN` vs `RUN_COMPLETE_20261021` — measured, not assumed
+
+`diff -rq` across the two trees reports exactly one difference:
+
+    Files runs/RUN/cmds.log and runs/RUN_COMPLETE_20261021/cmds.log differ
+
+Every other file is byte-identical — including all of `results/`, `errors.log`
+(1,435 B in both) and `openlane.log` (1,661 B in both). The two `cmds.log` files
+are 8,895 B and 8,593 B: `RUN` carries 302 bytes more. So the archive is an
+**earlier snapshot**, taken while the session was still issuing commands, not a
+divergent run. The results it contains are the same results.
 
 ## `RUN.bak` — run-tag collision, not a design failure
 
@@ -27,7 +39,9 @@ re-entered the run directory and aborted. Nothing in the design was wrong. The
 flow refused to clobber an existing `RUN` tag.
 
 It is a `flow.tcl`-driven tree, which is why it carries the expanded
-`config.tcl` (18,232 B) and `config_in.tcl` (1,009 B) that `RUN` does not.
+`config.tcl` (18,232 B) and `config_in.tcl` (1,009 B) that `RUN` does not —
+`RUN`'s `config.tcl` is only 83 B, because its stages were invoked as raw
+`run_openroad_script` calls.
 
 Its `results/` holds only two stages, both byte-size-identical to the final run:
 `synthesis/alu8_sys.v` 20,959 B and `floorplan/alu8.def` 24,648 B.
