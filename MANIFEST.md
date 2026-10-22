@@ -79,10 +79,18 @@ not a tapeout. See [`tapeout/TAPEOUT-PLAN.md`](tapeout/TAPEOUT-PLAN.md).
 
 | bytes | file | what it is |
 |---:|---|---|
-| 437 | `tapeout/config_chip.json` | 4 mm die; `CORE_AREA 304.90 304.90 3695.10 3695.10` — the frame's **measured** core opening, so the core GDS merges onto the frame with no translation |
-| 64 | `tapeout/pin_order_chip.cfg` | 29 pins as **8 / 8 / 8 / 5**. Every frame edge has exactly 8 signal positions, so the 1 mm run's E-edge grouping of 10 does not fit |
-| 3122 | `tapeout/run_chip.tcl` | same stage list as `flow/run_all.tcl`, chip config, separate design directory |
-| 11576 | `tapeout/TAPEOUT-PLAN.md` | measured frame geometry, pad-conversion arithmetic (**13 minimum, 18 for a bus-aligned floorplan**), the three SCL-side blockers, and the unwaivable DRC item |
+| 1632 | `tapeout/config_chip.json` | 4 mm die; `CORE_AREA 304.90 304.90 3695.10 3695.10` — the frame's **measured** core opening, so the core GDS merges onto the frame with no translation. `PL_TARGET_DENSITY 0.05` against the 1 mm run's 0.45. Every field carries a `__comment_` sibling explaining why |
+| 2370 | `tapeout/pin_order_chip.cfg` | 29 pins as **8 / 8 / 8 / 5**, with the measured per-edge pad map. Every frame edge has exactly 8 signal positions + 2 power, so the 1 mm run's E-edge grouping of 10 is impossible, not merely risky |
+| 8506 | `tapeout/run_chip.tcl` | same stage list as `flow/run_all.tcl`, chip config, `-tag CHIP` in a sibling design directory. Carries per-stage rationale and states explicitly why it builds neither a pad ring nor a seal ring |
+| 16110 | `tapeout/TAPEOUT-PLAN.md` | die-size/pin-budget table, measured frame geometry, pad-conversion arithmetic (**13 minimum, 18 for a bus-aligned floorplan**), the three SCL-side blockers, the unwaivable DRC item, and the fetch list |
+
+⚠️ These four files were drafted, lost, re-authored from records, then recovered
+and merged. Three corrections came out of the merge: the core opening is
+**measured** rather than the derived `305 305 3695 3695`; `PL_TARGET_DENSITY` is
+**0.05**, not 0.45; and cell area is **0.137 mm² ≈ 1.2 %** utilisation, not the
+0.45 mm² / 0.4 % an intermediate draft claimed — 0.45 mm² belonged to an older,
+larger ALU. The 0.137 figure is cross-checked against the 1 mm run: 33 % of
+0.414 mm² of row area.
 
 ## Run trees
 
