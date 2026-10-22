@@ -13,5 +13,14 @@ edge-pair: (1129.8,899.35;1129.8,897.85)/(1129.95,896.861;1129.95,900.339)
 edge-pair: (876.3,2220.75;876.3,2219.25)/(876.8,2218.384;876.8,2220.45)
 edge-pair: (1990.2,1098.15;1990.2,1099.65)/(1990.15,1100.649;1990.15,1097.151)
 edge-pair: (1991.7,1099.65;1991.7,1098.15)/(1991.95,1097.182;1991.95,1100.618)
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc $ grep -c 'FILLER' ../../runs/CHIP/results/routing/alu8_rt.def
+head -5 ../../runs/CHIP/results/sta/timing_report.txt
+2214
+Startpoint: b[7] (input port clocked by vclk)
+Endpoint: carry (output port clocked by vclk)
+Path Group: vclk
+Path Type: min
+
 [eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc $ 
+
 
