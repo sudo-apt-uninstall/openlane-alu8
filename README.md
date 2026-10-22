@@ -21,6 +21,10 @@ KLayout DRC/LVS signoff.
 > `diff -rq runs/RUN/results runs/RUN_COMPLETE_20261021/results`.
 > See [docs/determinism.md](docs/determinism.md).
 
+> 📐 **Chip-level inputs exist but have not been run.** `tapeout/` holds the 4 mm
+> pad-framed configuration, the measured frame geometry and an honest gap register:
+> [tapeout/TAPEOUT-PLAN.md](tapeout/TAPEOUT-PLAN.md). See [Tapeout](#tapeout).
+
 Companion project: [`openlane-8bit-counter`](https://github.com/sudo-apt-uninstall/openlane-8bit-counter)
 — the 8-bit counter that proved this flow end to end (0 DRC, LVS matched, ≈120 MHz).
 
@@ -132,10 +136,21 @@ parked inside it. Copy results, `cmds.log` and the signoff tree elsewhere first.
 🔴 **Never run `cts_cp8d.tcl`** — it calls `[get_ports clk]` and this design has no clock
 port. `fill_cp8d.tcl` replaces it; see [docs/flow-notes.md](docs/flow-notes.md).
 
-Signoff is a **separate, manual step**: `signoff/cdl_gds_script.source` builds the CDL
-and GDS and then opens the KLayout GUI, where DRC and LVS are run by hand. The flow
-itself has no GDS streamout stage, so the signoff artefacts must be regenerated after
-any re-run before they describe the current layout. Details in
+### Signoff
+
+`signoff/cdl_gds_script.source` builds the CDL and GDS and then opens the KLayout GUI,
+where DRC and LVS were run **by hand** — which is why the first signoff left no command
+trail. [`signoff/signoff.sh`](signoff/signoff.sh) is the headless replacement: the same
+two generation steps, then DRC and LVS in batch, then a verdict on stdout.
+
+⚠️ **`signoff.sh` has not been executed yet.** The KLayout decks are PDK files and are
+not in this repository, so the `-rd` variable names they expect could not be confirmed
+from here. Rather than guess, the script inspects both decks and prints the variables
+they actually reference; override with `DRC_IN` / `DRC_OUT` / `LVS_IN` /
+`LVS_SCHEMATIC` / `LVS_OUT` once, and signoff is reproducible from then on.
+
+The flow itself still has **no GDS streamout stage**, so signoff artefacts must be
+regenerated after any re-run before they describe the current layout. Details in
 [docs/signoff.md](docs/signoff.md).
 
 ---
@@ -165,27 +180,65 @@ above. Every result here is stock-script output.
 
 ---
 
+## Tapeout
+
+[`tapeout/`](tapeout/) holds the chip-level inputs for a **4 mm × 4 mm** pad-framed
+version. **None of it has been run.** The full plan, with the arithmetic behind every
+number, is in [tapeout/TAPEOUT-PLAN.md](tapeout/TAPEOUT-PLAN.md).
+
+| | value |
+|---|---|
+| die | 4 mm × 4 mm — 40 pads = 32 usable I/O + 8 power |
+| design I/O | **29** of 32, so pin count fixes the die, not area |
+| core opening | **`304.90 304.90 3695.10 3695.10`** — **measured** from `frame4mmx4mm.gds`, not derived |
+| pin split | **8 / 8 / 8 / 5**. Every edge has exactly 8 signal positions; the other two are power |
+
+Three things stand between this and a submittable GDS, and only the first is ours:
+
+1. **3 unwaivable DRC violations.** The `999:0` waiver layer is hard-capped at **2
+   polygons** and there are **3** items, so at least one must be genuinely fixed.
+   A plain re-run cannot help — the flow is byte-identically deterministic through
+   signoff. Two experiments decide it: a standalone `INVR00` DRC run (library defect?)
+   and the chip run itself, which drops occupancy from ~33 % to ~0.4 % and so tests the
+   `NND200`→`INVR00` abutment hypothesis for free.
+2. **Pad conversion.** The frame ships **16 input pads, 16 dead pads and zero outputs** —
+   `ASPAD00` has only three terminals (bond pad + 322 Ω nwell resistor + ESD diodes) and
+   **no path to the core at all**. Converting costs **13 swaps minimum**, or **18** for a
+   bus-aligned floorplan that keeps `result[7:0]` on one edge. Every swap also requires
+   editing `frame4mmx4mm.cdl`, or chip-level LVS fails.
+3. **Blocked on SCL.** No **antenna rule deck** exists anywhere in the PDK or its five
+   documents, yet submission requires an antenna-clean GDSII. The **Tapeout Submission
+   Form** and the **seal ring** are likewise named but never supplied. No amount of
+   core-side work removes these.
+
+---
+
 ## Open items
 
 1. **Signoff DRC — 3 boron-width violations.** All on `INVR00`, each 50 nm short of the
-   3.4 µm minimum, and reproducible run to run. Working hypothesis is the
-   `NND200 → INVR00` hard-abutment seam; the deciding experiment is a standalone DRC
-   run on the cell alone. Full analysis, including a corroborating
-   `DRC_EXCLUDE_CELL_LIST_OPT = "INVR01"` found in SCL's own config, in
-   [docs/signoff.md](docs/signoff.md).
+   3.4 µm minimum, and reproducible run to run. They are **one defect at three sites**:
+   relative to each instance origin the violation sits at Δx = 0.00, Δy = +17.35/+20.70
+   in all three. Working hypothesis is the `NND200 → INVR00` hard-abutment seam; the
+   deciding experiment is a standalone DRC run on the cell alone. Full analysis,
+   including a corroborating `DRC_EXCLUDE_CELL_LIST_OPT = "INVR01"` found in SCL's own
+   config, in [docs/signoff.md](docs/signoff.md).
 2. **Gate-level simulation of the routed netlist — not run.** The inputs exist
    (`alu8_rt_sim.v`, which carries no supply pins and so drops straight into the
    existing testbench, plus `alu8_rt.sdf`). This is the only step that verifies the
    routed netlist actually *computes correctly*.
-3. **Signoff is not scripted.** DRC and LVS are run by hand in the KLayout GUI, so
-   unlike the flow itself they are not reproducible on demand. A headless
-   `signoff.sh` is the fix.
+3. **Signoff scripted but unverified.** [`signoff/signoff.sh`](signoff/signoff.sh)
+   replaces the manual GUI run, but has not been executed: the deck `-rd` variable names
+   need one confirmation on the machine that has the PDK. Until then, DRC and LVS remain
+   reproducible only by hand.
 4. **Wire-load RC experiment — inconclusive, and the script is gone.** `cmds.log` shows
    `run_sta_wirerc.tcl` *was* executed twice (21 Oct, 22:55:41 and 23:26:33), so the
    earlier claim that it "never reached disk" is **withdrawn**. The file was deleted
    afterwards and is absent from `flow/3_src/`. It must be rewritten from scratch; both
    runs produced byte-identical output despite a 187× intended capacitance change, and
    why remains unexplained.
+5. **No GDS streamout in the flow.** `run_all.tcl` ends at STA, so every re-run leaves
+   the signoff artefacts describing the previous layout until they are regenerated by
+   hand. Folding steps 1–2 of `signoff.sh` into the driver would close this.
 
 ### Known RTL gaps
 
@@ -227,9 +280,11 @@ flow/       run_all.tcl  — single-command driver for the whole flow
             config.json, pin_order.cfg, 3_src/*.tcl as actually executed
 results/    flattened artefacts: synthesis netlist, floorplan/placement/cts/
             routing DEFs, routed netlists (_pwr/_sim), SPEF, SDF, STA reports
-signoff/    cdl_gds_script.source + script/ (DEF→GDS, Verilog→CDL), and
-            lvs_drc/ holding the GDS, CDL, extracted netlist, LVS database
-            and the KLayout DRC report
+signoff/    cdl_gds_script.source + script/ (DEF→GDS, Verilog→CDL), signoff.sh
+            (headless DRC/LVS, not yet executed), and lvs_drc/ holding the GDS,
+            CDL, extracted netlist, LVS database and the KLayout DRC report
+tapeout/    chip-level inputs for the 4 mm pad frame — config_chip.json,
+            pin_order_chip.cfg, run_chip.tcl, TAPEOUT-PLAN.md. NOT executed
 runs/       the three raw run trees — see docs/failed-runs.md
 netlist/    alu8_netlist.v — generic Yosys output, NOT technology-mapped
 docs/       flow-notes.md, signoff.md, determinism.md, failed-runs.md, images/
