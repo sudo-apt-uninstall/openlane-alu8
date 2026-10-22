@@ -9,18 +9,28 @@
 #   produced no reproducible command trail. This script closes that gap: same two
 #   generation steps, then both checks in batch, then a verdict on stdout.
 #
-# STATUS
-#   The CDL and GDS sections are lifted verbatim from cdl_gds_script.source and
-#   are known-good. The DRC and LVS sections have NOT been executed yet -- the
-#   KLayout decks are PDK files and are not in this repository, so the names of
-#   the variables they expect via -rd could not be confirmed from here. The
-#   script therefore inspects the decks first and tells you exactly what they
-#   reference instead of guessing. Confirm once, then it is reproducible forever.
+# STATUS 2026-10-22
+#   Deck paths and the report mechanism are now MEASURED on W0, not guessed:
+#
+#     $KLAYOUT_PATH/tech/drc/drc.lydrc      <- note the tech/ level
+#     $KLAYOUT_PATH/tech/lvs/lvs.lylvs
+#
+#   and the DRC report is written to ./scl_drc.txt RELATIVE TO THE CURRENT
+#   DIRECTORY. There is no -rd override for it. An earlier run proved this the
+#   hard way by depositing a report inside the PDK tree, because that happened
+#   to be the CWD. This script therefore runs DRC from a working directory of
+#   its own and moves the report out afterwards.
+#
+#   Still unconfirmed: whether the decks accept an input layout via -rd at all,
+#   or only operate on the layout open in the GUI. Step 3 inspects them and
+#   prints the variables they actually reference. If DRC produces no report,
+#   that is the thing to read.
 #
 # USAGE
 #   chmod +x signoff.sh         # git stores this 100644
 #   sclenv                      # sets PDK_ROOT, KLAYOUT_PATH, OPENLANE_PATH
 #   ./signoff.sh                # defaults to PROJECT_NAME=alu8, tag RUN
+#   RUN_TAG=CHIP ./signoff.sh   # sign off the 4 mm chip run instead
 #   DRC_ONLY=1 ./signoff.sh     # skip LVS
 #
 set -euo pipefail
@@ -39,8 +49,9 @@ KL="$PROJ/5_klayout"
 OUT="$KL/lvs_drc"
 ROUTING="$PROJ/runs/$RUN_TAG/results/routing"
 
-DRC_DECK="${DRC_DECK:-$KLAYOUT_PATH/drc/drc.lydrc}"
-LVS_DECK="${LVS_DECK:-$KLAYOUT_PATH/lvs/lvs.lylvs}"
+# MEASURED paths. Do not drop the tech/ level.
+DRC_DECK="${DRC_DECK:-$KLAYOUT_PATH/tech/drc/drc.lydrc}"
+LVS_DECK="${LVS_DECK:-$KLAYOUT_PATH/tech/lvs/lvs.lylvs}"
 
 say() { printf '\n=== %s\n' "$*"; }
 need() {
@@ -53,9 +64,12 @@ say "0. inputs"
 need "$ROUTING/${DESIGN_NAME}_rt_pwr.v"      # supply pins -> this is the LVS source
 need "$ROUTING/${DESIGN_NAME}_rt.def"
 need "$OUT/core_iolib_cp8d.cdl"              # PDK-derived, never committed here
+[ -r "$DRC_DECK" ] || { echo "DRC deck not found: $DRC_DECK" >&2; exit 1; }
+[ -r "$LVS_DECK" ] || { echo "LVS deck not found: $LVS_DECK" >&2; exit 1; }
 
 # A KLayout report records the deck it ran under <generator>. If that path is not
-# the PDK you built against, DRC silently checked a different process.
+# the PDK you built against, DRC silently checked a different process. There are
+# two PDK copies on this machine -- confirmed byte-identical, but check anyway.
 echo "  PDK_ROOT   = $PDK_ROOT"
 echo "  DRC_DECK   = $DRC_DECK"
 
@@ -79,35 +93,43 @@ klayout -b -zz \
 need "$OUT/${DESIGN_TOP_CELL_NAME}.gds"
 
 # -----------------------------------------------------------------------------
-say "3. deck inspection -- confirm the -rd names before trusting steps 4 and 5"
+say "3. deck inspection -- what the decks actually reference"
 for deck in "$DRC_DECK" "$LVS_DECK"; do
-    [ -r "$deck" ] || { echo "  deck not readable: $deck"; continue; }
     echo "  $deck references:"
     grep -oE '\$[A-Za-z_][A-Za-z0-9_]*' "$deck" | sort -u | sed 's/^/    /'
 done
-echo "  If the names below do not appear above, override them:"
-echo "    DRC_IN=... DRC_OUT=... LVS_IN=... LVS_SCHEMATIC=... LVS_OUT=..."
-
-DRC_IN="${DRC_IN:-input}"
-DRC_OUT="${DRC_OUT:-report}"
-LVS_IN="${LVS_IN:-input}"
-LVS_SCHEMATIC="${LVS_SCHEMATIC:-schematic}"
-LVS_OUT="${LVS_OUT:-target_netlist}"
 
 # -----------------------------------------------------------------------------
 say "4. DRC"
-klayout -b -zz \
-    -rd "${DRC_IN}=$OUT/${DESIGN_TOP_CELL_NAME}.gds" \
-    -rd "${DRC_OUT}=$OUT/scl_drc.txt" \
-    -r "$DRC_DECK"
+# The deck writes ./scl_drc.txt into the CURRENT directory. Run it from a scratch
+# dir so it cannot overwrite the PDK's copy or a previous design's report, then
+# move the result into place.
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
+cd "$WORK"
 
-if [ -s "$OUT/scl_drc.txt" ]; then
-    # The report is XML. Each violation is one <item>.
+klayout -b -zz \
+    -rd input="$OUT/${DESIGN_TOP_CELL_NAME}.gds" \
+    -rd top_cell="$DESIGN_TOP_CELL_NAME" \
+    -r "$DRC_DECK" || echo "  (deck returned non-zero -- read the output above)"
+
+if [ -s "$WORK/scl_drc.txt" ]; then
+    mv "$WORK/scl_drc.txt" "$OUT/scl_drc.txt"
+    # The report is XML; each violation is one <item>. An empty <items/> section
+    # means zero violations -- that is how standalone INVR00 was proven clean.
     n=$(grep -c '<item>' "$OUT/scl_drc.txt" || true)
-    printf '  DRC items: %s   (expected 3 boron-width on INVR00 as of 2026-10-22)\n' "$n"
-    [ "$n" -eq 0 ] && echo "  DRC CLEAN" || echo "  DRC NOT CLEAN"
+    tc=$(grep -oP '(?<=<top-cell>)[^<]*' "$OUT/scl_drc.txt" || true)
+    of=$(grep -oP '(?<=<original-file>)[^<]*' "$OUT/scl_drc.txt" || true)
+    echo "  report top-cell : $tc"
+    echo "  report input    : $of"
+    printf '  DRC items       : %s\n' "$n"
+    if [ "$n" -eq 0 ]; then echo "  DRC CLEAN"; else echo "  DRC NOT CLEAN"; fi
+    echo "  -> $OUT/scl_drc.txt"
 else
-    echo "  no DRC report produced -- the -rd names above are probably wrong"
+    echo "  NO REPORT PRODUCED."
+    echo "  The deck most likely takes its input from the layout open in the GUI"
+    echo "  rather than from -rd. Compare the variables listed in step 3 against"
+    echo "  the -rd names used above, and adjust."
 fi
 
 # -----------------------------------------------------------------------------
@@ -116,19 +138,19 @@ if [ "${DRC_ONLY:-0}" = "1" ]; then
 fi
 
 say "5. LVS"
+cd "$WORK"
 klayout -b -zz \
-    -rd "${LVS_IN}=$OUT/${DESIGN_TOP_CELL_NAME}.gds" \
-    -rd "${LVS_SCHEMATIC}=$OUT/${DESIGN_TOP_CELL_NAME}.cdl" \
-    -rd "${LVS_OUT}=$OUT/${DESIGN_TOP_CELL_NAME}.lvsdb" \
-    -r "$LVS_DECK"
-need "$OUT/${DESIGN_TOP_CELL_NAME}.lvsdb"
+    -rd input="$OUT/${DESIGN_TOP_CELL_NAME}.gds" \
+    -rd schematic="$OUT/${DESIGN_TOP_CELL_NAME}.cdl" \
+    -rd target_netlist="$OUT/${DESIGN_TOP_CELL_NAME}.lvsdb" \
+    -r "$LVS_DECK" || echo "  (deck returned non-zero -- read the output above)"
 
-# The LVS verdict lives inside the .lvsdb, not in a text file. KLayout's Netlist
-# Browser renders it; from the shell the match flag is the only cheap signal.
-if grep -qi 'xref.*mismatch\|not matched' "$OUT/${DESIGN_TOP_CELL_NAME}.lvsdb"; then
-    echo "  LVS: mismatches present -- open in KLayout Netlist Browser"
+if [ -s "$OUT/${DESIGN_TOP_CELL_NAME}.lvsdb" ]; then
+    need "$OUT/${DESIGN_TOP_CELL_NAME}.lvsdb"
+    echo "  LVS database written. The verdict lives INSIDE it, not in a text file:"
+    echo "  open it in KLayout's Netlist Browser to read match/mismatch."
 else
-    echo "  LVS: no mismatch markers found (open the Netlist Browser to confirm)"
+    echo "  no .lvsdb produced -- see the note under step 4"
 fi
 
 say "DONE"
