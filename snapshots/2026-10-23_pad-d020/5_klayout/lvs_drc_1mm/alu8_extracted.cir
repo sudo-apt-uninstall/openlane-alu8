@@ -1,0 +1,1054 @@
+* Extracted by KLayout
+
+* cell alu8
+* pin a[4]
+* pin a[5]
+* pin result[5]
+* pin zero
+* pin result[7]
+* pin b[6]
+* pin result[2]
+* pin result[3]
+* pin result[4]
+* pin result[1]
+* pin result[6]
+* pin b[5]
+* pin b[4]
+* pin VDD
+* pin op[0]
+* pin op[1]
+* pin result[0]
+* pin op[2]
+* pin b[7]
+* pin carry
+* pin a[6]
+* pin a[7]
+* pin b[3]
+* pin a[3]
+* pin b[2]
+* pin b[1]
+* pin a[2]
+* pin b[0]
+* pin a[0]
+* pin a[1]
+* pin GROUND
+.SUBCKT alu8 a[4] a[5] result[5] zero result[7] b[6] result[2] result[3]
++ result[4] result[1] result[6] b[5] b[4] VDD op[0] op[1] result[0] op[2] b[7]
++ carry a[6] a[7] b[3] a[3] b[2] b[1] a[2] b[0] a[0] a[1] GROUND
+* cell instance $1 r0 *1 612.3,101.4
+X$1 VDD \$92 a[4] b[4] GROUND NND200
+* cell instance $2 r0 *1 460.2,811.2
+X$2 \$785 a[3] a[4] b[0] VDD GROUND MX2100
+* cell instance $3 r0 *1 120.9,659.1
+X$3 \$629 a[5] a[4] b[0] VDD GROUND MX2100
+* cell instance $4 r0 *1 120.9,811.2
+X$4 \$845 a[4] a[3] b[0] VDD GROUND MX2100
+* cell instance $5 r0 *1 393.9,760.5
+X$5 \$782 a[4] a[5] b[0] VDD GROUND MX2100
+* cell instance $6 r0 *1 627.9,304.2
+X$6 VDD \$230 a[4] b[4] \$234 GROUND AND300
+* cell instance $7 r0 *1 546,304.2
+X$7 VDD b[4] \$272 a[4] \$299 GROUND ORND00
+* cell instance $8 r0 *1 647.4,101.4
+X$8 VDD \$49 a[4] GROUND INVR00
+* cell instance $30 r0 *1 464.1,101.4
+X$30 VDD \$46 a[5] \$32 GROUND NOR200
+* cell instance $31 r0 *1 113.1,760.5
+X$31 \$800 a[6] a[5] b[0] VDD GROUND MX2100
+* cell instance $32 r0 *1 331.5,709.8
+X$32 \$781 a[5] a[6] b[0] VDD GROUND MX2100
+* cell instance $33 r0 *1 425.1,354.9
+X$33 VDD b[5] \$331 a[5] \$299 GROUND ORND00
+* cell instance $34 r0 *1 452.4,152.1
+X$34 VDD \$87 a[5] \$32 GROUND NND200
+* cell instance $35 r0 *1 475.8,304.2
+X$35 VDD \$269 a[5] b[5] GROUND NND200
+* cell instance $50 r0 *1 152.1,101.4
+X$50 VDD result[5] \$17 GROUND INVR00
+* cell instance $51 r0 *1 218.4,101.4
+X$51 \$36 \$83 zero \$42 \$61 VDD GROUND AND400
+* cell instance $52 r0 *1 230.1,152.1
+X$52 VDD \$42 \$83 result[7] \$61 GROUND NND300
+* cell instance $53 r0 *1 312,405.6
+X$53 VDD b[6] \$329 a[6] \$299 GROUND ORND00
+* cell instance $54 r0 *1 312,354.9
+X$54 VDD \$230 a[6] \$328 b[6] GROUND NND300
+* cell instance $55 r0 *1 296.4,152.1
+X$55 VDD \$126 a[6] b[6] GROUND NND200
+* cell instance $56 r0 *1 265.2,304.2
+X$56 VDD \$263 b[6] GROUND INVR00
+* cell instance $61 r0 *1 284.7,101.4
+X$61 result[4] \$26 result[2] result[3] result[0] result[1] VDD GROUND NOR500
+* cell instance $62 r0 *1 546,507
+X$62 VDD \$521 \$503 \$520 \$482 result[2] GROUND NND400
+* cell instance $67 r0 *1 510.9,405.6
+X$67 \$412 \$380 \$370 \$413 \$436 \$348 result[3] VDD GROUND NND600
+* cell instance $74 r0 *1 565.5,253.5
+X$74 \$187 \$248 \$185 result[4] \$241 \$272 VDD GROUND NND500
+* cell instance $77 r0 *1 530.4,557.7
+X$77 \$636 \$637 \$570 result[1] \$574 \$652 VDD GROUND NND500
+* cell instance $82 r0 *1 393.9,152.1
+X$82 VDD \$130 \$85 result[6] \$44 GROUND NND300
+* cell instance $83 r0 *1 479.7,101.4
+X$83 VDD \$32 b[5] GROUND INVR00
+* cell instance $89 r0 *1 670.8,152.1
+X$89 VDD \$67 \$49 b[4] GROUND NND200
+* cell instance $90 r0 *1 674.7,101.4
+X$90 VDD \$50 \$49 b[4] GROUND NOR200
+* cell instance $1137 r0 *1 132.6,507
+X$1137 VDD op[1] \$504 op[0] op[2] GROUND NOR300
+* cell instance $1139 r0 *1 156,507
+X$1139 VDD \$214 \$512 op[2] GROUND AND200
+* cell instance $1143 r0 *1 234,507
+X$1143 VDD b[0] \$299 \$576 \$516 a[0] GROUND OAI400
+* cell instance $1144 r0 *1 261.3,507
+X$1144 VDD \$516 \$508 \$515 GROUND NOR200
+* cell instance $1148 r0 *1 362.7,507
+X$1148 VDD \$456 \$454 b[1] GROUND NOR200
+* cell instance $1152 r0 *1 405.6,507
+X$1152 \$509 \$456 \$518 \$531 VDD GROUND MX2100
+* cell instance $1155 r0 *1 448.5,507
+X$1155 \$493 \$375 \$743 \$531 VDD GROUND MX2100
+* cell instance $1156 r0 *1 479.7,507
+X$1156 VDD \$506 \$509 \$401 GROUND NOR200
+* cell instance $1159 r0 *1 530.4,507
+X$1159 VDD \$521 \$439 \$506 GROUND NOR200
+* cell instance $1160 r0 *1 573.3,507
+X$1160 VDD b[2] \$482 a[2] \$299 GROUND ORND00
+* cell instance $1163 r0 *1 635.7,507
+X$1163 VDD \$503 \$230 \$214 \$526 \$502 GROUND AOI400
+* cell instance $1166 r0 *1 678.6,507
+X$1166 VDD \$502 \$501 GROUND INVR00
+* cell instance $1167 r0 *1 690.3,507
+X$1167 VDD \$528 \$414 \$600 \$501 GROUND ORND00
+* cell instance $1168 r0 *1 713.7,507
+X$1168 VDD \$501 a[2] b[2] GROUND NND200
+* cell instance $1169 r0 *1 729.3,507
+X$1169 VDD \$601 \$384 \$165 \$439 GROUND AND300
+* cell instance $1172 r0 *1 132.6,456.3
+X$1172 VDD op[1] \$165 \$402 op[2] GROUND NOR300
+* cell instance $1174 r0 *1 156,456.3
+X$1174 VDD \$403 op[1] GROUND INVR00
+* cell instance $1175 r0 *1 167.7,456.3
+X$1175 VDD \$402 op[0] GROUND INVR00
+* cell instance $1178 r0 *1 218.4,456.3
+X$1178 VDD \$403 op[2] \$431 op[0] GROUND NND300
+* cell instance $1179 r0 *1 241.8,456.3
+X$1179 VDD \$403 \$230 op[0] op[2] GROUND NOR300
+* cell instance $1181 r0 *1 296.4,456.3
+X$1181 \$371 \$431 \$615 VDD GROUND OR2100
+* cell instance $1182 r0 *1 315.9,456.3
+X$1182 \$454 a[6] a[7] b[0] VDD GROUND MX2100
+* cell instance $1185 r0 *1 358.8,456.3
+X$1185 VDD \$565 \$454 b[1] GROUND NND200
+* cell instance $1188 r0 *1 421.2,456.3
+X$1188 \$443 \$431 \$457 VDD GROUND OR2100
+* cell instance $1192 r0 *1 526.5,456.3
+X$1192 VDD \$412 \$437 \$504 GROUND NND200
+* cell instance $1195 r0 *1 608.4,456.3
+X$1195 \$382 \$437 \$414 VDD GROUND XOR200
+* cell instance $1199 r0 *1 694.2,456.3
+X$1199 VDD \$436 \$415 \$165 GROUND NND200
+* cell instance $1203 r0 *1 764.4,456.3
+X$1203 VDD \$438 a[2] \$531 GROUND AND200
+* cell instance $1204 r0 *1 787.8,456.3
+X$1204 VDD \$355 \$438 GROUND INVR00
+* cell instance $1208 r0 *1 132.6,202.8
+X$1208 VDD \$47 carry \$116 \$177 GROUND ORND00
+* cell instance $1213 r0 *1 198.9,202.8
+X$1213 VDD \$75 \$125 \$192 GROUND AND200
+* cell instance $1214 r0 *1 222.3,202.8
+X$1214 VDD \$144 \$125 \$192 GROUND NOR200
+* cell instance $1218 r0 *1 312,202.8
+X$1218 VDD \$105 \$125 \$106 \$126 GROUND ORND00
+* cell instance $1221 r0 *1 347.1,202.8
+X$1221 \$104 \$106 VDD \$105 \$47 GROUND ADNR00
+* cell instance $1225 r0 *1 429,202.8
+X$1225 VDD \$180 \$112 \$132 \$87 GROUND NND300
+* cell instance $1228 r0 *1 464.1,202.8
+X$1228 VDD \$160 \$161 \$148 \$105 GROUND ORND00
+* cell instance $1231 r0 *1 522.6,202.8
+X$1231 \$106 \$64 VDD \$63 \$162 GROUND ADNR00
+* cell instance $1235 r0 *1 600.6,202.8
+X$1235 \$135 \$108 VDD \$68 \$47 GROUND ADNR00
+* cell instance $1239 r0 *1 702,202.8
+X$1239 \$148 \$186 VDD \$111 \$63 GROUND ADNR00
+* cell instance $1240 r0 *1 729.3,202.8
+X$1240 VDD \$164 \$112 \$69 \$165 GROUND NND300
+* cell instance $1242 r0 *1 760.5,202.8
+X$1242 VDD \$137 \$63 GROUND INVR00
+* cell instance $1244 r0 *1 776.1,202.8
+X$1244 VDD \$50 \$112 \$166 \$137 GROUND ORND00
+* cell instance $1248 r0 *1 132.6,557.7
+X$1248 VDD \$512 op[1] op[0] GROUND NOR200
+* cell instance $1251 r0 *1 163.8,557.7
+X$1251 VDD \$508 \$165 \$512 GROUND NOR200
+* cell instance $1253 r0 *1 241.8,557.7
+X$1253 VDD \$613 \$230 \$515 GROUND NND200
+* cell instance $1254 r0 *1 257.4,557.7
+X$1254 VDD \$613 \$576 result[0] \$517 GROUND NND300
+* cell instance $1257 r0 *1 315.9,557.7
+X$1257 VDD \$531 \$511 \$517 \$656 \$561 GROUND OAI400
+* cell instance $1258 r0 *1 343.2,557.7
+X$1258 VDD \$561 \$594 \$401 GROUND NOR200
+* cell instance $1260 r0 *1 366.6,557.7
+X$1260 VDD \$401 \$431 \$586 \$562 \$594 GROUND OAI400
+* cell instance $1261 r0 *1 393.9,557.7
+X$1261 VDD \$531 \$248 \$511 \$586 GROUND ORND00
+* cell instance $1264 r0 *1 452.4,557.7
+X$1264 \$569 \$597 \$635 \$531 VDD GROUND MX2100
+* cell instance $1267 r0 *1 561.6,557.7
+X$1267 VDD b[1] \$570 a[1] \$299 GROUND ORND00
+* cell instance $1271 r0 *1 612.3,557.7
+X$1271 VDD \$574 \$230 \$610 \$214 \$599 GROUND AOI400
+* cell instance $1275 r0 *1 744.9,557.7
+X$1275 VDD \$531 b[2] GROUND INVR00
+* cell instance $1280 r0 *1 144.3,760.5
+X$1280 \$826 \$800 \$845 b[1] VDD GROUND MX2100
+* cell instance $1282 r0 *1 237.9,760.5
+X$1282 VDD \$562 \$860 b[2] GROUND NOR200
+* cell instance $1283 r0 *1 253.5,760.5
+X$1283 \$615 \$826 \$705 b[2] VDD GROUND MX2100
+* cell instance $1291 r0 *1 592.8,760.5
+X$1291 VDD \$746 a[0] GROUND INVR00
+* cell instance $1294 r0 *1 674.7,760.5
+X$1294 VDD \$831 a[1] \$748 GROUND AND200
+* cell instance $1295 r0 *1 698.1,760.5
+X$1295 VDD \$831 \$384 \$791 \$528 GROUND ORND00
+* cell instance $1302 r0 *1 113.1,608.4
+X$1302 \$628 a[7] a[6] b[0] VDD GROUND MX2100
+* cell instance $1303 r0 *1 144.3,608.4
+X$1303 \$607 \$628 \$629 b[1] VDD GROUND MX2100
+* cell instance $1306 r0 *1 210.6,608.4
+X$1306 \$590 \$607 \$630 b[2] VDD GROUND MX2100
+* cell instance $1307 r0 *1 241.8,608.4
+X$1307 \$450 \$431 \$590 VDD GROUND OR2100
+* cell instance $1311 r0 *1 288.6,608.4
+X$1311 VDD \$686 \$511 b[1] \$431 GROUND NOR300
+* cell instance $1313 r0 *1 327.6,608.4
+X$1313 VDD \$656 \$688 \$401 GROUND NOR200
+* cell instance $1316 r0 *1 382.2,608.4
+X$1316 VDD \$594 \$565 \$633 GROUND NND200
+* cell instance $1320 r0 *1 440.7,608.4
+X$1320 VDD \$668 \$431 b[2] GROUND NOR200
+* cell instance $1323 r0 *1 479.7,608.4
+X$1323 \$636 \$401 \$569 VDD GROUND OR2100
+* cell instance $1328 r0 *1 612.3,608.4
+X$1328 VDD \$599 a[1] b[1] GROUND AND200
+* cell instance $1329 r0 *1 635.7,608.4
+X$1329 \$600 \$610 VDD \$515 \$599 GROUND ADNR00
+* cell instance $1334 r0 *1 721.5,608.4
+X$1334 VDD \$526 \$675 \$601 \$641 GROUND NND300
+* cell instance $1335 r0 *1 744.9,608.4
+X$1335 \$417 \$675 VDD \$641 \$526 GROUND ADNR00
+* cell instance $1340 r0 *1 167.7,659.1
+X$1340 \$689 \$629 \$693 b[1] VDD GROUND MX2100
+* cell instance $1342 r0 *1 230.1,659.1
+X$1342 \$630 \$693 \$665 b[1] VDD GROUND MX2100
+* cell instance $1344 r0 *1 292.5,659.1
+X$1344 \$665 a[1] VDD \$698 \$515 GROUND ADNR00
+* cell instance $1347 r0 *1 331.5,659.1
+X$1347 VDD \$702 \$665 b[1] GROUND NOR200
+* cell instance $1349 r0 *1 354.9,659.1
+X$1349 VDD \$742 a[7] \$698 GROUND NND200
+* cell instance $1351 r0 *1 378.3,659.1
+X$1351 \$457 \$689 \$702 b[2] VDD GROUND MX2100
+* cell instance $1354 r0 *1 421.2,659.1
+X$1354 VDD \$375 \$742 b[1] GROUND NOR200
+* cell instance $1356 r0 *1 468,659.1
+X$1356 VDD \$413 \$630 \$668 GROUND NND200
+* cell instance $1358 r0 *1 491.4,659.1
+X$1358 VDD \$652 \$786 \$702 \$668 \$504 GROUND AOI400
+* cell instance $1359 r0 *1 522.6,659.1
+X$1359 VDD \$520 \$504 \$668 \$705 \$709 GROUND AOI400
+* cell instance $1363 r0 *1 604.5,659.1
+X$1363 VDD \$759 \$675 \$637 \$165 GROUND NND300
+* cell instance $1367 r0 *1 655.2,659.1
+X$1367 \$526 \$709 \$600 VDD GROUND XNR200
+* cell instance $1370 r0 *1 737.1,659.1
+X$1370 b[2] \$526 a[2] VDD GROUND XOR200
+* cell instance $1379 r0 *1 191.1,811.2
+X$1379 \$860 \$845 \$869 b[1] VDD GROUND MX2100
+* cell instance $1381 r0 *1 253.5,811.2
+X$1381 \$705 \$869 \$686 b[1] VDD GROUND MX2100
+* cell instance $1384 r0 *1 304.2,811.2
+X$1384 \$873 \$872 VDD \$686 b[1] GROUND ADNR00
+* cell instance $1385 r0 *1 331.5,811.2
+X$1385 VDD \$873 \$688 b[2] \$850 GROUND NOR300
+* cell instance $1388 r0 *1 401.7,811.2
+X$1388 \$518 \$886 \$782 b[1] VDD GROUND MX2100
+* cell instance $1389 r0 *1 432.9,811.2
+X$1389 VDD \$850 \$886 \$748 GROUND NOR200
+* cell instance $1392 r0 *1 491.4,811.2
+X$1392 \$635 \$785 \$876 \$748 VDD GROUND MX2100
+* cell instance $1395 r0 *1 561.6,811.2
+X$1395 b[1] \$787 a[1] VDD GROUND XNR200
+* cell instance $1397 r0 *1 608.4,811.2
+X$1397 b[1] \$610 a[1] VDD GROUND XOR200
+* cell instance $1398 r0 *1 651.3,811.2
+X$1398 VDD \$748 b[1] GROUND INVR00
+* cell instance $1405 r0 *1 136.5,405.6
+X$1405 VDD op[1] op[2] \$401 \$402 GROUND NND300
+* cell instance $1406 r0 *1 159.9,405.6
+X$1406 VDD \$403 \$299 \$402 op[2] GROUND NOR300
+* cell instance $1410 r0 *1 226.2,405.6
+X$1410 VDD \$230 a[7] \$343 b[7] GROUND NND300
+* cell instance $1414 r0 *1 382.2,405.6
+X$1414 VDD \$330 \$397 \$456 GROUND NND200
+* cell instance $1415 r0 *1 397.8,405.6
+X$1415 VDD \$363 \$397 \$375 GROUND NND200
+* cell instance $1416 r0 *1 413.4,405.6
+X$1416 VDD \$397 \$401 b[2] GROUND NOR200
+* cell instance $1418 r0 *1 436.8,405.6
+X$1418 VDD \$345 \$397 \$597 GROUND NND200
+* cell instance $1422 r0 *1 479.7,405.6
+X$1422 \$380 \$401 \$493 VDD GROUND OR2100
+* cell instance $1429 r0 *1 620.1,405.6
+X$1429 \$108 \$414 VDD \$382 \$302 GROUND ADNR00
+* cell instance $1432 r0 *1 686.4,405.6
+X$1432 \$382 \$415 \$416 VDD GROUND XNR200
+* cell instance $1433 r0 *1 729.3,405.6
+X$1433 VDD \$416 \$384 \$355 GROUND NND200
+* cell instance $1436 r0 *1 780,405.6
+X$1436 VDD \$438 \$217 \$417 \$385 GROUND ORND00
+* cell instance $1437 r0 *1 803.4,405.6
+X$1437 VDD \$385 \$333 b[3] GROUND NND200
+* cell instance $1442 r0 *1 136.5,304.2
+X$1442 VDD \$224 \$204 b[7] GROUND NOR200
+* cell instance $1445 r0 *1 218.4,304.2
+X$1445 VDD \$192 \$161 \$262 \$226 GROUND NND300
+* cell instance $1446 r0 *1 241.8,304.2
+X$1446 VDD \$226 a[6] \$263 GROUND NND200
+* cell instance $1451 r0 *1 331.5,304.2
+X$1451 VDD \$210 a[6] \$263 GROUND NOR200
+* cell instance $1453 r0 *1 351,304.2
+X$1453 VDD \$105 \$208 \$210 GROUND NOR200
+* cell instance $1454 r0 *1 366.6,304.2
+X$1454 VDD \$294 \$180 \$214 GROUND NND200
+* cell instance $1456 r0 *1 444.6,304.2
+X$1456 \$267 \$345 \$119 \$331 \$443 VDD GROUND AND400
+* cell instance $1458 r0 *1 495.3,304.2
+X$1458 VDD \$162 \$269 GROUND INVR00
+* cell instance $1459 r0 *1 507,304.2
+X$1459 VDD \$267 \$230 \$214 \$63 \$162 GROUND AOI400
+* cell instance $1466 r0 *1 717.6,304.2
+X$1466 VDD \$274 \$186 \$304 \$68 GROUND ORND00
+* cell instance $1467 r0 *1 741,304.2
+X$1467 VDD \$274 \$333 b[3] GROUND NOR200
+* cell instance $1471 r0 *1 783.9,304.2
+X$1471 VDD \$217 \$113 \$276 \$275 GROUND NND300
+* cell instance $1476 r0 *1 132.6,253.5
+X$1476 VDD \$204 a[7] GROUND INVR00
+* cell instance $1478 r0 *1 144.3,253.5
+X$1478 VDD \$205 \$161 b[7] \$204 \$226 GROUND AOI400
+* cell instance $1479 r0 *1 175.5,253.5
+X$1479 VDD \$224 \$177 \$205 \$165 GROUND ORND00
+* cell instance $1482 r0 *1 237.9,253.5
+X$1482 VDD \$209 \$262 \$61 \$165 GROUND NND300
+* cell instance $1483 r0 *1 261.3,253.5
+X$1483 VDD \$207 \$192 GROUND INVR00
+* cell instance $1486 r0 *1 292.5,253.5
+X$1486 VDD \$208 \$209 \$251 \$207 GROUND ORND00
+* cell instance $1488 r0 *1 319.8,253.5
+X$1488 VDD \$208 a[6] \$263 GROUND AND200
+* cell instance $1491 r0 *1 354.9,253.5
+X$1491 \$180 \$210 \$208 VDD GROUND OR2100
+* cell instance $1495 r0 *1 429,253.5
+X$1495 \$251 \$112 VDD \$87 \$180 GROUND ADNR00
+* cell instance $1496 r0 *1 456.3,253.5
+X$1496 VDD \$132 \$161 \$44 \$165 GROUND NND300
+* cell instance $1502 r0 *1 608.4,253.5
+X$1502 VDD \$68 \$185 \$108 \$135 GROUND ORND00
+* cell instance $1503 r0 *1 631.8,253.5
+X$1503 \$241 \$113 VDD \$214 \$234 GROUND ADNR00
+* cell instance $1506 r0 *1 694.2,253.5
+X$1506 VDD \$63 \$186 \$164 \$111 GROUND NND300
+* cell instance $1507 r0 *1 717.6,253.5
+X$1507 VDD \$276 \$186 \$187 \$165 GROUND NND300
+* cell instance $1510 r0 *1 787.8,253.5
+X$1510 \$166 \$217 VDD \$275 \$113 GROUND ADNR00
+* cell instance $1516 r0 *1 124.8,101.4
+X$1516 VDD \$47 op[1] op[2] op[0] GROUND OR3100
+* cell instance $1524 r0 *1 370.5,101.4
+X$1524 \$17 \$85 \$44 \$26 \$130 \$36 VDD GROUND AND500
+* cell instance $1543 r0 *1 179.4,861.9
+X$1543 \$869 a[2] a[1] b[0] VDD GROUND MX2100
+* cell instance $1547 r0 *1 292.5,861.9
+X$1547 VDD \$872 a[1] b[0] GROUND NND200
+* cell instance $1551 r0 *1 382.2,861.9
+X$1551 \$886 a[2] a[3] b[0] VDD GROUND MX2100
+* cell instance $1555 r0 *1 499.2,861.9
+X$1555 \$876 a[1] a[2] b[0] VDD GROUND MX2100
+* cell instance $1565 r0 *1 152.1,709.8
+X$1565 \$693 a[3] a[2] b[0] VDD GROUND MX2100
+* cell instance $1568 r0 *1 230.1,709.8
+X$1568 VDD \$515 a[0] b[0] GROUND AND200
+* cell instance $1571 r0 *1 292.5,709.8
+X$1571 VDD \$686 a[0] \$698 GROUND NND200
+* cell instance $1577 r0 *1 405.6,709.8
+X$1577 VDD \$633 \$782 \$748 GROUND NND200
+* cell instance $1579 r0 *1 425.1,709.8
+X$1579 \$597 \$742 \$781 \$748 VDD GROUND MX2100
+* cell instance $1581 r0 *1 460.2,709.8
+X$1581 \$743 \$781 \$785 \$748 VDD GROUND MX2100
+* cell instance $1584 r0 *1 514.8,709.8
+X$1584 \$515 \$786 \$787 VDD GROUND XNR200
+* cell instance $1587 r0 *1 581.1,709.8
+X$1587 VDD \$698 \$675 a[0] \$787 GROUND ORND00
+* cell instance $1588 r0 *1 604.5,709.8
+X$1588 VDD \$698 b[0] GROUND INVR00
+* cell instance $1590 r0 *1 620.1,709.8
+X$1590 \$791 \$746 VDD b[0] \$610 GROUND ADNR00
+* cell instance $1591 r0 *1 647.4,709.8
+X$1591 VDD \$610 \$746 \$759 b[0] GROUND NND300
+* cell instance $1594 r0 *1 690.3,709.8
+X$1594 VDD \$641 a[1] \$748 GROUND NND200
+* cell instance $1596 r0 *1 709.8,709.8
+X$1596 b[2] \$528 a[2] VDD GROUND XNR200
+* cell instance $1602 r0 *1 124.8,354.9
+X$1602 b[7] \$192 a[7] VDD GROUND XOR200
+* cell instance $1605 r0 *1 202.8,354.9
+X$1605 VDD b[7] \$325 a[7] \$299 GROUND ORND00
+* cell instance $1607 r0 *1 234,354.9
+X$1607 \$450 \$364 \$363 \$325 \$343 \$42 VDD GROUND AND500
+* cell instance $1608 r0 *1 269.1,354.9
+X$1608 VDD \$364 \$192 \$214 GROUND NND200
+* cell instance $1613 r0 *1 339.3,354.9
+X$1613 \$371 \$294 \$330 \$329 \$328 \$130 VDD GROUND AND500
+* cell instance $1619 r0 *1 518.7,354.9
+X$1619 VDD b[3] \$348 a[3] \$299 GROUND ORND00
+* cell instance $1623 r0 *1 596.7,354.9
+X$1623 VDD \$370 \$230 \$214 \$382 \$302 GROUND AOI400
+* cell instance $1624 r0 *1 627.9,354.9
+X$1624 VDD \$332 a[3] b[3] GROUND NND200
+* cell instance $1625 r0 *1 643.5,354.9
+X$1625 VDD \$302 \$332 GROUND INVR00
+* cell instance $1628 r0 *1 690.3,354.9
+X$1628 VDD \$333 a[3] GROUND INVR00
+* cell instance $1631 r0 *1 713.7,354.9
+X$1631 VDD \$304 \$384 b[3] \$333 \$355 GROUND AOI400
+* cell instance $1634 r0 *1 783.9,354.9
+X$1634 \$275 b[3] \$333 VDD GROUND OR2100
+* cell instance $1635 r0 *1 803.4,354.9
+X$1635 VDD \$382 \$275 \$385 GROUND NND200
+* cell instance $1640 r0 *1 124.8,152.1
+X$1640 \$116 a[7] VDD b[7] \$75 GROUND ADNR00
+* cell instance $1644 r0 *1 202.8,152.1
+X$1644 VDD \$83 \$144 \$75 \$47 GROUND OR3100
+* cell instance $1652 r0 *1 370.5,152.1
+X$1652 VDD \$105 \$85 \$106 \$104 GROUND ORND00
+* cell instance $1655 r0 *1 468,152.1
+X$1655 VDD \$160 \$87 GROUND INVR00
+* cell instance $1657 r0 *1 483.6,152.1
+X$1657 \$63 \$46 \$160 VDD GROUND OR2100
+* cell instance $1660 r0 *1 522.6,152.1
+X$1660 VDD \$63 \$89 \$64 \$65 GROUND ORND00
+* cell instance $1661 r0 *1 546,152.1
+X$1661 VDD \$119 \$89 \$69 \$17 GROUND AND300
+* cell instance $1662 r0 *1 573.3,152.1
+X$1662 \$65 \$64 VDD \$63 \$47 GROUND ADNR00
+* cell instance $1664 r0 *1 616.2,152.1
+X$1664 VDD \$68 \$64 \$108 \$92 GROUND ORND00
+* cell instance $1668 r0 *1 705.9,152.1
+X$1668 VDD \$68 \$111 \$67 GROUND AND200
+* cell instance $1669 r0 *1 729.3,152.1
+X$1669 VDD \$113 \$111 \$67 GROUND NND200
+* cell instance $1670 r0 *1 744.9,152.1
+X$1670 VDD \$111 \$50 GROUND INVR00
+.ENDS alu8
+
+* cell NND600
+* pin IN2
+* pin IN3
+* pin IN6
+* pin IN4
+* pin IN1
+* pin IN5
+* pin OUT1
+* pin VDD
+* pin GROUND
+.SUBCKT NND600 IN2 IN3 IN6 IN4 IN1 IN5 OUT1 VDD GROUND
+* device instance $1 r0 *1 4.55,5.6 N
+M$1 \$12 IN1 \$9 GROUND N L=0.8U W=3U AS=8.7P AD=1.5P PS=11.8U PD=4U
+* device instance $2 r0 *1 6.35,5.6 N
+M$2 \$13 IN2 \$12 GROUND N L=0.8U W=3U AS=1.5P AD=5.85P PS=4U PD=6.9U
+* device instance $3 r0 *1 11.05,5.6 N
+M$3 GROUND IN3 \$13 GROUND N L=0.8U W=3U AS=5.85P AD=5.7P PS=6.9U PD=6.8U
+* device instance $4 r0 *1 15.65,5.6 N
+M$4 \$14 IN6 GROUND GROUND N L=0.8U W=3U AS=5.7P AD=5.25P PS=6.8U PD=6.5U
+* device instance $5 r0 *1 19.95,5.6 N
+M$5 \$15 IN5 \$14 GROUND N L=0.8U W=3U AS=5.25P AD=5.25P PS=6.5U PD=6.5U
+* device instance $6 r0 *1 24.25,5.6 N
+M$6 \$8 IN4 \$15 GROUND N L=0.8U W=3U AS=5.25P AD=8.7P PS=6.5U PD=11.8U
+* device instance $7 r0 *1 43.55,5 N
+M$7 OUT1 \$10 GROUND GROUND N L=0.8U W=2U AS=4.405P AD=9.06P PS=6.2U PD=12.4U
+* device instance $8 r0 *1 34.75,5.05 N
+M$8 \$10 \$8 GROUND GROUND N L=0.8U W=2.1U AS=7.81P AD=4.95P PS=11.4U PD=6.6U
+* device instance $9 r0 *1 39.15,5.05 N
+M$9 GROUND \$9 \$10 GROUND N L=0.8U W=2.1U AS=4.95P AD=4.405P PS=6.6U PD=6.2U
+* device instance $10 r0 *1 42.15,17.65 P
+M$10 OUT1 \$10 VDD VDD P L=0.8U W=3.1U AS=8.46P AD=14.03P PS=8.7U PD=15.8U
+* device instance $11 r0 *1 35.3,18.75 P
+M$11 \$17 \$8 \$10 VDD P L=0.8U W=5.3U AS=15.37P AD=4.9025P PS=16.4U PD=7.15U
+* device instance $12 r0 *1 37.95,18.75 P
+M$12 VDD \$9 \$17 VDD P L=0.8U W=5.3U AS=4.9025P AD=8.46P PS=7.15U PD=8.7U
+* device instance $13 r0 *1 4.55,19.85 P
+M$13 VDD IN1 \$9 VDD P L=0.8U W=3U AS=8.7P AD=4.8P PS=11.8U PD=6.2U
+* device instance $14 r0 *1 8.55,19.85 P
+M$14 \$9 IN2 VDD VDD P L=0.8U W=3U AS=4.8P AD=5.325P PS=6.2U PD=6.55U
+* device instance $15 r0 *1 12.9,19.85 P
+M$15 VDD IN3 \$9 VDD P L=0.8U W=3U AS=5.325P AD=4.8P PS=6.55U PD=6.2U
+* device instance $16 r0 *1 16.9,19.85 P
+M$16 \$8 IN6 VDD VDD P L=0.8U W=3U AS=4.8P AD=4.8P PS=6.2U PD=6.2U
+* device instance $17 r0 *1 20.9,19.85 P
+M$17 VDD IN5 \$8 VDD P L=0.8U W=3U AS=4.8P AD=4.8P PS=6.2U PD=6.2U
+* device instance $18 r0 *1 24.9,19.85 P
+M$18 \$8 IN4 VDD VDD P L=0.8U W=3U AS=4.8P AD=9P PS=6.2U PD=12U
+.ENDS NND600
+
+* cell OR3100
+* pin VDD
+* pin OUT1
+* pin IN3
+* pin IN2
+* pin IN1
+* pin GROUND
+.SUBCKT OR3100 VDD OUT1 IN3 IN2 IN1 GROUND
+* device instance $1 r0 *1 4.25,4.4 N
+M$1 \$2 IN1 GROUND GROUND N L=0.8U W=2.6U AS=7.54P AD=6.825P PS=11U PD=7.85U
+* device instance $2 r0 *1 8.9,4.4 N
+M$2 GROUND IN2 \$2 GROUND N L=0.8U W=2.6U AS=6.825P AD=4.16P PS=7.85U PD=5.8U
+* device instance $3 r0 *1 12.9,4.4 N
+M$3 \$2 IN3 GROUND GROUND N L=0.8U W=2.6U AS=4.16P AD=11.7P PS=5.8U PD=14.2U
+* device instance $4 r0 *1 20.7,3.9 N
+M$4 OUT1 \$2 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $5 r0 *1 4.8,19.75 P
+M$5 \$9 IN1 VDD VDD P L=0.8U W=8.5U AS=24.65P AD=8.5P PS=22.8U PD=10.5U
+* device instance $6 r0 *1 7.6,19.75 P
+M$6 \$8 IN2 \$9 VDD P L=0.8U W=8.5U AS=8.5P AD=11.2625P PS=10.5U PD=11.15U
+* device instance $7 r0 *1 11.05,19.75 P
+M$7 \$2 IN3 \$8 VDD P L=0.8U W=8.5U AS=11.2625P AD=32.3P PS=11.15U PD=24.6U
+* device instance $8 r0 *1 20.05,19.15 P
+M$8 OUT1 \$2 VDD VDD P L=0.8U W=3.1U AS=8.99P AD=8.99P PS=12U PD=12U
+.ENDS OR3100
+
+* cell AND500
+* pin IN1
+* pin IN3
+* pin IN2
+* pin IN5
+* pin IN4
+* pin OUT1
+* pin VDD
+* pin GROUND
+.SUBCKT AND500 IN1 IN3 IN2 IN5 IN4 OUT1 VDD GROUND
+* device instance $1 r0 *1 4.4,4.65 N
+M$1 \$8 IN5 GROUND GROUND N L=0.8U W=5.3U AS=15.37P AD=6.36P PS=16.4U PD=7.7U
+* device instance $2 r0 *1 7.6,4.65 N
+M$2 \$9 IN4 \$8 GROUND N L=0.8U W=5.3U AS=6.36P AD=8.215P PS=7.7U PD=8.4U
+* device instance $3 r0 *1 11.5,4.65 N
+M$3 \$10 IN3 \$9 GROUND N L=0.8U W=5.3U AS=8.215P AD=19.61P PS=8.4U PD=12.7U
+* device instance $4 r0 *1 19.7,4.65 N
+M$4 \$11 IN2 \$10 GROUND N L=0.8U W=5.3U AS=19.61P AD=3.445P PS=12.7U PD=6.6U
+* device instance $5 r0 *1 21.8,4.65 N
+M$5 \$12 IN1 \$11 GROUND N L=0.8U W=5.3U AS=3.445P AD=23.1P PS=6.6U PD=21.1U
+* device instance $6 r0 *1 32,4.7 N
+M$6 OUT1 \$12 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $7 r0 *1 29.75,21.65 P
+M$7 VDD \$12 OUT1 VDD P L=0.8U W=3U AS=8.7P AD=8.7P PS=11.8U PD=11.8U
+* device instance $8 r0 *1 6.05,19.05 P
+M$8 \$12 IN5 VDD VDD P L=0.8U W=6U AS=17.4P AD=9.6P PS=17.8U PD=9.2U
+* device instance $9 r0 *1 10.05,19.05 P
+M$9 VDD IN4 \$12 VDD P L=0.8U W=6U AS=9.6P AD=9.6P PS=9.2U PD=9.2U
+* device instance $10 r0 *1 14.05,19.05 P
+M$10 \$12 IN3 VDD VDD P L=0.8U W=6U AS=9.6P AD=11.1P PS=9.2U PD=9.7U
+* device instance $11 r0 *1 18.55,19.05 P
+M$11 VDD IN2 \$12 VDD P L=0.8U W=6U AS=11.1P AD=9.9P PS=9.7U PD=9.3U
+* device instance $12 r0 *1 22.65,19.05 P
+M$12 \$12 IN1 VDD VDD P L=0.8U W=6U AS=9.9P AD=17.4P PS=9.3U PD=17.8U
+.ENDS AND500
+
+* cell AND400
+* pin IN4
+* pin IN2
+* pin OUT1
+* pin IN3
+* pin IN1
+* pin VDD
+* pin GROUND
+.SUBCKT AND400 IN4 IN2 OUT1 IN3 IN1 VDD GROUND
+* device instance $1 r0 *1 8,5.25 N
+M$1 \$6 IN4 GROUND GROUND N L=0.8U W=4.1U AS=11.89P AD=5.0225P PS=14U PD=6.55U
+* device instance $2 r0 *1 11.25,5.25 N
+M$2 \$7 IN3 \$6 GROUND N L=0.8U W=4.1U AS=5.0225P AD=7.6875P PS=6.55U PD=7.85U
+* device instance $3 r0 *1 15.8,5.25 N
+M$3 \$8 IN2 \$7 GROUND N L=0.8U W=4.1U AS=7.6875P AD=3.075P PS=7.85U PD=5.6U
+* device instance $4 r0 *1 18.1,5.25 N
+M$4 \$4 IN1 \$8 GROUND N L=0.8U W=4.1U AS=3.075P AD=13.53P PS=5.6U PD=14.8U
+* device instance $5 r0 *1 26.6,3.5 N
+M$5 OUT1 \$4 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $6 r0 *1 26,20.85 P
+M$6 VDD \$4 OUT1 VDD P L=0.8U W=3.3U AS=9.57P AD=9.57P PS=12.4U PD=12.4U
+* device instance $7 r0 *1 6.15,18.45 P
+M$7 VDD IN4 \$4 VDD P L=0.8U W=4.8U AS=13.92P AD=7.68P PS=15.4U PD=8U
+* device instance $8 r0 *1 10.15,18.45 P
+M$8 \$4 IN3 VDD VDD P L=0.8U W=4.8U AS=7.68P AD=7.68P PS=8U PD=8U
+* device instance $9 r0 *1 14.15,18.45 P
+M$9 VDD IN2 \$4 VDD P L=0.8U W=4.8U AS=7.68P AD=9.12P PS=8U PD=8.6U
+* device instance $10 r0 *1 18.75,18.45 P
+M$10 \$4 IN1 VDD VDD P L=0.8U W=4.8U AS=9.12P AD=13.92P PS=8.6U PD=15.4U
+.ENDS AND400
+
+* cell NOR500
+* pin IN5
+* pin OUT1
+* pin IN3
+* pin IN4
+* pin IN1
+* pin IN2
+* pin VDD
+* pin GROUND
+.SUBCKT NOR500 IN5 OUT1 IN3 IN4 IN1 IN2 VDD GROUND
+* device instance $1 r0 *1 4.25,4.25 N
+M$1 \$3 IN3 GROUND GROUND N L=0.8U W=2.9U AS=8.41P AD=7.4025P PS=11.6U PD=8.15U
+* device instance $2 r0 *1 8.9,4.25 N
+M$2 GROUND IN4 \$3 GROUND N L=0.8U W=2.9U AS=7.4025P AD=4.64P PS=8.15U PD=6.1U
+* device instance $3 r0 *1 12.9,4.25 N
+M$3 \$3 IN5 GROUND GROUND N L=0.8U W=2.9U AS=4.64P AD=12.63P PS=6.1U PD=14.8U
+* device instance $4 r0 *1 22.5,3.9 N
+M$4 \$9 IN1 GROUND GROUND N L=0.8U W=2.1U AS=7.81P AD=12.62P PS=11.4U PD=12.5U
+* device instance $5 r0 *1 26.9,3.9 N
+M$5 \$9 IN2 GROUND GROUND N L=0.8U W=2.1U AS=8.605P AD=12.62P PS=9.9U PD=12.5U
+* device instance $6 r0 *1 34.3,4.65 N
+M$6 \$6 \$3 GROUND GROUND N L=0.8U W=2.4U AS=8.605P AD=2.22P PS=9.9U PD=4.25U
+* device instance $7 r0 *1 36.95,4.65 N
+M$7 \$4 \$9 \$6 GROUND N L=0.8U W=2.4U AS=2.22P AD=11.39P PS=4.25U PD=14.1U
+* device instance $8 r0 *1 44.3,4.4 N
+M$8 OUT1 \$4 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $9 r0 *1 23.6,20.6 P
+M$9 \$15 IN1 VDD VDD P L=0.8U W=5.3U AS=15.37P AD=5.565P PS=16.4U PD=7.4U
+* device instance $10 r0 *1 26.5,20.6 P
+M$10 \$9 IN2 \$15 VDD P L=0.8U W=5.3U AS=5.565P AD=15.37P PS=7.4U PD=16.4U
+* device instance $11 r0 *1 4.8,18.95 P
+M$11 \$13 IN3 VDD VDD P L=0.8U W=8.5U AS=24.65P AD=8.5P PS=22.8U PD=10.5U
+* device instance $12 r0 *1 7.6,18.95 P
+M$12 \$14 IN4 \$13 VDD P L=0.8U W=8.5U AS=8.5P AD=14.2375P PS=10.5U PD=11.85U
+* device instance $13 r0 *1 11.75,18.95 P
+M$13 \$3 IN5 \$14 VDD P L=0.8U W=8.5U AS=14.2375P AD=32.3P PS=11.85U PD=24.6U
+* device instance $14 r0 *1 42.7,19.2 P
+M$14 OUT1 \$4 VDD VDD P L=0.8U W=3.3U AS=5.725P AD=9.57P PS=6.8U PD=12.4U
+* device instance $15 r0 *1 34.6,19.3 P
+M$15 \$4 \$3 VDD VDD P L=0.8U W=3.5U AS=10.15P AD=5.6P PS=12.8U PD=6.7U
+* device instance $16 r0 *1 38.6,19.3 P
+M$16 VDD \$9 \$4 VDD P L=0.8U W=3.5U AS=5.6P AD=5.725P PS=6.7U PD=6.8U
+.ENDS NOR500
+
+* cell OAI400
+* pin VDD
+* pin IN1
+* pin IN3
+* pin OUT1
+* pin IN4
+* pin IN2
+* pin GROUND
+.SUBCKT OAI400 VDD IN1 IN3 OUT1 IN4 IN2 GROUND
+* device instance $1 r0 *1 7.8,5.55 N
+M$1 OUT1 IN2 \$3 GROUND N L=0.8U W=2.9U AS=8.41P AD=9.135P PS=11.6U PD=9.5U
+* device instance $2 r0 *1 12.3,5.55 N
+M$2 \$3 IN1 OUT1 GROUND N L=0.8U W=2.9U AS=9.135P AD=6.815P PS=9.5U PD=7.6U
+* device instance $3 r0 *1 17.8,5.55 N
+M$3 GROUND IN3 \$3 GROUND N L=0.8U W=2.9U AS=6.815P AD=4.64P PS=7.6U PD=6.1U
+* device instance $4 r0 *1 21.8,5.55 N
+M$4 \$3 IN4 GROUND GROUND N L=0.8U W=2.9U AS=4.64P AD=8.41P PS=6.1U PD=11.6U
+* device instance $5 r0 *1 9.2,19 P
+M$5 \$10 IN2 OUT1 VDD P L=0.8U W=5.5U AS=17.31P AD=2.75P PS=17.4U PD=6.5U
+* device instance $6 r0 *1 11,19 P
+M$6 VDD IN1 \$10 VDD P L=0.8U W=5.5U AS=2.75P AD=26.725P PS=6.5U PD=14.85U
+* device instance $7 r0 *1 19.8,19 P
+M$7 \$9 IN3 VDD VDD P L=0.8U W=5.5U AS=26.725P AD=3.025P PS=14.85U PD=6.6U
+* device instance $8 r0 *1 21.7,19 P
+M$8 \$9 IN4 OUT1 VDD P L=0.8U W=5.5U AS=17.31P AD=3.025P PS=17.4U PD=6.6U
+.ENDS OAI400
+
+* cell NOR300
+* pin VDD
+* pin IN3
+* pin OUT1
+* pin IN1
+* pin IN2
+* pin GROUND
+.SUBCKT NOR300 VDD IN3 OUT1 IN1 IN2 GROUND
+* device instance $1 r0 *1 6.2,4.4 N
+M$1 OUT1 IN1 GROUND GROUND N L=0.8U W=2.6U AS=7.54P AD=6.825P PS=11U PD=7.85U
+* device instance $2 r0 *1 10.85,4.4 N
+M$2 GROUND IN2 OUT1 GROUND N L=0.8U W=2.6U AS=6.825P AD=4.16P PS=7.85U PD=5.8U
+* device instance $3 r0 *1 14.85,4.4 N
+M$3 OUT1 IN3 GROUND GROUND N L=0.8U W=2.6U AS=4.16P AD=11.7P PS=5.8U PD=14.2U
+* device instance $4 r0 *1 6.75,19.75 P
+M$4 \$8 IN1 VDD VDD P L=0.8U W=8.5U AS=26.61P AD=8.5P PS=23.4U PD=10.5U
+* device instance $5 r0 *1 9.55,19.75 P
+M$5 \$7 IN2 \$8 VDD P L=0.8U W=8.5U AS=8.5P AD=16.575P PS=10.5U PD=12.4U
+* device instance $6 r0 *1 14.25,19.75 P
+M$6 OUT1 IN3 \$7 VDD P L=0.8U W=8.5U AS=16.575P AD=32.3P PS=12.4U PD=24.6U
+.ENDS NOR300
+
+* cell AND300
+* pin VDD
+* pin IN3
+* pin IN2
+* pin IN1
+* pin OUT1
+* pin GROUND
+.SUBCKT AND300 VDD IN3 IN2 IN1 OUT1 GROUND
+* device instance $1 r0 *1 4.1,5.6 N
+M$1 \$8 IN3 GROUND GROUND N L=0.8U W=3U AS=8.85P AD=6P PS=11.9U PD=7U
+* device instance $2 r0 *1 8.9,5.6 N
+M$2 \$9 IN2 \$8 GROUND N L=0.8U W=3U AS=6P AD=1.95P PS=7U PD=4.3U
+* device instance $3 r0 *1 11,5.6 N
+M$3 \$4 IN1 \$9 GROUND N L=0.8U W=3U AS=1.95P AD=10.2P PS=4.3U PD=12.8U
+* device instance $4 r0 *1 21,3.95 N
+M$4 OUT1 \$4 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $5 r0 *1 4.1,18.9 P
+M$5 VDD IN3 \$4 VDD P L=0.8U W=3U AS=8.85P AD=4.875P PS=11.9U PD=6.25U
+* device instance $6 r0 *1 8.15,18.9 P
+M$6 \$4 IN2 VDD VDD P L=0.8U W=3U AS=4.875P AD=4.8P PS=6.25U PD=6.2U
+* device instance $7 r0 *1 12.15,18.9 P
+M$7 VDD IN1 \$4 VDD P L=0.8U W=3U AS=4.8P AD=4.8P PS=6.2U PD=6.2U
+* device instance $8 r0 *1 16.15,18.9 P
+M$8 OUT1 \$4 VDD VDD P L=0.8U W=3U AS=4.8P AD=8.7P PS=6.2U PD=11.8U
+.ENDS AND300
+
+* cell NND400
+* pin VDD
+* pin IN3
+* pin IN4
+* pin IN2
+* pin IN1
+* pin OUT1
+* pin GROUND
+.SUBCKT NND400 VDD IN3 IN4 IN2 IN1 OUT1 GROUND
+* device instance $1 r0 *1 8,5.3 N
+M$1 \$10 IN4 GROUND GROUND N L=0.8U W=4U AS=11.6P AD=4.9P PS=13.8U PD=6.45U
+* device instance $2 r0 *1 11.25,5.3 N
+M$2 \$9 IN3 \$10 GROUND N L=0.8U W=4U AS=4.9P AD=7.5P PS=6.45U PD=7.75U
+* device instance $3 r0 *1 15.8,5.3 N
+M$3 \$8 IN2 \$9 GROUND N L=0.8U W=4U AS=7.5P AD=3P PS=7.75U PD=5.5U
+* device instance $4 r0 *1 18.1,5.3 N
+M$4 OUT1 IN1 \$8 GROUND N L=0.8U W=4U AS=3P AD=13.2P PS=5.5U PD=14.6U
+* device instance $5 r0 *1 6.15,18.45 P
+M$5 VDD IN4 OUT1 VDD P L=0.8U W=4.8U AS=13.92P AD=7.68P PS=15.4U PD=8U
+* device instance $6 r0 *1 10.15,18.45 P
+M$6 OUT1 IN3 VDD VDD P L=0.8U W=4.8U AS=7.68P AD=7.68P PS=8U PD=8U
+* device instance $7 r0 *1 14.15,18.45 P
+M$7 VDD IN2 OUT1 VDD P L=0.8U W=4.8U AS=7.68P AD=9.12P PS=8U PD=8.6U
+* device instance $8 r0 *1 18.75,18.45 P
+M$8 OUT1 IN1 VDD VDD P L=0.8U W=4.8U AS=9.12P AD=13.92P PS=8.6U PD=15.4U
+.ENDS NND400
+
+* cell NOR200
+* pin VDD
+* pin OUT1
+* pin IN2
+* pin IN1
+* pin GROUND
+.SUBCKT NOR200 VDD OUT1 IN2 IN1 GROUND
+* device instance $1 r0 *1 4.25,5.05 N
+M$1 OUT1 IN1 GROUND GROUND N L=0.8U W=2.1U AS=7.81P AD=6.25P PS=11.4U PD=7.6U
+* device instance $2 r0 *1 8.65,5.05 N
+M$2 OUT1 IN2 GROUND GROUND N L=0.8U W=2.1U AS=9.37P AD=6.25P PS=12.6U PD=7.6U
+* device instance $3 r0 *1 5.35,18.75 P
+M$3 \$6 IN1 VDD VDD P L=0.8U W=5.3U AS=15.37P AD=4.9025P PS=16.4U PD=7.15U
+* device instance $4 r0 *1 8,18.75 P
+M$4 OUT1 IN2 \$6 VDD P L=0.8U W=5.3U AS=4.9025P AD=15.37P PS=7.15U PD=16.4U
+.ENDS NOR200
+
+* cell NND500
+* pin IN1
+* pin IN3
+* pin IN2
+* pin OUT1
+* pin IN5
+* pin IN4
+* pin VDD
+* pin GROUND
+.SUBCKT NND500 IN1 IN3 IN2 OUT1 IN5 IN4 VDD GROUND
+* device instance $1 r0 *1 4.4,4.65 N
+M$1 \$8 IN5 GROUND GROUND N L=0.8U W=5.3U AS=15.37P AD=6.36P PS=16.4U PD=7.7U
+* device instance $2 r0 *1 7.6,4.65 N
+M$2 \$9 IN4 \$8 GROUND N L=0.8U W=5.3U AS=6.36P AD=8.215P PS=7.7U PD=8.4U
+* device instance $3 r0 *1 11.5,4.65 N
+M$3 \$10 IN3 \$9 GROUND N L=0.8U W=5.3U AS=8.215P AD=19.61P PS=8.4U PD=12.7U
+* device instance $4 r0 *1 19.7,4.65 N
+M$4 \$11 IN2 \$10 GROUND N L=0.8U W=5.3U AS=19.61P AD=3.445P PS=12.7U PD=6.6U
+* device instance $5 r0 *1 21.8,4.65 N
+M$5 OUT1 IN1 \$11 GROUND N L=0.8U W=5.3U AS=3.445P AD=23.1P PS=6.6U PD=21.1U
+* device instance $6 r0 *1 6.05,19.05 P
+M$6 OUT1 IN5 VDD VDD P L=0.8U W=6U AS=17.4P AD=9.6P PS=17.8U PD=9.2U
+* device instance $7 r0 *1 10.05,19.05 P
+M$7 VDD IN4 OUT1 VDD P L=0.8U W=6U AS=9.6P AD=9.6P PS=9.2U PD=9.2U
+* device instance $8 r0 *1 14.05,19.05 P
+M$8 OUT1 IN3 VDD VDD P L=0.8U W=6U AS=9.6P AD=11.1P PS=9.2U PD=9.7U
+* device instance $9 r0 *1 18.55,19.05 P
+M$9 VDD IN2 OUT1 VDD P L=0.8U W=6U AS=11.1P AD=9.9P PS=9.7U PD=9.3U
+* device instance $10 r0 *1 22.65,19.05 P
+M$10 OUT1 IN1 VDD VDD P L=0.8U W=6U AS=9.9P AD=17.4P PS=9.3U PD=17.8U
+.ENDS NND500
+
+* cell XOR200
+* pin IN1
+* pin OUT1
+* pin IN2
+* pin VDD
+* pin GROUND
+.SUBCKT XOR200 IN1 OUT1 IN2 VDD GROUND
+* device instance $1 r0 *1 12.1,6 N
+M$1 \$3 \$6 \$2 GROUND N L=0.8U W=2U AS=7.76P AD=4.38P PS=11.4U PD=6.2U
+* device instance $2 r0 *1 16.5,6 N
+M$2 \$4 IN1 \$3 GROUND N L=0.8U W=2U AS=4.38P AD=7.76P PS=6.2U PD=11.4U
+* device instance $3 r0 *1 29.55,5.45 N
+M$3 OUT1 \$3 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $4 r0 *1 3.2,4.7 N
+M$4 \$6 IN1 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $5 r0 *1 37.35,4.4 N
+M$5 \$2 IN2 GROUND GROUND N L=0.8U W=2U AS=8.02P AD=10.1P PS=11.6U PD=13.2U
+* device instance $6 r0 *1 22.5,3.5 N
+M$6 \$4 \$2 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $7 r0 *1 12.15,19.85 P
+M$7 \$3 IN1 \$2 VDD P L=0.8U W=3U AS=8.7P AD=5.25P PS=11.8U PD=6.5U
+* device instance $8 r0 *1 16.45,19.85 P
+M$8 \$4 \$6 \$3 VDD P L=0.8U W=3U AS=5.25P AD=8.7P PS=6.5U PD=11.8U
+* device instance $9 r0 *1 35.85,20.85 P
+M$9 VDD IN2 \$2 VDD P L=0.8U W=3U AS=8.7P AD=8.7P PS=11.8U PD=11.8U
+* device instance $10 r0 *1 4.05,19.6 P
+M$10 \$6 IN1 VDD VDD P L=0.8U W=3U AS=8.7P AD=8.7P PS=11.8U PD=11.8U
+* device instance $11 r0 *1 22.75,21.65 P
+M$11 VDD \$2 \$4 VDD P L=0.8U W=3U AS=8.7P AD=8.7P PS=11.8U PD=11.8U
+* device instance $12 r0 *1 29.55,18.05 P
+M$12 OUT1 \$3 VDD VDD P L=0.8U W=3.1U AS=8.99P AD=8.99P PS=12U PD=12U
+.ENDS XOR200
+
+* cell NND300
+* pin VDD
+* pin IN3
+* pin IN2
+* pin OUT1
+* pin IN1
+* pin GROUND
+.SUBCKT NND300 VDD IN3 IN2 OUT1 IN1 GROUND
+* device instance $1 r0 *1 4.1,5.6 N
+M$1 \$8 IN3 GROUND GROUND N L=0.8U W=3U AS=8.85P AD=6P PS=11.9U PD=7U
+* device instance $2 r0 *1 8.9,5.6 N
+M$2 \$7 IN2 \$8 GROUND N L=0.8U W=3U AS=6P AD=2.625P PS=7U PD=4.75U
+* device instance $3 r0 *1 11.45,5.6 N
+M$3 OUT1 IN1 \$7 GROUND N L=0.8U W=3U AS=2.625P AD=8.85P PS=4.75U PD=11.9U
+* device instance $4 r0 *1 4.8,18.9 P
+M$4 VDD IN3 OUT1 VDD P L=0.8U W=3U AS=8.85P AD=4.875P PS=11.9U PD=6.25U
+* device instance $5 r0 *1 8.85,18.9 P
+M$5 OUT1 IN2 VDD VDD P L=0.8U W=3U AS=4.875P AD=4.8P PS=6.25U PD=6.2U
+* device instance $6 r0 *1 12.85,18.9 P
+M$6 VDD IN1 OUT1 VDD P L=0.8U W=3U AS=4.8P AD=8.7P PS=6.2U PD=11.8U
+.ENDS NND300
+
+* cell ADNR00
+* pin OUT1
+* pin IN2
+* pin VDD
+* pin IN1
+* pin IN3
+* pin GROUND
+.SUBCKT ADNR00 OUT1 IN2 VDD IN1 IN3 GROUND
+* device instance $1 r0 *1 6.85,5.55 N
+M$1 \$8 IN2 GROUND GROUND N L=0.8U W=2.9U AS=8.41P AD=1.45P PS=11.6U PD=3.9U
+* device instance $2 r0 *1 8.65,5.55 N
+M$2 OUT1 IN1 \$8 GROUND N L=0.8U W=2.9U AS=1.45P AD=4.64P PS=3.9U PD=6.1U
+* device instance $3 r0 *1 12.65,5.55 N
+M$3 GROUND IN3 OUT1 GROUND N L=0.8U W=2.9U AS=4.64P AD=8.41P PS=6.1U PD=11.6U
+* device instance $4 r0 *1 6.85,21.25 P
+M$4 \$3 IN2 VDD VDD P L=0.8U W=5.8U AS=24.6P AD=9.28P PS=21.2U PD=9U
+* device instance $5 r0 *1 10.85,21.25 P
+M$5 VDD IN1 \$3 VDD P L=0.8U W=5.8U AS=9.28P AD=27.4P PS=9U PD=22U
+* device instance $6 r0 *1 20.05,18.25 P
+M$6 OUT1 IN3 \$3 VDD P L=0.8U W=5.8U AS=16.82P AD=16.82P PS=17.4U PD=17.4U
+.ENDS ADNR00
+
+* cell NND200
+* pin VDD
+* pin OUT1
+* pin IN2
+* pin IN1
+* pin GROUND
+.SUBCKT NND200 VDD OUT1 IN2 IN1 GROUND
+* device instance $1 r0 *1 4.65,5.6 N
+M$1 \$6 IN2 GROUND GROUND N L=0.8U W=2.4U AS=7.96P AD=2.16P PS=11.4U PD=4.2U
+* device instance $2 r0 *1 7.25,5.6 N
+M$2 OUT1 IN1 \$6 GROUND N L=0.8U W=2.4U AS=2.16P AD=17.2P PS=4.2U PD=19.1U
+* device instance $3 r0 *1 6.85,19.6 P
+M$3 OUT1 IN2 VDD VDD P L=0.8U W=3.1U AS=8.99P AD=4.96P PS=12U PD=6.3U
+* device instance $4 r0 *1 10.85,19.6 P
+M$4 VDD IN1 OUT1 VDD P L=0.8U W=3.1U AS=4.96P AD=8.99P PS=6.3U PD=12U
+.ENDS NND200
+
+* cell AND200
+* pin VDD
+* pin OUT1
+* pin IN2
+* pin IN1
+* pin GROUND
+.SUBCKT AND200 VDD OUT1 IN2 IN1 GROUND
+* device instance $1 r0 *1 4.65,5.6 N
+M$1 \$7 IN2 GROUND GROUND N L=0.8U W=2.4U AS=7.96P AD=2.16P PS=11.4U PD=4.2U
+* device instance $2 r0 *1 7.25,5.6 N
+M$2 \$6 IN1 \$7 GROUND N L=0.8U W=2.4U AS=2.16P AD=7.96P PS=4.2U PD=11.4U
+* device instance $3 r0 *1 16.8,4.4 N
+M$3 OUT1 \$6 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $4 r0 *1 14.85,19.55 P
+M$4 OUT1 \$6 VDD VDD P L=0.8U W=3U AS=4.935P AD=8.7P PS=6.3U PD=11.8U
+* device instance $5 r0 *1 6.85,19.6 P
+M$5 \$6 IN2 VDD VDD P L=0.8U W=3.1U AS=8.99P AD=4.96P PS=12U PD=6.3U
+* device instance $6 r0 *1 10.85,19.6 P
+M$6 VDD IN1 \$6 VDD P L=0.8U W=3.1U AS=4.96P AD=4.935P PS=6.3U PD=6.3U
+.ENDS AND200
+
+* cell ORND00
+* pin VDD
+* pin IN1
+* pin OUT1
+* pin IN2
+* pin IN3
+* pin GROUND
+.SUBCKT ORND00 VDD IN1 OUT1 IN2 IN3 GROUND
+* device instance $1 r0 *1 10.35,5.1 N
+M$1 \$7 IN3 GROUND GROUND N L=0.8U W=2.7U AS=7.83P AD=5.22P PS=11.2U
++ PD=5.66666666667U
+* device instance $2 r0 *1 8.1,8.95 N
+M$2 OUT1 IN2 \$7 GROUND N L=0.8U W=2.7U AS=5.22P AD=8.76P PS=5.66666666667U
++ PD=11.9U
+* device instance $3 r0 *1 12.6,8.95 N
+M$3 OUT1 IN1 \$7 GROUND N L=0.8U W=2.7U AS=5.22P AD=8.235P PS=5.66666666667U
++ PD=11.5U
+* device instance $4 r0 *1 4.85,20.4 P
+M$4 OUT1 IN3 VDD VDD P L=0.8U W=4.1U AS=11.89P AD=7.79P PS=14U PD=7.9U
+* device instance $5 r0 *1 9.45,20.4 P
+M$5 \$8 IN2 OUT1 VDD P L=0.8U W=4.1U AS=7.79P AD=2.05P PS=7.9U PD=5.1U
+* device instance $6 r0 *1 11.25,20.4 P
+M$6 VDD IN1 \$8 VDD P L=0.8U W=4.1U AS=2.05P AD=11.89P PS=5.1U PD=14U
+.ENDS ORND00
+
+* cell XNR200
+* pin IN1
+* pin OUT1
+* pin IN2
+* pin VDD
+* pin GROUND
+.SUBCKT XNR200 IN1 OUT1 IN2 VDD GROUND
+* device instance $1 r0 *1 12.1,6 N
+M$1 \$3 IN1 \$2 GROUND N L=0.8U W=2U AS=7.76P AD=4.38P PS=11.4U PD=6.2U
+* device instance $2 r0 *1 16.5,6 N
+M$2 \$4 \$6 \$3 GROUND N L=0.8U W=2U AS=4.38P AD=7.76P PS=6.2U PD=11.4U
+* device instance $3 r0 *1 29.55,5.45 N
+M$3 OUT1 \$3 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $4 r0 *1 3.2,4.7 N
+M$4 \$6 IN1 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $5 r0 *1 37.35,4.4 N
+M$5 \$2 IN2 GROUND GROUND N L=0.8U W=2U AS=8.02P AD=10.1P PS=11.6U PD=13.2U
+* device instance $6 r0 *1 22.5,3.5 N
+M$6 \$4 \$2 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $7 r0 *1 22.75,21.65 P
+M$7 VDD \$2 \$4 VDD P L=0.8U W=3U AS=8.7P AD=8.7P PS=11.8U PD=11.8U
+* device instance $8 r0 *1 12.15,19.85 P
+M$8 \$3 \$6 \$2 VDD P L=0.8U W=3U AS=8.7P AD=5.25P PS=11.8U PD=6.5U
+* device instance $9 r0 *1 16.45,19.85 P
+M$9 \$4 IN1 \$3 VDD P L=0.8U W=3U AS=5.25P AD=8.7P PS=6.5U PD=11.8U
+* device instance $10 r0 *1 35.85,20.85 P
+M$10 VDD IN2 \$2 VDD P L=0.8U W=3U AS=8.7P AD=8.7P PS=11.8U PD=11.8U
+* device instance $11 r0 *1 4.05,19.6 P
+M$11 \$6 IN1 VDD VDD P L=0.8U W=3U AS=8.7P AD=8.7P PS=11.8U PD=11.8U
+* device instance $12 r0 *1 29.55,18 P
+M$12 OUT1 \$3 VDD VDD P L=0.8U W=3U AS=8.7P AD=8.7P PS=11.8U PD=11.8U
+.ENDS XNR200
+
+* cell MX2100
+* pin OUT1
+* pin D0
+* pin D1
+* pin S
+* pin VDD
+* pin GROUND
+.SUBCKT MX2100 OUT1 D0 D1 S VDD GROUND
+* device instance $1 r0 *1 11.85,6 N
+M$1 \$5 \$3 D0 GROUND N L=0.8U W=2U AS=7.76P AD=4.38P PS=11.4U PD=6.2U
+* device instance $2 r0 *1 16.25,6 N
+M$2 D1 S \$5 GROUND N L=0.8U W=2U AS=4.38P AD=7.76P PS=6.2U PD=11.4U
+* device instance $3 r0 *1 2.95,4.7 N
+M$3 \$3 S GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $4 r0 *1 23.15,3.5 N
+M$4 OUT1 \$5 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $5 r0 *1 5.6,22.8 P
+M$5 VDD S \$3 VDD P L=0.8U W=3U AS=12.15P AD=9.3P PS=14.1U PD=12.2U
+* device instance $6 r0 *1 23.55,21.65 P
+M$6 VDD \$5 OUT1 VDD P L=0.8U W=3.1U AS=8.99P AD=8.99P PS=12U PD=12U
+* device instance $7 r0 *1 11.9,19.85 P
+M$7 \$5 S D0 VDD P L=0.8U W=3U AS=8.7P AD=5.25P PS=11.8U PD=6.5U
+* device instance $8 r0 *1 16.2,19.85 P
+M$8 D1 \$3 \$5 VDD P L=0.8U W=3U AS=5.25P AD=8.7P PS=6.5U PD=11.8U
+.ENDS MX2100
+
+* cell INVR00
+* pin VDD
+* pin OUT1
+* pin IN1
+* pin GROUND
+.SUBCKT INVR00 VDD OUT1 IN1 GROUND
+* device instance $1 r0 *1 5.2,5.55 N
+M$1 OUT1 IN1 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=7.76P PS=11.4U PD=11.4U
+* device instance $2 r0 *1 5.2,18.5 P
+M$2 OUT1 IN1 VDD VDD P L=0.8U W=3U AS=8.7P AD=9.3P PS=11.8U PD=12.2U
+.ENDS INVR00
+
+* cell OR2100
+* pin OUT1
+* pin IN1
+* pin IN2
+* pin VDD
+* pin GROUND
+.SUBCKT OR2100 OUT1 IN1 IN2 VDD GROUND
+* device instance $1 r0 *1 4.25,4.1 N
+M$1 \$3 IN2 GROUND GROUND N L=0.8U W=2U AS=7.76P AD=6.2P PS=11.4U PD=7.6U
+* device instance $2 r0 *1 8.65,4.1 N
+M$2 GROUND IN1 \$3 GROUND N L=0.8U W=2U AS=6.2P AD=4.38P PS=7.6U PD=6.2U
+* device instance $3 r0 *1 13.05,4.1 N
+M$3 OUT1 \$3 GROUND GROUND N L=0.8U W=2U AS=4.38P AD=11.4P PS=6.2U PD=14.2U
+* device instance $4 r0 *1 4.75,20.1 P
+M$4 \$7 IN2 VDD VDD P L=0.8U W=3.6U AS=10.44P AD=3.15P PS=13U PD=5.35U
+* device instance $5 r0 *1 7.3,20.1 P
+M$5 \$3 IN1 \$7 VDD P L=0.8U W=3.6U AS=3.15P AD=10.44P PS=5.35U PD=13U
+* device instance $6 r0 *1 15.4,18.55 P
+M$6 OUT1 \$3 VDD VDD P L=0.8U W=3.1U AS=8.99P AD=8.99P PS=12U PD=12U
+.ENDS OR2100
+
+* cell AOI400
+* pin VDD
+* pin OUT1
+* pin IN4
+* pin IN1
+* pin IN2
+* pin IN3
+* pin GROUND
+.SUBCKT AOI400 VDD OUT1 IN4 IN1 IN2 IN3 GROUND
+* device instance $1 r0 *1 5.5,5.55 N
+M$1 \$10 IN1 OUT1 GROUND N L=0.8U W=2.9U AS=8.99P AD=1.45P PS=12U PD=3.9U
+* device instance $2 r0 *1 7.3,5.55 N
+M$2 \$10 IN2 GROUND GROUND N L=0.8U W=2.9U AS=17.725P AD=1.45P PS=12.65U PD=3.9U
+* device instance $3 r0 *1 16.1,5.55 N
+M$3 \$9 IN4 GROUND GROUND N L=0.8U W=2.9U AS=17.725P AD=1.595P PS=12.65U PD=4U
+* device instance $4 r0 *1 18,5.55 N
+M$4 OUT1 IN3 \$9 GROUND N L=0.8U W=2.9U AS=1.595P AD=8.41P PS=4U PD=11.6U
+* device instance $5 r0 *1 5.5,19.4 P
+M$5 VDD IN1 \$6 VDD P L=0.8U W=3.1U AS=8.99P AD=4.96P PS=12U PD=6.3U
+* device instance $6 r0 *1 9.5,19.4 P
+M$6 \$6 IN2 VDD VDD P L=0.8U W=3.1U AS=4.96P AD=4.96P PS=6.3U PD=6.3U
+* device instance $7 r0 *1 13.5,19.4 P
+M$7 \$6 IN4 OUT1 VDD P L=0.8U W=3.1U AS=9.505P AD=4.96P PS=9.7U PD=6.3U
+* device instance $8 r0 *1 18,19.4 P
+M$8 \$6 IN3 OUT1 VDD P L=0.8U W=3.1U AS=9.505P AD=8.99P PS=9.7U PD=12U
+.ENDS AOI400

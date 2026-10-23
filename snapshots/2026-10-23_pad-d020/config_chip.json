@@ -1,0 +1,20 @@
+{
+    "DESIGN_NAME": "alu8",
+    "DESIGN_TOP_CELL_NAME": "alu8",
+    "__comment_die": "4 mm die. REQUIRED: alu8 has 29 I/O; the 3 mm die offers only 24 usable I/O, the 4 mm die offers 32. The 1000x1000 die used for the learning run corresponds to the 1 mm frame = 4 usable I/O and cannot carry this design.",
+    "DIE_AREA": "0 0 4000 4000",
+    "__comment_core": "MEASURED from frame4mmx4mm.gds by KLayout batch, 2026-10-22: pad origin rows/cols sit at 304.90 and 3695.10 on both axes, giving a 3390.2 um square core opening. This supersedes the earlier derived value 305 305 3695 3695, which was a guess that happened to land within 0.1 um. Pad pitch 350.00 um confirmed (700.95 - 350.95).",
+    "CORE_AREA": "304.90 304.90 3695.10 3695.10",
+    "__comment_clock": "alu8 is purely combinational. CLOCK_PERIOD feeds only run_sta.tcl's virtual clock; it never reaches synthesis.",
+    "CLOCK_PERIOD": 100,
+    "CLOCK_PORT": "",
+    "CLOCK_NET": "",
+    "RUN_CTS": false,
+    "__comment_density": "Cell area is about 0.137 mm2 against an 11.5 mm2 core: roughly 1.2 % utilisation. This design is pad-limited, not core-limited. A low target lets the placer spread toward the pad ring instead of clustering at the centre and routing everything outward. It is also the cheapest test of the NND200->INVR00 abutment hypothesis behind the 3 boron-width DRC violations: at this density the placer has no reason to hard-abut anything.",
+    "PL_TARGET_DENSITY": 0.2,
+    "FP_PIN_ORDER_CFG": "dir::pin_order_chip.cfg",
+    "FP_PDN_SKIPTRIM": true,
+    "PLACE_SITE": "CORE",
+    "PLACE_SITE_WIDTH": 3.9,
+    "PLACE_SITE_HEIGHT": 32.35
+}
