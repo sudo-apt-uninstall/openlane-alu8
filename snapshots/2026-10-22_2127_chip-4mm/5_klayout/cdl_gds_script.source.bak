@@ -1,0 +1,55 @@
+#================ SET DESIGN VARIABLE (EDIT THIS FIELD) ==========================================
+#============================ PROJECT FOLDER NAME (EDIT THIS FIELD) =============================================
+# PROJECT FOLDER NAME: Enter a custom name for your project folder name created at path ~/OpenLane/design/project_scl_cp8d (Example: If the project name is project1, enter "project1").
+
+export PROJECT_NAME=smoke
+
+#================================ DESIGN_NAME  (EDIT THIS  FIELD) ===============================================
+# INPUT RTL NAME: The core filename of your input Verilog source file.
+# NOTE: Omit the ".v" extension. (Example: If the file is "test.v", enter "test").
+
+export DESIGN_NAME=cnt8
+
+#============================ DESIGN_TOP_CELL_NAME  (EDIT THIS  FIELD) ===========================================
+# Enter top cell name of RTL design file name as created by the user 
+
+export DESIGN_TOP_CELL_NAME=cnt8_top
+
+#================ SET DESIGN VARIABLE (EDIT THIS FIELD) ==========================================
+# Edit path: ~/OpenLane/designs/project_scl_cp8d with actual directory path , 
+# if OpenLane not installed other than home directory
+
+cd ~/OpenLane/designs/project_scl_cp8d
+source cp8d_pdk_env_setting.source
+
+#================ CDL SCRIPT (DO NOT EDIT THIS FIELD) ============================================
+
+cd $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/script
+
+python3 \
+verilog2spice.py \
+-spice $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc/core_iolib_cp8d.cdl  \
+-verilog $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/runs/RUN/results/routing/${DESIGN_NAME}_rt_pwr.v \
+-output $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc/${DESIGN_TOP_CELL_NAME}.cdl \
+-pos_pwr VDD \
+-neg_pwr GROUND -delimiter
+
+#================ GDS SCRIPT  (DO NOT EDIT THIS FIELD)  ===========================================
+
+cd $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/script
+
+klayout -b -zz \
+    -rd in_def=$OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/runs/RUN/results/routing//${DESIGN_NAME}_rt.def \
+    -rd out_gds=$OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc/${DESIGN_TOP_CELL_NAME}.gds \
+    -r def2gds.py
+
+#================ GDS SCRIPT  (DO NOT EDIT THIS FIELD) ============================================
+
+cd $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout
+
+#================ OPEN KLAYOUT  (DO NOT EDIT THIS FIELD) ===========================================
+
+klayout -e $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc/${DESIGN_TOP_CELL_NAME}.gds &
+
+#================== END ===========================================================================
+
