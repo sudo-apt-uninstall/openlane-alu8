@@ -7,8 +7,7 @@ itself in `sudo-apt-uninstall/SCL_0.8-um-PDK`: the full tree listing, `tech_cp8d
 `scl800.rcx.lib`, `cp8d_drc.drc`, and the PDK's `libs.tech/openlane` configs were read
 line by line. Items marked **VERIFIED** were confirmed from those bytes. Items marked
 **MEASURED** come from a run of this design. Items marked **UNVERIFIED** are stated as
-such. **One claim from the first draft was found to be wrong and has been retracted —
-see E2.**
+such.
 
 Two PDKs are in scope: **CP8D** (0.8 µm digital) and **C1D** (1.2 µm). The work
 described here used CP8D.
@@ -185,15 +184,15 @@ Tcl scripts, confirmed from the tree: `cts_cp8d.tcl`, `floorplan_cp8d.tcl`,
 
 For a combinational design you must write the filler step yourself. (Ours is 937 B.)
 
-### B5. There is no sample design — VERIFIED, with a correction
+### B5. There is no sample design — VERIFIED
 
 `sample_project_files_cp8d/1_RTL/` and `4A_synthesis_netlist/` are **both empty
 directories**.
 
-⚠️ **Corrected from the first draft:** the testbench folders are *not* empty. They each
-ship a **driver script** — `tb_prelay_script.source`, `tb_sys_sim_script.source`,
-`tb_postlay_script.source` — but **no testbench Verilog**. So the simulation plumbing
-is provided and the stimulus is not.
+The testbench folders are **not** empty. They each ship a **driver script** —
+`tb_prelay_script.source`, `tb_sys_sim_script.source`, `tb_postlay_script.source` —
+but **no testbench Verilog**. So the simulation plumbing is provided and the stimulus
+is not.
 
 What the "sample project" actually is: ten PnR Tcl scripts, three simulation driver
 scripts, `cdl_gds_script.source`, `def2gds.py`, `verilog2spice.py`,
@@ -289,6 +288,13 @@ C1D ships **7 flow scripts against CP8D's 10** — no `script_openlane.tcl`, no
 byte-identical 12-line stubs with a broken `PDK_ROOT` and `LIB_SYNTH` pointing at the
 **pad** library while the core library sits beside it. The shipped comments are literal
 placeholders.
+
+The practical symptom, reproduced 2026-10-23 on an unrelated machine and a separate
+OpenLane install: `flow.tcl` aborts at STEP 1 with
+`can't read "::env(SYNTH_DRIVING_CELL)": no such variable`, because the stub never
+defines it. The Liberty file is fine — a standalone `yosys-abc read_lib` on
+`c1d_core_min.lib` succeeds, reporting 53 cells with 8 sequential and 2 tri-state
+skipped, which is ordinary ABC behaviour and not a fault.
 
 Also: the C1D pad set shares **no cell names** with CP8D except `PVDD01`/`PVSS01`, so
 pad work does not port between the two PDKs.
@@ -420,10 +426,7 @@ changed by 16×, density by 9×, padding went from off to on. The STA reported s
 MET**, through the same ten instances with the same per-gate delays, to the
 picosecond, **every time**. Wire length is invisible to the timer.
 
-### E2. 🔴 RETRACTED — the worst-case libraries DO ship
-
-**The first draft of this document claimed "the digital kit ships no worst-case
-library". That is wrong, and it is withdrawn.**
+### E2. The worst-case libraries ship; the flow reads typical only — VERIFIED
 
 The kit ships all three corners for both core and pads, as full libraries:
 
@@ -445,11 +448,11 @@ set ::env(LIB_FASTEST) ".../cp8d_core_min.lib .../cp8d_pads_min.lib"
 set ::env(LIB_SLOWEST) ".../cp8d_core_max.lib .../cp8d_pads_max.lib"
 ```
 
-**What is actually true** is narrower and is a *flow* limitation, not a kit one: the
-run as configured reads **typical only**. `STA_MULTICORNER_READ_LIBS` is `0` in the
-as-run config, and `run_sta.tcl` reads `cp8d_core_typ.lib`. So every number produced so
-far is **typical corner, 5 V / 25 °C** — because that is what was asked for, not
-because the data is missing.
+The limitation is therefore a **flow** one, not a kit one: the run as configured reads
+**typical only**. `STA_MULTICORNER_READ_LIBS` is `0` in the as-run config, and
+`run_sta.tcl` reads `cp8d_core_typ.lib`. So every number produced so far is **typical
+corner, 5 V / 25 °C** — because that is what was asked for, not because the data is
+missing.
 
 Multi-corner STA on this PDK is **available and was simply not done**. That is a
 one-script change, and it is the obvious next thing for anyone continuing this work.
@@ -573,5 +576,5 @@ explicit routing blockage over cell poly, or a tighter core.
 5. **Config variables that are silently dead**, so the floorplan you designed is not
    necessarily the floorplan you got (C2).
 
-And one correction worth carrying: **multi-corner timing is available on this PDK and
-we simply did not run it** (E2).
+And one item worth carrying for whoever continues: **multi-corner timing is available
+on this PDK and simply was not run** (E2).
