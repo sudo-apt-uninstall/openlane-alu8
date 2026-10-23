@@ -1,0 +1,64 @@
+Startpoint: b[7] (input port clocked by vclk)
+Endpoint: carry (output port clocked by vclk)
+Path Group: vclk
+Path Type: min
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock vclk (rise edge)
+   0.00    0.00   clock network delay (ideal)
+   0.00    0.00 v input external delay
+   0.00    0.00 v b[7] (in)
+   0.42    0.42 ^ _352_/OUT1 (ADNR00)
+   0.35    0.78 v _353_/OUT1 (ORND00)
+   0.00    0.78 v carry (out)
+           0.78   data arrival time
+
+   0.00    0.00   clock vclk (rise edge)
+   0.00    0.00   clock network delay (ideal)
+   0.00    0.00   clock reconvergence pessimism
+   0.00    0.00   output external delay
+           0.00   data required time
+---------------------------------------------------------
+           0.00   data required time
+          -0.78   data arrival time
+---------------------------------------------------------
+           0.78   slack (MET)
+
+
+Startpoint: a[1] (input port clocked by vclk)
+Endpoint: zero (output port clocked by vclk)
+Path Group: vclk
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock vclk (rise edge)
+   0.00    0.00   clock network delay (ideal)
+   0.00    0.00 ^ input external delay
+   0.00    0.00 ^ a[1] (in)
+   2.53    2.53 v _406_/OUT1 (XOR200)
+   0.50    3.03 ^ _203_/OUT1 (ADNR00)
+   0.72    3.76 v _226_/OUT1 (ORND00)
+   0.57    4.32 ^ _237_/OUT1 (NND200)
+   1.91    6.24 v _238_/OUT1 (XNR200)
+   0.53    6.77 ^ _239_/OUT1 (NND200)
+   1.56    8.33 v _254_/OUT1 (NND600)
+   1.42    9.75 ^ _347_/OUT1 (NOR500)
+   1.16   10.91 ^ _348_/OUT1 (AND500)
+   0.71   11.61 ^ _349_/OUT1 (AND400)
+   0.00   11.61 ^ zero (out)
+          11.61   data arrival time
+
+ 100.00  100.00   clock vclk (rise edge)
+   0.00  100.00   clock network delay (ideal)
+   0.00  100.00   clock reconvergence pessimism
+   0.00  100.00   output external delay
+         100.00   data required time
+---------------------------------------------------------
+         100.00   data required time
+         -11.61   data arrival time
+---------------------------------------------------------
+          88.39   slack (MET)
+
+
