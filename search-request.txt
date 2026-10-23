@@ -1,22 +1,3 @@
-[eda@eda] ~/projects/openlane-alu8 $ cd ~/OpenLane/designs/project_scl_cp8d/alu8
-
-grep -n 'PL_TARGET_DENSITY\|DIE_AREA\|CORE_AREA' config.json
-#   expect: DIE 0 0 4000 4000 | CORE 304.90 304.90 3695.10 3695.10 | 0.2
-
-grep -n 'set_placement_padding' 3_src/placement_cp8d.tcl
-#   expect one hit, above global_placement
-
-ls runs/
-#   expect: CHIP  RUN.bak  RUN_COMPLETE_20261021   (no RUN - nothing to protect)
-
-echo "CADENCE_ROOT=[$CADENCE_ROOT] DDIROOT=[$DDIROOT]"
-#   both MUST be empty - sclenv refuses to load if either is set (PDK_ROOT collision)
-5:    "DIE_AREA": "0 0 4000 4000",
-7:    "CORE_AREA": "304.90 304.90 3695.10 3695.10",
-14:    "PL_TARGET_DENSITY": 0.2,
-22:set_placement_padding -global -left 1 -right 1
-CHIP  RUN.bak  RUN_COMPLETE_20261021
-CADENCE_ROOT=[] DDIROOT=[]
 [eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ sclenv
 ========================================================================
  SCL CP8D / OpenLane environment loaded
@@ -35,133 +16,25 @@ CADENCE_ROOT=[] DDIROOT=[]
 ========================================================================
 [eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ cd ~/OpenLane/designs/project_scl_cp8d/alu8
 
-grep -n 'PL_TARGET_DENSITY\|DIE_AREA\|CORE_AREA' config.json
-#   expect: DIE 0 0 4000 4000 | CORE 304.90 304.90 3695.10 3695.10 | 0.2
+# the padding run's signoff needs its own driver + its own output dir
+cp 5_klayout/cdl_gds_script.source 5_klayout/cdl_gds_script.pad_d020.source
+sed -i -e 's#runs/CHIP/#runs/PAD_D020/#g' \
+       -e 's#runs/RUN/#runs/PAD_D020/#g' \
+       -e 's#5_klayout/lvs_drc/#5_klayout/lvs_drc_pad_d020/#g' \
+       5_klayout/cdl_gds_script.pad_d020.source
 
-grep -n 'set_placement_padding' 3_src/placement_cp8d.tcl
-#   expect one hit, above global_placement
+grep -n 'runs/\|lvs_drc' 5_klayout/cdl_gds_script.pad_d020.source   # verify every path
 
-ls runs/
-#   expect: CHIP  RUN.bak  RUN_COMPLETE_20261021   (no RUN - nothing to protect)
+# verilog2spice needs the PDK cell netlist present in the output dir
+cp 5_klayout/lvs_drc/core_iolib_cp8d.cdl 5_klayout/lvs_drc_pad_d020/
 
-echo "CADENCE_ROOT=[$CADENCE_ROOT] DDIROOT=[$DDIROOT]"
-#   both MUST be empty - sclenv refuses to load if either is set (PDK_ROOT collision)
-5:    "DIE_AREA": "0 0 4000 4000",
-7:    "CORE_AREA": "304.90 304.90 3695.10 3695.10",
-14:    "PL_TARGET_DENSITY": 0.2,
-22:set_placement_padding -global -left 1 -right 1
-CHIP  RUN.bak  RUN_COMPLETE_20261021
-CADENCE_ROOT=[] DDIROOT=[]
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ olmount
-make: Entering directory '/home/eda/OpenLane'
-Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
-cd /home/eda/OpenLane && \
-	docker run --rm -v /home/eda/OpenLane:/openlane -v /home/eda/OpenLane/designs:/openlane/install -v /home/eda:/home/eda -v /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks:/home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks -e PDK_ROOT=/home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks -e PDK=scl_cp8d   -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix --network host --security-opt seccomp=unconfined --security-opt label=disable -ti ghcr.io/the-openroad-project/openlane:ff5509f65b17bfa4068d5336495ab1718987ff69-amd64
-Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
-OpenLane Container (ff5509f):/openlane$ cd /openlane
-OpenLane Container (ff5509f):/openlane$ ./flow.tcl -design project_scl_cp8d/alu8 -tag RUN -interactive -overwrite
-OpenLane v1.0.2 (ff5509f65b17bfa4068d5336495ab1718987ff69)
-All rights reserved. (c) 2020-2025 Efabless Corporation and contributors.
-Available under the Apache License, version 2.0. See the LICENSE file for more details.
-
-[INFO]: Using configuration in 'designs/project_scl_cp8d/alu8/config.json'...
-[INFO]: PDK Root: /home/eda/cadence/pdk/echip/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks
-[INFO]: Process Design Kit: scl_cp8d
-[INFO]: Standard Cell Library: digital_cp8d
-[INFO]: Run Directory: /openlane/designs/project_scl_cp8d/alu8/runs/RUN
-[INFO]: Saving runtime environment...
-[INFO]: Preparing LEF files for the nom corner...
-[INFO]: Preparing LEF files for the min corner...
-[INFO]: Preparing LEF files for the max corner...
-% source $::env(DESIGN_DIR)/run_chip.tcl
-=== alu8 CHIP run: 4 mm frame, core hardening ===
-    writing into: /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results
-    (3_src hardcodes runs/RUN -- see the header of this file)
-  OK     20959  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/synthesis/alu8_sys.v
-  OK     20959  /openlane/designs/project_scl_cp8d/alu8/4A_synthesis_netlist/alu8_sys.v
-  OK     27616  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/floorplan/alu8.def
-  OK    397893  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/floorplan/alu8_pdn.def
-  OK    404121  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/placement/alu8_pl.def
-  OK    569641  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/cts/alu8_plcts.def
-  OK    721360  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/routing/alu8_rt.def
-  OK     18144  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/routing/alu8_rt_sim.v
-  OK    152956  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/routing/alu8_rt_pwr.v
-  OK      2188  /openlane/designs/project_scl_cp8d/alu8/runs/RUN/results/sta/timing_report.txt
-
-=== CORE HARDENING DONE ===
-router drc.rpt size (0 == clean):  0
-
-ON THE HOST, IMMEDIATELY:
-  mv runs/RUN runs/CHIP        ;# label it before anything else writes there
-  cp config_1mm.json config.json
-
-THEN, NOT AUTOMATED HERE:
-  1. Stream out GDS and run KLayout signoff DRC + LVS.
-     ../signoff/signoff.sh does this headlessly. NOTE it also hardcodes
-     runs/RUN via cdl_gds_script.source -- pass RUN_TAG to match whatever
-     the directory is called when you run it.
-     COUNT THE <item> ELEMENTS. 0 closes the unwaivable DRC blocker.
-  2. Gate-level simulation with alu8_rt_sim.v + alu8_rt.sdf.
-     Never run; it is the only check that the routed netlist computes.
-  3. Chip assembly in the 4 mm frame database: pad ring, then seal ring.
-     See tapeout/TAPEOUT-PLAN.md for the blocker list.
-% exit              
-OpenLane Container (ff5509f):/openlane$ exit
-exit
-make: Leaving directory '/home/eda/OpenLane'
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ cd ~/OpenLane/designs/project_scl_cp8d/alu8
-mv runs/RUN runs/PAD_D020
-cp config_1mm.json config.json
-
-ls -l runs/PAD_D020/results/routing/alu8_rt.def runs/PAD_D020/results/routing/drc.rpt
-grep -c FILLER runs/PAD_D020/results/routing/alu8_rt.def
-head -40 runs/PAD_D020/results/sta/timing_report.txt
--rw-r--r--. 1 eda eda 721360 Oct 23 19:47 runs/PAD_D020/results/routing/alu8_rt.def
--rw-r--r--. 1 eda eda      0 Oct 23 19:47 runs/PAD_D020/results/routing/drc.rpt
-2197
-Startpoint: b[7] (input port clocked by vclk)
-Endpoint: carry (output port clocked by vclk)
-Path Group: vclk
-Path Type: min
-
-  Delay    Time   Description
----------------------------------------------------------
-   0.00    0.00   clock vclk (rise edge)
-   0.00    0.00   clock network delay (ideal)
-   0.00    0.00 v input external delay
-   0.00    0.00 v b[7] (in)
-   0.42    0.42 ^ _352_/OUT1 (ADNR00)
-   0.35    0.78 v _353_/OUT1 (ORND00)
-   0.00    0.78 v carry (out)
-           0.78   data arrival time
-
-   0.00    0.00   clock vclk (rise edge)
-   0.00    0.00   clock network delay (ideal)
-   0.00    0.00   clock reconvergence pessimism
-   0.00    0.00   output external delay
-           0.00   data required time
----------------------------------------------------------
-           0.00   data required time
-          -0.78   data arrival time
----------------------------------------------------------
-           0.78   slack (MET)
-
-
-Startpoint: a[1] (input port clocked by vclk)
-Endpoint: zero (output port clocked by vclk)
-Path Group: vclk
-Path Type: max
-
-  Delay    Time   Description
----------------------------------------------------------
-   0.00    0.00   clock vclk (rise edge)
-   0.00    0.00   clock network delay (ideal)
-   0.00    0.00 ^ input external delay
-   0.00    0.00 ^ a[1] (in)
-   2.53    2.53 v _406_/OUT1 (XOR200)
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ mkdir -p 5_klayout/lvs_drc_pad_d020
-cd 5_klayout
-RUN_TAG=PAD_D020 source cdl_gds_script.source
+cd 5_klayout && source cdl_gds_script.pad_d020.source
+31:-spice $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc_pad_d020/core_iolib_cp8d.cdl  \
+32:-verilog $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/runs/PAD_D020/results/routing/${DESIGN_NAME}_rt_pwr.v \
+33:-output $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc_pad_d020/${DESIGN_TOP_CELL_NAME}.cdl \
+42:    -rd in_def=$OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/runs/PAD_D020/results/routing//${DESIGN_NAME}_rt.def \
+43:    -rd out_gds=$OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc_pad_d020/${DESIGN_TOP_CELL_NAME}.gds \
+52:klayout -e $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc_pad_d020/${DESIGN_TOP_CELL_NAME}.gds &
 ========================================================================
  Environment Variables Sourced Successfully!
 ========================================================================
@@ -177,119 +50,56 @@ Success: CDL generated successfully with bracket tracking.
 ======================================================================
 DEF -> GDS conversion
 ======================================================================
-  DEF file      : /home/eda/OpenLane/designs/project_scl_cp8d/alu8/runs/CHIP/results/routing//alu8_rt.def
+  DEF file      : /home/eda/OpenLane/designs/project_scl_cp8d/alu8/runs/PAD_D020/results/routing//alu8_rt.def
   Tech LEF      : /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/openlane/digital_cp8d/lef/tech_cp8d.lef
   Cell LEFs     : ['/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/core_cp8d.lef', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/corner_cp8d.lef', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/lef/pads_cp8d.lef']
   Cell GDS libs : ['/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/std_cells_cp8d.gds', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/pads_cp8d.gds', '/home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.ref/digital_cp8d/gds/CORNER.gds']
   Layer map     : /home/eda/alu8bit/PDK/new_download/SCL_CP8D_PDK_v1/digital_cp8d/my_dtech_cp8d/Open_Source_SCL_0.8micron_PDK_digital/open_source_scl_cp8d/open_pdks/scl_cp8d/libs.tech/klayout/tech/scl_cp8d.map
-  Output GDS    : /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/alu8.gds
+  Output GDS    : /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc_pad_d020/alu8.gds
 ======================================================================
 Warning: FOREIGN name SPAD00 differs from MACRO ASPAD00 (line=5434, cell=ASPAD00, file=pads_cp8d.lef)
 Warning: No mapping for purpose 'OUTLINE' - layer is ignored (line=6, cell=, file=alu8_rt.def)
 Top cell(s) after import: ['alu8']
-Done. Wrote /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/alu8.gds
+Done. Wrote /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc_pad_d020/alu8.gds
 [eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ Info: Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
-2026-10-23 19:50:34 +0530: Starting running SCL C1D Klayout LVS runset on active layout
-2026-10-23 19:50:34 +0530: deep mode is enabled.
-2026-10-23 19:50:34 +0530: Netlist file: alu8.cdl
-2026-10-23 19:50:34 +0530: Extracted netlist file: alu8_extracted.cir
-2026-10-23 19:50:34 +0530: Final report: alu8.lvsdb
-2026-10-23 19:50:35 +0530: LVS Total Run time 1.350676 seconds
-2026-10-23 19:50:35 +0530: ==========================================
-2026-10-23 19:50:35 +0530: INFO : Congratulations! Netlists match.
-2026-10-23 19:50:35 +0530: ==========================================
-2026-10-23 19:50:38 +0530: Starting running SCL C1D Klayout LVS runset on active layout
-2026-10-23 19:50:38 +0530: deep mode is enabled.
-2026-10-23 19:50:38 +0530: Netlist file: alu8.cdl
-2026-10-23 19:50:38 +0530: Extracted netlist file: alu8_extracted.cir
-2026-10-23 19:50:38 +0530: Final report: alu8.lvsdb
-2026-10-23 19:50:39 +0530: LVS Total Run time 1.379529 seconds
-2026-10-23 19:50:39 +0530: ==========================================
-2026-10-23 19:50:39 +0530: INFO : Congratulations! Netlists match.
-2026-10-23 19:50:39 +0530: ==========================================
-Writing report database: /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/scl_drc.txt ..
-Total elapsed: 1.760s  Memory: 569.00M
-Writing report database: /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc/scl_drc.txt ..
-Total elapsed: 1.690s  Memory: 573.00M
+2026-10-23 20:07:44 +0530: Starting running SCL C1D Klayout LVS runset on active layout
+2026-10-23 20:07:44 +0530: deep mode is enabled.
+2026-10-23 20:07:44 +0530: Netlist file: alu8.cdl
+2026-10-23 20:07:44 +0530: Extracted netlist file: alu8_extracted.cir
+2026-10-23 20:07:44 +0530: Final report: alu8.lvsdb
+2026-10-23 20:07:45 +0530: LVS Total Run time 1.445377 seconds
+2026-10-23 20:07:45 +0530: ==========================================
+2026-10-23 20:07:45 +0530: INFO : Congratulations! Netlists match.
+2026-10-23 20:07:45 +0530: ==========================================
+2026-10-23 20:07:48 +0530: Starting running SCL C1D Klayout LVS runset on active layout
+2026-10-23 20:07:48 +0530: deep mode is enabled.
+2026-10-23 20:07:48 +0530: Netlist file: alu8.cdl
+2026-10-23 20:07:48 +0530: Extracted netlist file: alu8_extracted.cir
+2026-10-23 20:07:48 +0530: Final report: alu8.lvsdb
+2026-10-23 20:07:49 +0530: LVS Total Run time 1.463062 seconds
+2026-10-23 20:07:49 +0530: ==========================================
+2026-10-23 20:07:49 +0530: INFO : Congratulations! Netlists match.
+2026-10-23 20:07:49 +0530: ==========================================
+Writing report database: /home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc_pad_d020/scl_drc.txt ..
+Total elapsed: 1.790s  Memory: 557.00M
 
-[1]+  Done                    klayout -e $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc/${DESIGN_TOP_CELL_NAME}.gds
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ grep -oP '(?<=<category>)[^<]*' 5_klayout/lvs_drc_pad_d020/scl_drc.txt | sort | uniq -c
-grep -oP '(?<=<value>)[^<]*' 5_klayout/lvs_drc_pad_d020/scl_drc.txt
-grep -oP '(?<=<generator>).*' 5_klayout/lvs_drc_pad_d020/scl_drc.txt   # check against $PDK_ROOT
-grep: 5_klayout/lvs_drc_pad_d020/scl_drc.txt: No such file or directory
-grep: 5_klayout/lvs_drc_pad_d020/scl_drc.txt: No such file or directory
-grep: 5_klayout/lvs_drc_pad_d020/scl_drc.txt: No such file or directory
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ cd ..
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ grep -oP '(?<=<category>)[^<]*' 5_klayout/lvs_drc_pad_d020/scl_drc.txt | sort | uniq -c
-grep -oP '(?<=<value>)[^<]*' 5_klayout/lvs_drc_pad_d020/scl_drc.txt
-grep -oP '(?<=<generator>).*' 5_klayout/lvs_drc_pad_d020/scl_drc.txt   # check against $PDK_ROOT
-grep: 5_klayout/lvs_drc_pad_d020/scl_drc.txt: No such file or directory
-grep: 5_klayout/lvs_drc_pad_d020/scl_drc.txt: No such file or directory
-grep: 5_klayout/lvs_drc_pad_d020/scl_drc.txt: No such file or directory
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ ls
-1_RTL                 4B_synthesis_netlist_sim  config_chip.json  pin_order_chip.cfg
-2_iverilog_prelayout  5_klayout                 config.json       run_all.tcl
-3_src                 6_iverilog_postlayout     config_prev.json  run_chip.tcl
-4A_synthesis_netlist  config_1mm.json           pin_order.cfg     runs
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ tree 5_klayout/
-5_klayout/
-├── cdl_gds_script.source
-├── cdl_gds_script.source.1mm
-├── cdl_gds_script.source.bak
-├── drc 1.png
-├── drc 2.png
-├── full chip screenshot.png
-├── lvs_drc
-│   ├── alu8.cdl
-│   ├── alu8_extracted.cir
-│   ├── alu8.gds
-│   ├── alu8_klayout.gds
-│   ├── alu8.lvsdb
-│   ├── core_iolib_cp8d.cdl
-│   ├── DRC_ERROR_SCREENSHOT.png
-│   └── scl_drc.txt
-├── lvs_drc_1mm
-│   ├── alu8.cdl
-│   ├── alu8_extracted.cir
-│   ├── alu8.gds
-│   ├── alu8_klayout.gds
-│   ├── alu8.lvsdb
-│   ├── core_iolib_cp8d.cdl
-│   ├── DRC_ERROR_SCREENSHOT.png
-│   └── scl_drc.txt
-├── lvs_drc_chip_d005
-│   ├── alu8.cdl
-│   ├── alu8_extracted.cir
-│   ├── alu8.gds
-│   ├── alu8_klayout.gds
-│   ├── alu8.lvsdb
-│   ├── core_iolib_cp8d.cdl
-│   ├── DRC_ERROR_SCREENSHOT.png
-│   └── scl_drc.txt
-├── lvs_drc_pad_d020
-│   ├── drc-browser.png
-│   ├── drc-error-1-zoomed-in.png
-│   ├── drc-error-1-zoomed-out.png
-│   ├── drc-error-2-zoomed-in.png
-│   ├── drc-error-2-zoomed-out.png
-│   └── klayout-image.png
-└── script
-    ├── def2gds.py
-    └── verilog2spice.py
-
-5 directories, 38 files
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ rsync -a --exclude='runs/' ~/OpenLane/designs/project_scl_cp8d/alu8/ \
-  ~/projects/openlane-alu8/snapshots/2026-10-23_pad-d020/
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ rsync -a --exclude='runs/' ~/OpenLane/designs/project_scl_cp8d/alu8/ \
-  ~/projects/openlane-alu8/snapshots/2026-10-23_pad-d020/
-
-1_RTL/                     6_iverilog_postlayout/     pin_order_chip.cfg 
-2_iverilog_prelayout/      config_1mm.json            run_all.tcl 
-3_src/                     config_chip.json           run_chip.tcl 
-4A_synthesis_netlist/      config.json                runs/
-4B_synthesis_netlist_sim/  config_prev.json           
-5_klayout/                 pin_order.cfg              
-[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ rsync -a --exclude='runs/' ~/OpenLane/designs/project_scl_cp8d/alu8/ \
-  ~/projects/openlane-alu8/snapshots/2026-10-23_pad-d020/
+[1]+  Done                    klayout -e $OPENLANE_PATH/designs/project_scl_cp8d/$PROJECT_NAME/5_klayout/lvs_drc_pad_d020/${DESIGN_TOP_CELL_NAME}.gds
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8/5_klayout $ cd ~/OpenLane/designs/project_scl_cp8d/alu8
+grep -oP '(?<=<original-file>).*'  5_klayout/lvs_drc_pad_d020/scl_drc.txt
+grep -oP '(?<=<category>)[^<]*' 5_klayout/lvs_drc_pad_d020/scl_drc.txt | sort | uniq -c
+grep -oP '(?<=<value>)[^<]*'    5_klayout/lvs_drc_pad_d020/scl_drc.txt
+/home/eda/OpenLane/designs/project_scl_cp8d/alu8/5_klayout/lvs_drc_pad_d020/alu8.gds</original-file>
+      8 '9.4.1 : Minimum via to Poly spacing violations = 1.0um'
+edge-pair: (642.3,592.75;642.3,591.25)/(642.55,590.282;642.55,593.718)
+edge-pair: (1206.3,1149.95;1206.3,1151.45)/(1206.25,1152.449;1206.25,1148.951)
+edge-pair: (1207.8,1151.45;1207.8,1149.95)/(1208.05,1148.982;1208.05,1152.418)
+edge-pair: (462.9,999.75;462.9,998.25)/(463.05,997.261;463.05,1000.739)
+edge-pair: (1320.9,696.35;1320.9,694.85)/(1321.05,693.861;1321.05,697.339)
+edge-pair: (675.9,1453.35;675.9,1454.85)/(675.85,1455.849;675.85,1452.351)
+edge-pair: (640.8,591.25;640.8,592.75)/(640.75,593.749;640.75,590.251)
+edge-pair: (677.4,1454.85;677.4,1453.35)/(677.65,1452.382;677.65,1455.818)
+[eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ # is the regenerated d005 report identical to the archived one?
+diff <(grep -oP '(?<=<value>)[^<]*' 5_klayout/lvs_drc/scl_drc.txt) \
+     <(grep -oP '(?<=<value>)[^<]*' 5_klayout/lvs_drc_chip_d005/scl_drc.txt)
 [eda@eda] ~/OpenLane/designs/project_scl_cp8d/alu8 $ 
 
