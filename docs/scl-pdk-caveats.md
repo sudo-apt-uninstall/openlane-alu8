@@ -6,8 +6,8 @@ Written 2026-10-23, at the point where the `alu8` work is being parked.
 itself in `sudo-apt-uninstall/SCL_0.8-um-PDK`: the full tree listing, `tech_cp8d.lef`,
 `scl800.rcx.lib`, `cp8d_drc.drc`, and the PDK's `libs.tech/openlane` configs were read
 line by line. Items marked **VERIFIED** were confirmed from those bytes. Items marked
-**MEASURED** come from a run of this design. Items marked **UNVERIFIED** are stated as
-such.
+**MEASURED** come from a run of this design. Items marked **PORTAL** were read off the
+live submission portal (see B3). Items marked **UNVERIFIED** are stated as such.
 
 Two PDKs are in scope: **CP8D** (0.8 µm digital) and **C1D** (1.2 µm). The work
 described here used CP8D.
@@ -130,8 +130,8 @@ never tested. The 50.7 arrangement is the one that produced clean DRC and matche
 
 ### B1. No antenna rule deck, and no antenna data in the LEF either — VERIFIED
 
-SCL requires a *"DRC/**Antenna** clean GDSII"*. Three independent confirmations that
-you cannot produce one from this kit:
+Three independent confirmations that you cannot produce an antenna-clean sign-off from
+this kit:
 
 1. **Filename grep across the whole tree — 102 directories, 264 files — returns zero
    hits for `antenna`.**
@@ -151,9 +151,17 @@ antenna machinery — `GRT_REPAIR_ANTENNAS 1`, `GRT_ANT_ITERS 15`,
 `USE_ARC_ANTENNA_CHECK 1` — so the flow *appears* to be checking antennas. **It has no
 data to check against.** A silent pass.
 
-You can be fully DRC-clean and still un-submittable, with no way to self-check.
-Whether a 2-metal 0.8 µm process is antenna-exempt is a reasonable question to ask SCL
-or NIELIT, but it must be asked rather than assumed.
+**How much this matters is smaller than it first appeared — PORTAL.** SCL's MPW page
+asks for a *"DRC/**Antenna** clean GDSII"*, which reads like a hard gate. The actual
+submission checklist (B3, §9) has **exactly seven rows and none of them mentions
+antenna**; it asks only whether the DRC report is clean and whether the DRC run reports
+are included. **The designer never attests to antenna compliance.**
+
+That is a real softening, not a resolution. It does **not** establish that a 2-metal
+0.8 µm process is antenna-exempt, and SCL may still check at incoming inspection. The
+honest status is: *not asked at submission, exemption unconfirmed, and still
+unself-checkable from this kit.* Worth asking SCL or NIELIT directly rather than
+assuming either way.
 
 ### B2. No seal ring — VERIFIED
 
@@ -164,13 +172,78 @@ for `seal`, `ring`, `revision`, `silicon` returns **zero hits**.
 cells**, not a seal ring. They are easy to mistake for one. (MEASURED aside: the 4 mm
 frame instantiates no corner cells at all — 41 instances = 40 pads + a logo.)
 
-### B3. No tapeout submission form
+### B3. The submission form exists — it is a web form on the portal — PORTAL
 
-Named four times across the MPW page and the procedure document. It carries the
-compliance checklist SCL inspects against, and the division contacts needed to obtain
-a silicon number. Never seen. It gates both ends of the process.
+Earlier revisions of this document recorded the tape-out submission form as *named four
+times in the documentation and never seen*. **It has now been seen.** It is not a
+document to be requested from a division contact; it is a **nine-section web form** on
+SCL's submission portal, reached after PDK access is granted, and headed
+*"OPEN-SOURCE DESIGNS THROUGH NIELIT"*. The portal also issues silicon numbers
+directly, against the account that downloaded the PDK.
 
-### B4. `filler_placement.tcl` is mandated by the README and was never shipped — VERIFIED
+What the form demands, section by section:
+
+| § | Title | What it asks for |
+|---|---|---|
+| 1 | Personal information | focal name · individual researcher / industry / academia · organization · designation · email · contact |
+| 2 | Project information | **silicon number** (chosen from the ones allocated to the account) · submission date · design name · technology node (*"must match the selected silicon number"*) · ASIC type · introduction · **frequency** · device application · workflow |
+| 3 | Physical design (layout) | name **and version** for Operating System, Layout Tool, **DRC Tool**, **DRC Rule file** |
+| 4 | Die information | die width/height · X/Y min and max · die size · **bottom-left coordinates of the silicon-number marker block** · GDSII upload · GDSII file name · **file size in bytes** · **MD5 checksum, 32 alphanumeric characters** |
+| 5 | SCL PDK dataset | PDK name with version; per-library *Used* and *"outside library name and origin"* — rows for the standard cell library and the IO library |
+| 6 | COB package | package type and pin details |
+| 7 | Deliverables from SCL | **20 dies + 20 COB packages** / 40 dies / 40 COB packages |
+| 8 | Final dataset transfer to NIELIT | **GDSII · DRC reports · tape-out submission form · GDS MD5 checksum report** |
+| 9 | Tape-out checklist | seven Yes/No attestations, then submit |
+
+**The seven checklist rows, verbatim in substance:**
+
+1. GDSII database provided?
+2. **Silicon Number Block inserted in design?**
+3. Grid size **0.005 µm** used for layout?
+4. **Top Cell Name is Silicon number?**
+5. Final Chip Origin at **(0, 0)**?
+6. **Is DRC Report clean with latest released version?**
+7. Final DRC run reports included?
+
+with the footnote *"The top cell name must be the exact, case-sensitive silicon number
+assigned to you."*
+
+Two footnotes assign liability to the designer explicitly: §3 — *"The designer is
+responsible for using an EDA tool other than those mentioned in the reference
+documents"*; §5 — *"If another library is used, the user/designer is responsible for the
+consequences."*
+
+⚠️ **Units trap in §4.** The heading reads "DIE COORDINATES (MM)", the width and height
+are chosen in mm, but X max and Y max are entered as **2000 for a 2 mm die** — those
+boxes are **µm**. Do not infer a field's unit from its section heading.
+
+⚠️ The §5 library table shows **C1D-named references** (`core_c1d`, `io_c1d`). Whether
+it re-renders for a 0.8 µm selection is **UNVERIFIED**.
+
+### B4. The silicon-number marker block is a design obligation nobody tells you about — PORTAL
+
+This is the item that the kit, the flow and this document all previously missed.
+
+When a silicon number is allocated, the portal provides a **matching marker-block GDS
+file** alongside it. That block must be **instantiated in your layout**, and the form
+then requires its **bottom-left X/Y coordinate** (§4). Checklist row 2 is a direct
+attestation that it is present.
+
+Nothing in the CP8D kit covers this: no marker cell in `libs.ref`, no placement step in
+the ten `3_src` scripts, no mention in the README. It has to be fetched per allocation,
+placed by hand, and measured.
+
+Combined with checklist row 4, the two naming/placement obligations are:
+
+- **top cell renamed to the silicon number**, exactly and case-sensitively — which for
+  any design already through LVS means re-running CDL and GDS generation and
+  re-checking LVS under the new name;
+- **marker block placed**, and its bottom-left coordinate measured and declared.
+
+Neither is hard. Both are invisible until you open the form, and both invalidate an
+otherwise finished GDS.
+
+### B5. `filler_placement.tcl` is mandated by the README and was never shipped — VERIFIED
 
 README step 27, note 1, verbatim: *"If your design is a purely combinational circuit or
 a ring oscillator, skip the `cts_cp8d.tcl` script and run `filler_placement.tcl`
@@ -184,7 +257,7 @@ Tcl scripts, confirmed from the tree: `cts_cp8d.tcl`, `floorplan_cp8d.tcl`,
 
 For a combinational design you must write the filler step yourself. (Ours is 937 B.)
 
-### B5. There is no sample design — VERIFIED
+### B6. There is no sample design — VERIFIED
 
 `sample_project_files_cp8d/1_RTL/` and `4A_synthesis_netlist/` are **both empty
 directories**.
@@ -202,7 +275,7 @@ scripts, `cdl_gds_script.source`, `def2gds.py`, `verilog2spice.py`,
 flow run has to use your own RTL, so a deliberately tiny smoke design is worth
 building first.
 
-### B6. Bonding is fixed one-to-one with the pin-out
+### B7. Bonding is fixed one-to-one with the pin-out
 
 Bonding diagrams and chip-on-board footprints come from SCL via the portal. Because
 bonding is 1:1 with pad order, **the pad order on the frame determines the package
@@ -269,7 +342,8 @@ quietly be wrong.
 standalone runset) and `drc.lydrc` (25,199 B, the KLayout-wrapped version). The
 `<generator>` field in a report names **`drc.lydrc`** — that is the one actually
 invoked. They are not the same file; do not quote a checksum of one as evidence about
-the other.
+the other. Form §3 asks for the **DRC rule file name and version**, so quote the deck
+that actually ran.
 
 ### C4. Signoff is manual and is not part of the flow
 
@@ -279,7 +353,9 @@ makefile. Both checks were done by hand, which is why there are no report files 
 reproducibility until you write the batch driver yourself.
 
 There is also **no GDS streamout inside the flow**, so the GDS and all signoff
-artefacts go stale after every re-run until regenerated by hand.
+artefacts go stale after every re-run until regenerated by hand. Form §4 wants the
+GDSII's **size in bytes and MD5**, so the file you hash must be the file you submit —
+regenerate, then hash, in that order.
 
 ### C5. C1D cannot be driven end-to-end as shipped
 
@@ -368,7 +444,8 @@ The deck actually carries **two** such checks: `via.separation(poly, 1.0.um)` fo
 9.4.1, and a separate `via.interacting(poly.edges)` NOTE check.
 
 **Router DRC clean is not signoff DRC clean.** On this design that gap was 0 vs 8
-reported items.
+reported items. Checklist row 6 asks whether the **DRC report** is clean — that means
+the signoff deck's report, not `drc.rpt`.
 
 ### D4. A report item count is not a defect count — MEASURED
 
@@ -425,6 +502,9 @@ changed by 16×, density by 9×, padding went from off to on. The STA reported s
 `a[1]`→`zero` at **11.61 ns, slack +88.39 MET** and hold `b[7]`→`carry` at **+0.78
 MET**, through the same ten instances with the same per-gate delays, to the
 picosecond, **every time**. Wire length is invisible to the timer.
+
+This matters at submission: form §2 asks for a **frequency**. Whatever you write is a
+cell-delay-only number unless you fix the RC first.
 
 ### E2. The worst-case libraries ship; the flow reads typical only — VERIFIED
 
@@ -496,11 +576,11 @@ layout comes from OpenROAD, verification from Icarus or Xcelium. Only two gaps t
 digital flow, and both are covered: signoff DRC/LVS goes to **KLayout**, extraction to
 **OpenRCX**.
 
-The decider: **submission requires a DRC report from SCL's own KLayout deck**, named
-`Silicon no._Design Name_Date_Version_drc.txt`. Genus, Innovus, Tempus, Conformal and
-Xcelium are all usable for synthesis, PnR and STA cross-checks, but they cannot produce
-the submitted signoff report. Innovus extraction is limited to LEF-derived R/C, which
-inherits defect A2.
+The decider: **submission requires a DRC report from SCL's own KLayout deck**, and the
+form (§3) asks you to name the **DRC tool and rule file with versions**. Genus, Innovus,
+Tempus, Conformal and Xcelium are all usable for synthesis, PnR and STA cross-checks,
+but they cannot produce the submitted signoff report. Innovus extraction is limited to
+LEF-derived R/C, which inherits defect A2.
 
 ### F2. Environment collisions — MEASURED
 
@@ -556,6 +636,9 @@ there is.
   were traced to cell abutment — a standalone DRC on the cell itself was clean across
   all 71 rule categories — and adding one site of placement padding removed them
   entirely.
+- The submission route itself is **open and self-service**: PDK access, silicon-number
+  allocation and the tape-out form all live on one portal, with no gatekeeping step
+  that has to be negotiated first.
 
 The remaining open item on this design is via-over-poly, which is D3: the router cannot
 see poly in the abstract. Five real vias sit 0.05 to 0.25 µm from poly against a 1.0 µm
@@ -566,15 +649,20 @@ explicit routing blockage over cell poly, or a tighter core.
 
 ## Summary — the five that would cost a shuttle
 
-1. **No antenna deck, and no antenna data in the LEF** — while the flow's antenna
-   machinery is switched on and silently finds nothing (B1).
-2. **No seal ring**, despite documentation saying it ships (B2).
-3. **Max metal width is a real rule the deck does not check** — the deck tests minimum
+1. **Max metal width is a real rule the deck does not check** — the deck tests minimum
    widths only, so wide straps pass DRC and fail inspection (D1).
-4. **The LEF capacitance is 1000× wrong**, and using it produces confident nonsense
+2. **The LEF capacitance is 1000× wrong**, and using it produces confident nonsense
    rather than an error (A2).
-5. **Config variables that are silently dead**, so the floorplan you designed is not
+3. **No seal ring**, despite documentation saying it ships (B2).
+4. **Config variables that are silently dead**, so the floorplan you designed is not
    necessarily the floorplan you got (C2).
+5. **No antenna deck, and no antenna data in the LEF** — while the flow's antenna
+   machinery is switched on and silently finds nothing (B1). Demoted from first place
+   because the submission checklist never asks about antennas; still unresolved,
+   because that is not the same as being exempt.
 
-And one item worth carrying for whoever continues: **multi-corner timing is available
-on this PDK and simply was not run** (E2).
+Two things to carry into any submission attempt:
+
+- **The marker block and the top-cell rename** (B4) — both invisible until you open the
+  form, and both invalidate an otherwise finished GDS.
+- **Multi-corner timing is available on this PDK and simply was not run** (E2).
