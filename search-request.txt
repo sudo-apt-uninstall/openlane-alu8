@@ -1,73 +1,171 @@
-[eda@eda] ~/projects/openlane-alu8 $ cd ~/OpenLane/designs/project_scl_cp8d/alu8
+[eda@eda] ~/projects/openlane-alu8 $ S=~/projects/openlane-alu8/snapshots
+mkdir -p $S
 
-# 0. sanity: confirm this IS the chip run, not the 1 mm one
-ls -l runs/CHIP/results/routing/alu8_rt.def      # expect 727713
-grep -c FILLER runs/CHIP/results/routing/alu8_rt.def   # expect 2214
+# evidence set
+mv ~/OpenLane/designs/project_scl_cp8d/alu8_evidence_2026-10-22  $S/2026-10-22_evidence
 
-# 1. run tree -> repo.  tmp/ is the 14.5 MB PDK leak path. .odb is huge and regenerable.
-rsync -a --delete \
-  --exclude='tmp/' \
-  --exclude='*.odb' \
-  --exclude='results/routing.bak/' \
-  runs/CHIP/  ~/projects/openlane-alu8/runs/CHIP/
+# preplacement archive (keeps its own alu8/ level, and its runs/RUN)
+mv ~/alu8-archive/alu8-preplacement-20261022-0215  $S/2026-10-22_0215_preplacement
+mv ~/alu8-archive/alu8-preplacement-20261022-0215.tar.gz  $S/   # ignored, kept on disk
+rmdir ~/alu8-archive
+[eda@eda] ~/projects/openlane-alu8 $ D=~/OpenLane/designs/project_scl_cp8d/alu8
+mkdir -p $S/2026-10-22_2127_chip-4mm
+rsync -a --exclude='runs/' $D/ $S/2026-10-22_2127_chip-4mm/
 
-# 2. chip signoff set -> its OWN dir, do not overwrite the 1 mm one
-mkdir -p ~/projects/openlane-alu8/signoff/lvs_drc_chip
-rsync -a --exclude='core_iolib_cp8d.cdl' \
-  5_klayout/lvs_drc/  ~/projects/openlane-alu8/signoff/lvs_drc_chip/
+cd $S/2026-10-22_2127_chip-4mm/5_klayout
+[ -f "drc 1.png" ]                && mv "drc 1.png"                drc-1.png
+[ -f "drc 2.png" ]                && mv "drc 2.png"                drc-2.png
+[ -f "full chip screenshot.png" ] && mv "full chip screenshot.png" full-chip-screenshot.png
+[eda@eda] ~/projects/openlane-alu8/snapshots/2026-10-22_2127_chip-4mm/5_klayout $ cd ~/projects/openlane-alu8
+git add -A
 
-# 3. the chip config as actually used (whatever config.json was at run time)
-cp config.json ~/projects/openlane-alu8/tapeout/config_chip_asrun.json
+git check-ignore -v snapshots/alu8-preplacement-20261022-0215.tar.gz   # must name a rule
 
-# 4. verify before committing
-cd ~/projects/openlane-alu8
-du -sh runs/CHIP signoff/lvs_drc_chip
-find runs/CHIP signoff/lvs_drc_chip -name '*.lib' -o -name '*.lef' -o -name 'core_iolib*'   # must print NOTHING
-ls -l signoff/lvs_drc/scl_drc.txt signoff/lvs_drc_chip/scl_drc.txt   # 12191 vs the 8-item one
-git add -A && git commit -m "archive 4 mm chip run: runs/CHIP + chip signoff set" && git push
--rw-r--r--. 1 eda eda 727713 Oct 23 02:57 runs/CHIP/results/routing/alu8_rt.def
-2214
-2.6M	runs/CHIP
-2.5M	signoff/lvs_drc_chip
--rw-r--r--. 1 eda eda 13902 Oct 23 03:07 signoff/lvs_drc_chip/scl_drc.txt
--rw-r--r--. 1 eda eda 12191 Oct 22 21:17 signoff/lvs_drc/scl_drc.txt
-[main b93378c] archive 4 mm chip run: runs/CHIP + chip signoff set
- 27 files changed, 104862 insertions(+)
- create mode 100644 runs/CHIP/OPENLANE_COMMIT
- create mode 100644 runs/CHIP/cmds.log
- create mode 100644 runs/CHIP/config.tcl
- create mode 100644 runs/CHIP/openlane.log
- create mode 100644 runs/CHIP/results/cts/alu8_plcts.def
- create mode 100644 runs/CHIP/results/floorplan/alu8.def
- create mode 100644 runs/CHIP/results/floorplan/alu8_pdn.def
- create mode 100644 runs/CHIP/results/placement/alu8_pl.def
- create mode 100644 runs/CHIP/results/routing/alu8_rt.def
- create mode 100644 runs/CHIP/results/routing/alu8_rt_pwr.v
- create mode 100644 runs/CHIP/results/routing/alu8_rt_sim.v
- create mode 100644 runs/CHIP/results/routing/drc.rpt
- create mode 100644 runs/CHIP/results/spef/alu8_rt.spef
- create mode 100644 runs/CHIP/results/sta/alu8_rt.sdf
- create mode 100644 runs/CHIP/results/sta/timing_report.txt
- create mode 100644 runs/CHIP/results/sta/tns_report.txt
- create mode 100644 runs/CHIP/results/sta/wns_report.txt
- create mode 100644 runs/CHIP/results/synthesis/alu8_sys.v
- create mode 100644 runs/CHIP/runtime.yaml
- create mode 100644 signoff/lvs_drc_chip/DRC_ERROR_SCREENSHOT.png
- create mode 100644 signoff/lvs_drc_chip/alu8.cdl
- create mode 100644 signoff/lvs_drc_chip/alu8.gds
- create mode 100644 signoff/lvs_drc_chip/alu8.lvsdb
- create mode 100644 signoff/lvs_drc_chip/alu8_extracted.cir
- create mode 100644 signoff/lvs_drc_chip/alu8_klayout.gds
- create mode 100644 signoff/lvs_drc_chip/scl_drc.txt
- create mode 100644 tapeout/config_chip_asrun.json
-Enumerating objects: 46, done.
-Counting objects: 100% (46/46), done.
+git diff --cached --name-only | grep -Ei \
+  '\.(lib|lef|odb)$|\.tar\.gz$|\.7z$|\.zip$|core_iolib|/tmp/|std_cells_cp8d|pads_cp8d|CORNER\.gds|frame.*\.gds'
+# ^ must print NOTHING
+
+git diff --cached --name-only | wc -l
+du -sh snapshots/*
+.gitignore:30:*.tar.gz	snapshots/alu8-preplacement-20261022-0215.tar.gz
+snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/cts/cts-fastest.lib.exclude.list
+snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/cts/cts-slowest.lib.exclude.list
+snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/cts/cts.lib.exclude.list
+snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/layers.list
+snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/routing/config.tracks
+snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/synthesis/trimmed.lib.exclude.list
+112
+15M	snapshots/2026-10-22_0215_preplacement
+4.7M	snapshots/2026-10-22_2127_chip-4mm
+4.1M	snapshots/2026-10-22_evidence
+3.0M	snapshots/alu8-preplacement-20261022-0215.tar.gz
+[eda@eda] ~/projects/openlane-alu8 $ git commit -m "snapshots/: move orphaned archives into the repo, add per-run design snapshot
+
+Moves ~/alu8-archive and alu8_evidence_2026-10-22 under snapshots/ and adds the
+live design tree as 2026-10-22_2127_chip-4mm. .gitignore now excludes PDK data at
+any depth; runs/*/tmp/ only ever matched the top-level runs/."
+git push
+[main 20550d2] snapshots/: move orphaned archives into the repo, add per-run design snapshot
+ 112 files changed, 153599 insertions(+)
+ create mode 100755 snapshots/2026-10-22_0215_preplacement/alu8/1_RTL/alu8.v
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/2_iverilog_prelayout/tb_prelay_sim/tb_prelay_script.source
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/cts_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/fill_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/floorplan_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/pdn_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/pdn_order.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/placement_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/rcx_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/routing_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/run_sta.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/run_sta.tcl.bak
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/script_openlane.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/3_src/yosys_script.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/4A_synthesis_netlist/alu8_sys.v
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/4B_synthesis_netlist_sim/tb_prelay_sim/tb_sys_sim_script.source
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/5_klayout/cdl_gds_script.source
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/5_klayout/script/def2gds.py
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/5_klayout/script/verilog2spice.py
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/6_iverilog_postlayout/tb_postlay_sim/tb_postlay_script.source
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/config.json
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/pin_order.cfg
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/OPENLANE_COMMIT
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/cmds.log
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/config.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/config_in.tcl
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/errors.log
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/openlane.log
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/results/floorplan/alu8.def
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/results/synthesis/alu8_sys.v
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/runtime.yaml
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/cts/cts-fastest.lib.exclude.list
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/cts/cts-slowest.lib.exclude.list
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/cts/cts.lib.exclude.list
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/layers.list
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/routing/config.tracks
+ create mode 100644 snapshots/2026-10-22_0215_preplacement/alu8/runs/RUN/tmp/synthesis/trimmed.lib.exclude.list
+ create mode 100755 snapshots/2026-10-22_2127_chip-4mm/1_RTL/alu8.v
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/2_iverilog_prelayout/tb_prelay_sim/tb_prelay_script.source
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/cts_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/fill_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/floorplan_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/pdn_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/pdn_order.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/placement_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/rcx_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/routing_cp8d.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/run_sta.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/run_sta.tcl.bak
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/script_openlane.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/3_src/yosys_script.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/4A_synthesis_netlist/alu8_sys.v
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/4B_synthesis_netlist_sim/tb_prelay_sim/tb_sys_sim_script.source
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/cdl_gds_script.source
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/cdl_gds_script.source.1mm
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/cdl_gds_script.source.bak
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/drc-1.png
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/drc-2.png
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/full-chip-screenshot.png
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc/DRC_ERROR_SCREENSHOT.png
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc/alu8.cdl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc/alu8.gds
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc/alu8.lvsdb
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc/alu8_extracted.cir
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc/alu8_klayout.gds
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc/scl_drc.txt
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc_1mm/DRC_ERROR_SCREENSHOT.png
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc_1mm/alu8.cdl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc_1mm/alu8.gds
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc_1mm/alu8.lvsdb
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc_1mm/alu8_extracted.cir
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc_1mm/alu8_klayout.gds
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/lvs_drc_1mm/scl_drc.txt
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/script/def2gds.py
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/5_klayout/script/verilog2spice.py
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/6_iverilog_postlayout/tb_postlay_sim/tb_postlay_script.source
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/config.json
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/config_1mm.json
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/config_chip.json
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/pin_order.cfg
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/pin_order_chip.cfg
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/run_all.tcl
+ create mode 100644 snapshots/2026-10-22_2127_chip-4mm/run_chip.tcl
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/cdl_gds_script.source
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/cdl_gds_script.source.bak
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/lvs_drc/alu8.cdl
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/lvs_drc/alu8.gds
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/lvs_drc/alu8.lvsdb
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/lvs_drc/alu8_extracted.cir
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/lvs_drc/scl_drc.txt
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/script/def2gds.py
+ create mode 100644 snapshots/2026-10-22_evidence/5_klayout/script/verilog2spice.py
+ create mode 100644 snapshots/2026-10-22_evidence/cmds.log
+ create mode 100644 snapshots/2026-10-22_evidence/results/cts/alu8_plcts.def
+ create mode 100644 snapshots/2026-10-22_evidence/results/floorplan/alu8.def
+ create mode 100644 snapshots/2026-10-22_evidence/results/floorplan/alu8_pdn.def
+ create mode 100644 snapshots/2026-10-22_evidence/results/placement/alu8_pl.def
+ create mode 100644 snapshots/2026-10-22_evidence/results/routing.bak/alu8_rt.def
+ create mode 100644 snapshots/2026-10-22_evidence/results/routing.bak/alu8_rt_pwr.v
+ create mode 100644 snapshots/2026-10-22_evidence/results/routing.bak/alu8_rt_sim.v
+ create mode 100644 snapshots/2026-10-22_evidence/results/routing.bak/drc.rpt
+ create mode 100644 snapshots/2026-10-22_evidence/results/routing/alu8_rt.def
+ create mode 100644 snapshots/2026-10-22_evidence/results/routing/alu8_rt_pwr.v
+ create mode 100644 snapshots/2026-10-22_evidence/results/routing/alu8_rt_sim.v
+ create mode 100644 snapshots/2026-10-22_evidence/results/routing/drc.rpt
+ create mode 100644 snapshots/2026-10-22_evidence/results/spef/alu8_rt.spef
+ create mode 100644 snapshots/2026-10-22_evidence/results/sta/alu8_rt.sdf
+ create mode 100644 snapshots/2026-10-22_evidence/results/sta/timing_report.txt
+ create mode 100644 snapshots/2026-10-22_evidence/results/sta/tns_report.txt
+ create mode 100644 snapshots/2026-10-22_evidence/results/sta/wns_report.txt
+ create mode 100644 snapshots/2026-10-22_evidence/results/synthesis/alu8_sys.v
+Enumerating objects: 112, done.
+Counting objects: 100% (112/112), done.
 Delta compression using up to 4 threads
-Compressing objects: 100% (35/35), done.
-Writing objects: 100% (42/42), 417.75 KiB | 1.86 MiB/s, done.
-Total 42 (delta 11), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (11/11), completed with 4 local objects.
+Compressing objects: 100% (93/93), done.
+Writing objects: 100% (110/110), 564.49 KiB | 2.44 MiB/s, done.
+Total 110 (delta 25), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (25/25), completed with 1 local object.
 To github.com:sudo-apt-uninstall/openlane-alu8.git
-   388d19e..b93378c  main -> main
+   20a47b7..20550d2  main -> main
 [eda@eda] ~/projects/openlane-alu8 $ 
 
