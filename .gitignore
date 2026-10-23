@@ -17,7 +17,7 @@ runs/*/logs/
 a.out
 
 # --- PDK-derived / vendor data: never in a public repo ---
-tmp/                 # matches at ANY depth, unlike runs/*/tmp/
+tmp/
 *.lib
 *.lef
 core_iolib_cp8d.cdl
