@@ -1,0 +1,205 @@
+# Engineering notes — status, conditions, caveats and open work
+
+Everything the [README](../README.md) deliberately does not say. The README is the
+showcase; **this file is the honest register.** Read it before quoting any number from
+the front page, and treat it as the authority wherever the two disagree.
+
+Last updated **2026-10-26**.
+
+---
+
+## 1. Status in one line
+
+> **Routed. LVS clean. Router DRC clean. Signoff DRC not yet clean.
+> Gate-level simulation of the routed netlist has not been run.
+> Nothing here is a tapeout claim.**
+
+| check | state |
+|---|---|
+| router DRC (`drc.rpt`) | ✅ 0 bytes — clean |
+| signoff LVS (KLayout) | ✅ 0 errors — layout matches schematic |
+| signoff DRC — boron width `6.1.1/6.1.2` | ✅ **0** after placement padding (was 3, then 2) |
+| signoff DRC — via-to-poly `9.4.1` | ⚠️ **8 report items = 5 physical vias** — open |
+| gate-level simulation of routed netlist | ❌ not run |
+| `signoff.sh` headless run | ⚠️ written, deck variables confirmed, end-to-end batch run still unverified |
+| GDS streamout inside the flow | ❌ absent — `run_all.tcl` ends at STA |
+
+---
+
+## 2. The timing number is cell delay only
+
+> **≈86 MHz is not post-layout timing and must never be presented as signoff timing.**
+
+The SPEF is generated and read, but the **OpenRCX rule deck for this process yields zero
+capacitance on every net**, so wire length is invisible to the timer. The figure is also
+**typical corner only (5 V, 25 °C)** — CP8D ships no worst-case library.
+
+This is a **measurement, not a disclaimer.** Across four configurations:
+
+| configuration | setup | hold |
+|---|---|---|
+| 1 mm die, density 0.45 | 11.61 ns, **+88.39 MET** | **+0.78 MET** |
+| 4 mm die, density 0.05 | 11.61 ns, **+88.39 MET** | **+0.78 MET** |
+| 4 mm die, density 0.20 + padding | 11.61 ns, **+88.39 MET** | **+0.78 MET** |
+
+Same path `a[1]` → `zero`, the same ten instances, the same per-gate delays to the
+picosecond. **Die area changed 16×, density 9×, padding off → on, and STA never moved.**
+
+For scale on how slow this process is: `NND600` alone costs **2.50 ns**.
+
+---
+
+## 3. Open items
+
+### 3.1 Signoff DRC — via-to-poly, 5 physical violations
+
+The boron-width blocker is **closed** — `set_placement_padding -global -left 1 -right 1`
+removed all of them ([padding-run-d020.md](padding-run-d020.md)). What remains is
+`9.4.1 : Minimum via to Poly spacing = 1.0um`.
+
+**8 report items are 5 distinct vias** — three are reported twice, once per side, at an
+x-separation of exactly 1.5 µm (the via width). *Do not quote the item count as a defect
+count.* Worst case is 0.05 µm against a 1.0 µm minimum.
+
+Root cause is structural: `detailed_route` checks the **LEF abstract, and the abstract
+contains no poly**. The router cannot see what it is violating — which is exactly why
+`drc.rpt` is 0 bytes while the signoff deck still finds items. Both statements are true
+about different views of the same layout.
+
+Untried fixes, cheapest first:
+
+1. **Routing layer adjustment** — `routing_cp8d.tcl` sets
+   `set_global_routing_layer_adjustment metal1 0` and `metal2 0`, i.e. no derating at all.
+   Raising it discourages tracks over cells.
+2. **A routing blockage over cell poly** before `detailed_route`, telling the router what
+   the abstract hides.
+3. **A tighter core area**, so wires stop crossing cells to reach distant pins.
+4. **Accept five and fix them by hand** in KLayout — normal practice at this scale, but it
+   costs the scripted-flow property.
+
+⚠️ Options 1 and 3 interact with the boron result. Any of them must be **re-signed-off,
+not assumed**.
+
+### 3.2 Gate-level simulation of the routed netlist — not run
+
+The inputs exist: `alu8_rt_sim.v` (no supply pins, so it drops straight into the existing
+testbench) and `alu8_rt.sdf`. **This is the only step that verifies the routed netlist
+actually computes correctly.** Until it runs, LVS proves connectivity and nothing proves
+function post-layout.
+
+### 3.3 Signoff scripted, not yet verified end to end
+
+`signoff/signoff.sh` replaces the manual GUI run. The deck paths were corrected after the
+standalone-cell experiment (`$KLAYOUT_PATH/tech/drc/drc.lydrc`, not `$KLAYOUT_PATH/drc/`),
+but a clean batch execution has not been confirmed. Until it is, DRC and LVS are
+reproducible only by hand.
+
+### 3.4 Wire-load RC experiment — inconclusive, and the script is gone
+
+`cmds.log` shows `run_sta_wirerc.tcl` **was executed twice** (21 Oct, 22:55:41 and
+23:26:33), so any earlier claim that it "never reached disk" is **withdrawn**. The file
+was deleted afterwards and is absent from `flow/3_src/`. It must be rewritten from
+scratch. Both runs produced **byte-identical output despite a 187× intended capacitance
+change**, and why remains unexplained.
+
+### 3.5 No GDS streamout in the flow
+
+`run_all.tcl` ends at STA, so after every re-run the signoff artefacts describe the
+*previous* layout until regenerated by hand. Folding steps 1–2 of `signoff.sh` into the
+driver closes this.
+
+---
+
+## 4. Known RTL gaps
+
+- No signed **overflow** flag — `carry` is the unsigned indicator only.
+- Shifts drop ejected bits and never set `carry`; the convention is undecided.
+- `op = 3'b111` is never exercised by the testbench, so the `default` branch is dead in
+  simulation.
+- The testbench is **9 directed vectors**. A full `a × b × op` sweep is only
+  8 × 256 × 256 = **524,288 evaluations** — trivially runnable, and it would *prove* the
+  design rather than sample it.
+
+---
+
+## 5. Operational warnings
+
+🔴 **Never run `cts_cp8d.tcl`.** It calls `[get_ports clk]` and this design has no clock
+port. `fill_cp8d.tcl` replaces it — and skipping CTS without that replacement silently
+loses every filler. See [flow-notes.md](flow-notes.md).
+
+⚠️ **`-overwrite` deletes the entire `runs/<tag>` directory**, including anything parked
+inside it. Copy `results/`, `cmds.log` and the signoff tree elsewhere first. `runs/RUN`
+is *already* a re-run for this reason; the original is preserved as
+`runs/RUN_COMPLETE_20261021`.
+
+⚠️ **The DRC report path is CWD-relative and there is no override.** The deck writes
+`./scl_drc.txt` into whatever the current directory is — an earlier invocation from inside
+the PDK tree overwrote the PDK's own copy. Run DRC from a scratch directory and move the
+report afterwards.
+
+⚠️ **`cdl_gds_script.source` hardcodes the run directory.** There is no tag variable, so a
+signoff launched against the wrong tag silently re-verifies a previous run and overwrites
+`5_klayout/lvs_drc/`.
+
+**Rule: read `<original-file>`, `<top-cell>` and `<generator>` out of a KLayout report
+before believing its counts.** All three are in the header and all three can silently be
+the wrong thing.
+
+⚠️ **`netlist/alu8_netlist.v` is Yosys *generic* output** — 322 `assign` statements, 318
+wires, **zero cell instances**. Kept for provenance only. **No area, cell-count or timing
+number may be quoted from it.** OpenLane re-synthesises from `1_RTL/` regardless.
+
+⚠️ **Each run tree's `tmp/` is excluded from this repository.** It holds merged LEF and
+Liberty files copied out of the PDK — roughly **14.5 MB per tree**. Never commit it.
+
+---
+
+## 6. What stands between this and a submittable GDS
+
+Only the first of these is ours.
+
+1. **The remaining DRC items.** The `999:0` waiver layer is hard-capped at **2 polygons**.
+   At 5 physical violations, waiving is unavailable in principle — they must be fixed.
+   A plain re-run cannot help: the flow is byte-identically deterministic *through*
+   signoff ([determinism.md](determinism.md)).
+2. **Pad conversion.** The 4 mm frame ships **16 input pads, 16 dead pads and zero
+   outputs** — `ASPAD00` has only three terminals (bond pad + 322 Ω nwell resistor + ESD
+   diodes) and **no path to the core at all**. Converting costs **13 swaps minimum**, or
+   **18** for a bus-aligned floorplan that keeps `result[7:0]` on one edge. Every swap
+   also requires editing `frame4mmx4mm.cdl`, or chip-level LVS fails.
+3. **Blocked on SCL.** No **antenna rule deck** exists anywhere in the PDK or its five
+   documents, yet submission requires an antenna-clean GDSII. The **Tapeout Submission
+   Form** and the **seal ring** are likewise named but never supplied.
+   ⚠️ `CORNER.gds` is a pad-ring corner cell, **not** a seal ring.
+   No amount of core-side work removes these.
+
+---
+
+## 7. Experiment record
+
+| experiment | question | result |
+|---|---|---|
+| [invr00-standalone-drc.md](invr00-standalone-drc.md) | Is `INVR00` itself defective? | **No — 0 items across 71 categories.** The violations were created by placement. |
+| [chip-run-4mm.md](chip-run-4mm.md) | Does ≈1.2 % utilisation remove the abutment? | Boron 3 → **2**. Helped, did not close. Via-to-poly appeared: **6**. |
+| [padding-run-d020.md](padding-run-d020.md) | Does explicit placement padding close it? | **Boron → 0.** Via-to-poly 6 → 8 items (5 vias). Blocker closed. |
+| [determinism.md](determinism.md) | Is the flow reproducible? | **Byte-identical** results across two executions, and signoff reproduces the same items at the same coordinates. |
+| [flow-script-audit.md](flow-script-audit.md) | Do the config knobs reach the tools? | **No** — `GPL_CELL_PADDING` / `DPL_CELL_PADDING` never reach the placer; `placement_cp8d.tcl` never calls `set_placement_padding`. That is *why* padding had to be added by hand. |
+
+---
+
+## 8. Corrections to earlier claims
+
+Kept visible on purpose — a retracted claim is evidence about process, not an
+embarrassment to hide.
+
+| withdrawn claim | what measurement showed |
+|---|---|
+| "`run_sta_wirerc.tcl` never reached disk" | `cmds.log` proves it ran **twice**, then was deleted. |
+| "SCL's own `DRC_EXCLUDE_CELL_LIST_OPT \"INVR01\"` corroborates an `INVR` family defect" | `INVR00` measures **clean standalone**. Whatever SCL excluded `INVR01` for, it is not this. |
+| "The signoff artefacts are stale" | A regenerated `scl_drc.txt` holds the **same items at the same coordinates**. Determinism holds through signoff. |
+| "`alu8_klayout.gds` is byte-identical to `alu8.gds`" | Same size, **different SHA, 57 % of bytes differ**. Parsing both: identical geometry multiset, only cell write order differs — **geometrically identical, file-wise not.** |
+| "The two completed run trees are the same run, differing only in `cmds.log`" | They are **two separate executions** whose `results/` are byte-identical — which is the stronger claim, and the determinism proof. |
+
+**Rule earned: for GDS, equal size proves nothing and a byte-diff proves less than it
+looks. Only a parsed comparison answers it.**
